@@ -1,0 +1,132 @@
+\chapter{Illustration of the cover set induction method}
+\normalsize
+\rm
+This example illustrates the cover set induction method by a simple 
+example.
+
+\small
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> option
+Type ackb, autoorder, brakes, critical, cycle, depth, fastkb, fopc, history, 
+     list, manualorder, norm, operator, order, prove, quit, reduce, refute, 
+     support, trace, type, help --> prove
+Following methods are available:
+  Deduction:
+     (f) forward reasoning --- using completion
+     (s) refutation        --- using boolean-ring method
+     (c) refutation        --- using conditional rules
+  Induction:
+     (e) explicit          --- using the cover-set method
+     (s) inductionless     --- using the test set method
+     (g) inductionless     --- using the ground-reducibility method
+Please make your choice: 
+(current value: s) (f,c,e,s,g) e
+Time = 0.04999999999999999 sec      Total = 0.2 sec
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> read minus
+
+New operators have the arities:
+      0: -> num
+      minus: num -> num
+      pre: num -> num
+      suc: num -> num
+
+New constant set is: { 0 }
+Equations read in are:
+ 1. pre(suc(x)) == x  [user, 1]
+ 2. suc(pre(x)) == x  [user, 2]
+ 3. minus(0) == 0  [def, 3]
+ 4. minus(pre(x)) == suc(minus(x))  [def, 4]
+ 5. minus(suc(x)) == pre(minus(x))  [def, 5]
+Time = 0.3833333333333333 sec      Total = 0.6 sec
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> operator
+Type order, rulesize, display, constructor, commutative, acoperator, 
+     transitive, divisible, equivalence, precedence, quit, status, weight, 
+     help --> precedence
+Type operators in decreasing precedence
+  (eg. 'i * e' to set i > * > e) 
+--> minus pre suc 0 
+Precedence relation, minus > pre, is added.
+Precedence relation, pre > suc, is added.
+Precedence relation, suc > 0, is added.
+Time = 0.08333333333333334 sec      Total = 0.6833333333333333 sec
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> operator
+Type order, rulesize, display, constructor, commutative, acoperator, 
+     transitive, divisible, equivalence, precedence, quit, status, weight, 
+     help --> constructor
+Type operators you wish to be constructors: 0 suc pre 
+Is 'suc' a free constructor ? (y,n,yes,no) n
+Is 'pre' a free constructor ? (y,n,yes,no) n
+Time = 0.04999999999999999 sec      Total = 0.75 sec
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> makerule
+
+Adding rule:   [1] pre(suc(x)) ---> x  [user, 1]
+Adding rule:   [2] suc(pre(x)) ---> x  [user, 2]
+Adding rule:   [3] minus(0) ---> 0  [def, 3]
+Adding rule:   [4] minus(pre(x)) ---> suc(minus(x))  [def, 4]
+Adding rule:   [5] minus(suc(x)) ---> pre(minus(x))  [def, 5]
+Time = 0.15 sec      Total = 0.9333333333333333 sec
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> prove
+Type your equation in the format:  L == R (if C) 
+Enter a ']' to exit when no equation is given.
+minus(minus(x)) == x  [user, 6]
+
+No, it is not equational theorem.
+Normal form of the left hand side is:
+        minus(minus(x))
+Normal form of the right hand side is:
+        x
+----- Step 1 -----
+Let P(x) be [main] minus(minus(x)) == x
+The induction will be done on x in minus(x), and will follow the scheme: 
+    [1] P(0)
+    [2] P(pre(x)) if  { P(x) } 
+    [3] P(suc(x)) if  { P(x) } 
+
+By the rules [3],
+    [1] minus(minus(0)) == 0
+    is reduced to true.
+
+By the rules [4], [5],
+    [2] minus(minus(pre(x))) == pre(x) if  { (minus(minus(x)) = x) } 
+    is reduced to true.
+
+By the rules [5], [4],
+    [3] minus(minus(suc(x))) == suc(x) if  { (minus(minus(x)) = x) } 
+    is reduced to true.
+
+All subgoals of [main] are proven, hence
+    [main] minus(minus(x)) == x
+    is an inductive theorem.
+
+Following equation
+    minus(minus(x)) == x  [user, 6]
+    is an inductive theorem in the current system.
+
+Adding rule:   [6] minus(minus(x)) ---> x  [user, 6]
+Time = 0.3666666666666666 sec      Total = 1.333333333333333 sec
+\end{verbatim}
+\rm
+\normalsize

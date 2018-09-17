@@ -1,0 +1,18 @@
+This directory has the files for Equation Solver. The current
+version contains all the changes after the first version.
+
+Improtant changes made till date are :-
+
+    1.. A function has been written which when called shows all
+    the available rules. The user has the option of removing
+    some of these rules from the set used for restructuring.
+    This has to be done by calling :-
+    RRL>> (SHOW-RES-RULES $RULE-SET).
+
+    2.. If required the EAGER REWRITING flag can be set off.
+    (The default is ON - i.e. eager rewriting is tried). This
+    is handled by using a global variable *EAGER-REWRITE* which
+    is initially set to T (true). If this flag is set to false
+    then eager-rewriting is turned off.
+
+

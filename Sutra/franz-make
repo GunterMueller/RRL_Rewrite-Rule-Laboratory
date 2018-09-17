@@ -1,0 +1,44 @@
+.SUFFIXES: .l.o
+
+.l.o:
+	${Liszt} -q $*
+
+Liszt = liszt
+
+ReqSrc = term.l miscel.l match.l unify.l ac.l orderpc.l dioph.l \
+	subst.l operators.l boolean.l initialize.l critical.l \
+	kb.l history.l normalize.l normstrat.l lrpo.l order.l \
+	precedence.l cancel.l makerules.l consist.l commut.l \
+	set.l pickrules.l output.l suggprec.l normbool.l \
+	aclrpo.l polynomial.l cyclerule.l coverrule.l typing.l \
+	statistics.l toplevel.l syntax.l \
+	frz-input.l options.l autoorder.l \
+	condit.l building.l premises.l prem-norm.l \
+	prove.l induc.l suffic.l narrow.l abstract.l \
+	quasired.l paramod.l skolem.l pccrit.l assertion.l \
+	refut.l conject.l testset.l equality.l structure.l saveload.l \
+	datamacs.l frz-spl.l
+
+
+ReqObj = term.o miscel.o match.o unify.o ac.o orderpc.o dioph.o \
+	subst.o operators.o boolean.o initialize.o critical.o \
+	kb.o history.o normalize.o normstrat.o lrpo.o order.o \
+	precedence.o cancel.o makerules.o consist.o commut.o \
+	set.o pickrules.o output.o suggprec.o normbool.o \
+	aclrpo.o polynomial.o cyclerule.o coverrule.o typing.o \
+	statistics.o toplevel.o syntax.o \
+	frz-input.o options.o autoorder.o \
+	condit.o building.o premises.o prem-norm.o \
+	prove.o induc.o suffic.o narrow.o abstract.o \
+	quasired.o paramod.o skolem.o pccrit.o assertion.o \
+	refut.o conject.o testset.o equality.o structure.o saveload.o 
+
+AllSrc = ${ReqSrc}
+
+all: ${ReqObj}
+
+required: ${ReqObj}
+
+sources: ${AllSrc}
+
+

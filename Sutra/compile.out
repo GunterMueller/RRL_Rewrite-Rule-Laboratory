@@ -1,0 +1,701 @@
+AKCL (Austin Kyoto Common Lisp)  Version(1.249) Thu Nov  9 12:43:20 EST 1989
+Contains Enhancements by W. Schelter
+Changes in version 1-225 definitely require recompilation of user files.
+
+>#<"USER" package>
+
+>*RRL-PROCLAIM*
+
+>*RRL-DIRECTORY*
+
+>*RRL-PATHNAME-EXTENSIONS*
+
+>*RRL-LOAD-VERSION-DEFAULT*
+
+>*RRL-DEFAULT-COMPILE-ARGS*
+
+>*RRL-DEFAULT-LOAD-ARGS*
+
+>LISP-FILE
+
+>FASL-FILE
+
+>*RRL-FILES*
+
+>*RRL-LOADED-FILE-TABLE*
+
+>FWD
+
+>COMPILE-RRL-FILE
+
+>LOAD-RRL-FILE
+
+>WITH-COMPILER-WARNINGS-CONTEXT
+
+>COMPILE-RRL
+
+>LOAD-RRL
+
+>Loading bug-fixes.lsp
+Finished loading bug-fixes.lsp
+Compiling bug-fixes.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling bug-fixes.lsp.
+Loading bug-fixes.o
+start address -T 21c74c Finished loading bug-fixes.o
+Loading defvars.lsp
+Finished loading defvars.lsp
+Compiling defvars.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling defvars.lsp.
+Loading defvars.o
+start address -T 24a000 Finished loading defvars.o
+Loading cl-loop.lsp
+Warning: LOOP is being redefined.
+Finished loading cl-loop.lsp
+Compiling cl-loop.lsp.
+Warning: LOOP is being redefined.
+End of Pass 1.  
+;; Note: Tail-recursive call of LOOP-DECLARE-VARIABLE was replaced by iteration.
+;; Note: Tail-recursive call of LOOP-DECLARE-VARIABLE was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling cl-loop.lsp.
+Loading cl-loop.o
+start address -T 2d4000 Finished loading cl-loop.o
+Loading cl-frzmacs.lsp
+Finished loading cl-frzmacs.lsp
+Compiling cl-frzmacs.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling cl-frzmacs.lsp.
+Loading cl-frzmacs.o
+start address -T 2e3000 Finished loading cl-frzmacs.o
+Loading datamacs.lsp
+Finished loading datamacs.lsp
+Compiling datamacs.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling datamacs.lsp.
+Loading datamacs.o
+start address -T 2ee800 Finished loading datamacs.o
+Loading cl-frzfuns.lsp
+Finished loading cl-frzfuns.lsp
+Compiling cl-frzfuns.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling cl-frzfuns.lsp.
+Loading cl-frzfuns.o
+start address -T 2fc800 Finished loading cl-frzfuns.o
+Loading help.lsp
+Finished loading help.lsp
+Compiling help.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling help.lsp.
+Loading help.o
+start address -T 2e1420 Finished loading help.o
+Loading term.lsp
+Finished loading term.lsp
+Compiling term.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling term.lsp.
+Loading term.o
+start address -T 302800 Finished loading term.o
+Loading miscel.lsp
+Finished loading miscel.lsp
+Compiling miscel.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling miscel.lsp.
+Loading miscel.o
+start address -T 308800 Finished loading miscel.o
+Loading ac-match.lsp
+Finished loading ac-match.lsp
+Compiling ac-match.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of MATCH-POSS was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling ac-match.lsp.
+Loading ac-match.o
+start address -T 30c800 Finished loading ac-match.o
+Loading ac-unify.lsp
+Finished loading ac-unify.lsp
+Compiling ac-unify.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling ac-unify.lsp.
+Loading ac-unify.o
+start address -T 317000 Finished loading ac-unify.o
+Loading ac.lsp
+Finished loading ac.lsp
+Compiling ac.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling ac.lsp.
+Loading ac.o
+start address -T 31c000 Finished loading ac.o
+Loading orderpc.lsp
+Finished loading orderpc.lsp
+Compiling orderpc.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling orderpc.lsp.
+Loading orderpc.o
+start address -T 321800 Finished loading orderpc.o
+Loading dioph.lsp
+Finished loading dioph.lsp
+Compiling dioph.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of TAKE-OUT was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling dioph.lsp.
+Loading dioph.o
+start address -T 328800 Finished loading dioph.o
+Loading uni-match.lsp
+Finished loading uni-match.lsp
+Compiling uni-match.lsp.
+; (DEFUN MATCH ...) is being compiled.
+;; Warning: The variable CONDI is not used.
+End of Pass 1.  
+;; Note: Tail-recursive call of RESOLVE-SUBS was replaced by iteration.
+;; Note: Tail-recursive call of NORMAL-FORM-SUB was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling uni-match.lsp.
+Loading uni-match.o
+start address -T 32f000 Finished loading uni-match.o
+Loading subst.lsp
+Finished loading subst.lsp
+Compiling subst.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling subst.lsp.
+Loading subst.o
+start address -T 331800 Finished loading subst.o
+Loading operators.lsp
+Finished loading operators.lsp
+Compiling operators.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling operators.lsp.
+Loading operators.o
+start address -T 334800 Finished loading operators.o
+Loading boolean.lsp
+Finished loading boolean.lsp
+Compiling boolean.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling boolean.lsp.
+Loading boolean.o
+start address -T 33c000 Finished loading boolean.o
+Loading initialize.lsp
+Finished loading initialize.lsp
+Compiling initialize.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling initialize.lsp.
+Loading initialize.o
+start address -T 342000 Finished loading initialize.o
+Loading critical.lsp
+Finished loading critical.lsp
+Compiling critical.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling critical.lsp.
+Loading critical.o
+start address -T 387000 Finished loading critical.o
+Loading kb.lsp
+Finished loading kb.lsp
+Compiling kb.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling kb.lsp.
+Loading kb.o
+start address -T 395800 Finished loading kb.o
+Loading history.lsp
+Finished loading history.lsp
+Compiling history.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling history.lsp.
+Loading history.o
+start address -T 39e800 Finished loading history.o
+Loading normalize.lsp
+Finished loading normalize.lsp
+Compiling normalize.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling normalize.lsp.
+Loading normalize.o
+start address -T 3a1000 Finished loading normalize.o
+Loading normstrat.lsp
+Finished loading normstrat.lsp
+Compiling normstrat.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of PURE-NORM-INNERMOST was replaced by iteration.
+;; Note: Tail-recursive call of NORM-WITH-BIN was replaced by iteration.
+;; Note: Tail-recursive call of PURE-NORM-WITH-BIN was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling normstrat.lsp.
+Loading normstrat.o
+start address -T 3a7800 Finished loading normstrat.o
+Loading lrpo.lsp
+Finished loading lrpo.lsp
+Compiling lrpo.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling lrpo.lsp.
+Loading lrpo.o
+start address -T 3aa800 Finished loading lrpo.o
+Loading order.lsp
+Finished loading order.lsp
+Compiling order.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling order.lsp.
+Loading order.o
+start address -T 3ad000 Finished loading order.o
+Loading precedence.lsp
+Finished loading precedence.lsp
+Compiling precedence.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling precedence.lsp.
+Loading precedence.o
+start address -T 3b3000 Finished loading precedence.o
+Loading cancel.lsp
+Finished loading cancel.lsp
+Compiling cancel.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of RIGHT-ARG2 was replaced by iteration.
+;; Note: Tail-recursive call of LEFT-ARG2 was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling cancel.lsp.
+Loading cancel.o
+start address -T 3b5800 Finished loading cancel.o
+Loading makerules.lsp
+Finished loading makerules.lsp
+Compiling makerules.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling makerules.lsp.
+Loading makerules.o
+start address -T 3ba000 Finished loading makerules.o
+Loading consist.lsp
+Finished loading consist.lsp
+Compiling consist.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling consist.lsp.
+Loading consist.o
+start address -T 3bf800 Finished loading consist.o
+Loading commut.lsp
+Finished loading commut.lsp
+Compiling commut.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling commut.lsp.
+Loading commut.o
+start address -T 3c4000 Finished loading commut.o
+Loading set.lsp
+Finished loading set.lsp
+Compiling set.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling set.lsp.
+Loading set.o
+start address -T 3c8000 Finished loading set.o
+Loading pickrules.lsp
+Finished loading pickrules.lsp
+Compiling pickrules.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of CHOOSE-BY-HAND was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling pickrules.lsp.
+Loading pickrules.o
+start address -T 3d4800 Finished loading pickrules.o
+Loading output.lsp
+Finished loading output.lsp
+Compiling output.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling output.lsp.
+Loading output.o
+start address -T 3d8800 Finished loading output.o
+Loading suggprec.lsp
+Finished loading suggprec.lsp
+Compiling suggprec.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling suggprec.lsp.
+Loading suggprec.o
+start address -T 3e0800 Finished loading suggprec.o
+Loading normbool.lsp
+Finished loading normbool.lsp
+Compiling normbool.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of NORM-CTX was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling normbool.lsp.
+Loading normbool.o
+start address -T 3e3000 Finished loading normbool.o
+Loading aclrpo.lsp
+Finished loading aclrpo.lsp
+Compiling aclrpo.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of AC-DISTRI was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling aclrpo.lsp.
+Loading aclrpo.o
+start address -T 3e6000 Finished loading aclrpo.o
+Loading polynomial.lsp
+Finished loading polynomial.lsp
+Compiling polynomial.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling polynomial.lsp.
+Loading polynomial.o
+start address -T 41b800 Finished loading polynomial.o
+Loading cyclerule.lsp
+Finished loading cyclerule.lsp
+Compiling cyclerule.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling cyclerule.lsp.
+Loading cyclerule.o
+start address -T 429000 Finished loading cyclerule.o
+Loading coverrule.lsp
+Finished loading coverrule.lsp
+Compiling coverrule.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling coverrule.lsp.
+Loading coverrule.o
+start address -T 42f800 Finished loading coverrule.o
+Loading typing.lsp
+Finished loading typing.lsp
+Compiling typing.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling typing.lsp.
+Loading typing.o
+start address -T 436800 Finished loading typing.o
+Loading statistics.lsp
+Finished loading statistics.lsp
+Compiling statistics.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling statistics.lsp.
+Loading statistics.o
+start address -T 43a800 Finished loading statistics.o
+Loading toplevel.lsp
+Finished loading toplevel.lsp
+Compiling toplevel.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling toplevel.lsp.
+Loading toplevel.o
+start address -T 43d000 Finished loading toplevel.o
+Loading syntax.lsp
+Finished loading syntax.lsp
+Compiling syntax.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of EXPECTING-PREDICATES was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling syntax.lsp.
+Loading syntax.o
+start address -T 442800 Finished loading syntax.o
+Loading cl-input.lsp
+Finished loading cl-input.lsp
+Compiling cl-input.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling cl-input.lsp.
+Loading cl-input.o
+start address -T 447800 Finished loading cl-input.o
+Loading options.lsp
+Finished loading options.lsp
+Compiling options.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling options.lsp.
+Loading options.o
+start address -T 453800 Finished loading options.o
+Loading autoorder.lsp
+Finished loading autoorder.lsp
+Compiling autoorder.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling autoorder.lsp.
+Loading autoorder.o
+start address -T 462000 Finished loading autoorder.o
+Loading condit.lsp
+Finished loading condit.lsp
+Compiling condit.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling condit.lsp.
+Loading condit.o
+start address -T 468800 Finished loading condit.o
+Loading building.lsp
+Finished loading building.lsp
+Compiling building.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling building.lsp.
+Loading building.o
+start address -T 472800 Finished loading building.o
+Loading premises.lsp
+Finished loading premises.lsp
+Compiling premises.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling premises.lsp.
+Loading premises.o
+start address -T 478000 Finished loading premises.o
+Loading prem-norm.lsp
+Finished loading prem-norm.lsp
+Compiling prem-norm.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling prem-norm.lsp.
+Loading prem-norm.o
+start address -T 24a000 Finished loading prem-norm.o
+Loading prove.lsp
+Finished loading prove.lsp
+Compiling prove.lsp.
+; (DEFUN SUCC-END-INDUC ...) is being compiled.
+;; Warning: The variable L1 is not used.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling prove.lsp.
+Loading prove.o
+start address -T 47e000 Finished loading prove.o
+Loading induc.lsp
+Finished loading induc.lsp
+Compiling induc.lsp.
+; (SETQ $GENE ...) is being compiled.
+;; The variable $GENE is undefined.
+;; The compiler will assume this variable is a global.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling induc.lsp.
+Loading induc.o
+start address -T 481800 Finished loading induc.o
+Loading suffic.lsp
+Finished loading suffic.lsp
+Compiling suffic.lsp.
+; (DEFUN START-TEST ...) is being compiled.
+;; Warning: The variable TEMP is not used.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling suffic.lsp.
+Loading suffic.o
+start address -T 48a000 Finished loading suffic.o
+Loading narrow.lsp
+Finished loading narrow.lsp
+Compiling narrow.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling narrow.lsp.
+Loading narrow.o
+start address -T 48c800 Finished loading narrow.o
+Loading abstract.lsp
+Finished loading abstract.lsp
+Compiling abstract.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling abstract.lsp.
+Loading abstract.o
+start address -T 48e800 Finished loading abstract.o
+Loading quasired.lsp
+Finished loading quasired.lsp
+Compiling quasired.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling quasired.lsp.
+Loading quasired.o
+start address -T 491800 Finished loading quasired.o
+Loading paramod.lsp
+Finished loading paramod.lsp
+Compiling paramod.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling paramod.lsp.
+Loading paramod.o
+start address -T 24b978 Finished loading paramod.o
+Loading skolem.lsp
+Finished loading skolem.lsp
+Compiling skolem.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of SKOLEMIZE-AWAY-QUANTS was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling skolem.lsp.
+Loading skolem.o
+start address -T 494000 Finished loading skolem.o
+Loading pccrit.lsp
+Finished loading pccrit.lsp
+Compiling pccrit.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling pccrit.lsp.
+Loading pccrit.o
+start address -T 496800 Finished loading pccrit.o
+Loading assertion.lsp
+Finished loading assertion.lsp
+Compiling assertion.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of PROCESS-ASS was replaced by iteration.
+;; Note: Tail-recursive call of PROCESS-ASS was replaced by iteration.
+;; Note: Tail-recursive call of PROCESS-ASS was replaced by iteration.
+;; Note: Tail-recursive call of PROCESS-ASS was replaced by iteration.
+;; Note: Tail-recursive call of PROCESS-ASS was replaced by iteration.
+;; Note: Tail-recursive call of PROCESS-ASS was replaced by iteration.
+;; Note: Tail-recursive call of PROCESS-ASS was replaced by iteration.
+;; Note: Tail-recursive call of PROCESS-ASS was replaced by iteration.
+;; Note: Tail-recursive call of PROCESS-ASS was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling assertion.lsp.
+Loading assertion.o
+start address -T 49b800 Finished loading assertion.o
+Loading refut.lsp
+Finished loading refut.lsp
+Compiling refut.lsp.
+; (SETQ $GOAL-SIZE ...) is being compiled.
+;; The variable $GOAL-SIZE is undefined.
+;; The compiler will assume this variable is a global.
+;; The variable $INSTANCE-SUBST-SIZE is undefined.
+;; The compiler will assume this variable is a global.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling refut.lsp.
+Loading refut.o
+start address -T 49f000 Finished loading refut.o
+Loading conject.lsp
+Finished loading conject.lsp
+Compiling conject.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of REMOVE-DUP-VARS was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling conject.lsp.
+Loading conject.o
+start address -T 4a3000 Finished loading conject.o
+Loading testset.lsp
+Finished loading testset.lsp
+Compiling testset.lsp.
+; (DEFUN TRACE-ADD-TESTSET ...) is being compiled.
+;; Warning: The variable TIME is not used.
+; (DEFUN GET-TESTSET-QUASI ...) is being compiled.
+;; Warning: The variable TIME is not used.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling testset.lsp.
+Loading testset.o
+start address -T 4a7800 Finished loading testset.o
+Loading equality.lsp
+Finished loading equality.lsp
+Compiling equality.lsp.
+End of Pass 1.  
+;; Note: Tail-recursive call of EQ-JOIN was replaced by iteration.
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling equality.lsp.
+Loading equality.o
+start address -T 4b0000 Finished loading equality.o
+Loading structure.lsp
+Finished loading structure.lsp
+Compiling structure.lsp.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling structure.lsp.
+Loading structure.o
+start address -T 30b800 Finished loading structure.o
+Loading saveload.lsp
+Warning: GET-PROPERTIES is being redefined.
+Finished loading saveload.lsp
+Compiling saveload.lsp.
+Warning: GET-PROPERTIES is being redefined.
+End of Pass 1.  
+End of Pass 2.  
+OPTIMIZE levels: Safety=1 (No runtime error checking), Space=3, Speed=3
+Finished compiling saveload.lsp.
+Loading saveload.o
+start address -T 4b3000 Finished loading saveload.o
+real time : 4604.317 secs
+run time  : 448.000 secs
+NIL
+
+>START-RRL
+
+>RESUME-RRL
+
+>Bye.
+Compiling... ...
+If all goes well, compiling takes about an hour on a Sun-3.

@@ -1,0 +1,201 @@
+\chapter{RRL as an interpreter for functional definitions}
+\normalsize
+\rm
+We give below a recursive definition of Ackermann's function.  The
+termination of this definition can be easily verified using the {\em
+makerule} command. Further, it can also be checked using {\em suffice}
+command that the function is completely defined.  \RRL gives a warning
+that the rewriting system obtained after invoking {\em makerule} may
+not be canonical. \RRL subsequently asks for the constructors of the
+domain on which the function is defined, which in this case, are {\em
+0, s}. If \RRL finds a function to be completely defined, then the
+function is indeed completely defined even if the rewriting system is
+not canonical.  That portion of the transcript was generated using
+extended trace to exhibit how \RRL checks for the completeness of the
+definition using the test set method.  Later, we exhibit how the {\em
+norm} command can be used to compute the value of Ackermann's function
+on a particular input.
+
+To use \RRL as an interpreter for a functional language, the user can
+\begin{enumerate}
+\item give the functional definition as input, 
+\item invoke {\em makerule} to make
+rewrite rules from the functional definition,
+\item check for the completeness of the definition, if desired, using
+{\em suffic} and by giving the constructors of the domain on which the function
+is defined, and finally
+\item use {\em norm} to execute the function by reading the term corresponding
+to the functional invocation and normalizing it.
+\end{enumerate}
+
+\small
+\tt
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em read ackermann}
+\begin{verbatim}
+
+New operators have the arities:
+      0: -> int
+      s: int -> int
+      ack: int, int, int -> int
+New constant set is: { 0 }
+Equations read in are:
+ 1. ack(0, 0, x) == x  [user, 1]
+ 2. ack(0, s(x), y) == s(ack(0, x, y))  [user, 2]
+ 3. ack(s(0), 0, y) == 0  [user, 3]
+ 4. ack(s(s(x)), 0, y) == s(0)  [user, 4]
+ 5. ack(s(z), s(x), y) == ack(z, ack(s(z), x, y), y)  [user, 5]
+New constant set is: { 0 }
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em makerule}
+\begin{verbatim}
+Adding rule:   [1] ack(0, 0, x) ---> x  [user, 1]
+Trying to orient equation: 
+  ack(0, s(x), y) == s(ack(0, x, y))  [user, 2]
+  To prove:  ack(0, s(x), y)  >  s(ack(0, x, y))
+        or:  ack(0, s(x), y)  <  s(ack(0, x, y))
+  Here are some precedence suggestions:
+       1.  ack > s                   2.  s > ack
+       3.  ack > 0                   4.  0 > ack
+       5.  0 > s                     6.  s > 0
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em st ack lr}
+\begin{verbatim}
+Operator, ack, given status: lr
+----- Step 1 -----
+  To prove:  ack(0, s(x), y)  >  s(ack(0, x, y))
+        or:  ack(0, s(x), y)  <  s(ack(0, x, y))
+  Here are some precedence suggestions:
+       1.  ack > s                   2.  s > ack
+       3.  ack > 0                   4.  0 > ack
+       5.  0 > s                     6.  s > 0
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em 1 3}
+\begin{verbatim}
+Adding rule:   [2] ack(0, s(x), y) ---> s(ack(0, x, y))  [user, 2]
+Adding rule:   [3] ack(s(0), 0, y) ---> 0  [user, 3]
+Adding rule:   [4] ack(s(s(x)), 0, y) ---> s(0)  [user, 4]
+Adding rule:   [5] ack(s(z), s(x), y) ---> ack(z, ack(s(z), x, y), y)  [user, 5]
+
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em opt tr 3}
+\begin{verbatim}
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> operator constructor
+Type operators you wish to be constructors: 0 s
+Is 's' a free constructor ? (y,n,yes,no) y
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+\tt RRL-> \em option trace 3\tt
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em suffice}
+\begin{verbatim}
+The system has the following constructors:
+     Type 'int': { 0, s }
+Nmuber of Candidates = 2
+Add to test set: 0
+Add to test set: s(x1)
+Time spent in computing TestSet  =  0.0 sec
+The schemas of the term
+    ack(x1, x2, x3)
+    are
+    ack(0, x2, x3)
+    ack(s(x1), x2, x3)
+The schemas of the term
+    ack(0, x2, x3)
+    are
+    ack(0, 0, x3)
+    ack(0, s(x1), x3)
+The schemas of the term
+    ack(s(x1), x2, x3)
+    are
+    ack(s(0), x2, x3)
+    ack(s(s(x1)), x2, x3)
+The schemas of the term
+    ack(s(0), x2, x3)
+    are
+    ack(s(0), 0, x3)
+    ack(s(0), s(x1), x3)
+The schemas of the term
+    ack(s(s(x1)), x2, x3)
+    are
+    ack(s(s(x1)), 0, x3)
+    ack(s(s(x1)), s(x11), x3)
+Specification of 'ack' is completely defined.
+Processor time used      =  0.1333333333333337 sec
+
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em norm}
+\begin{verbatim}
+Input a term in the form T  or T if C :
+\end{verbatim}
+{\em ack(0, 0, 0)}
+\begin{verbatim}
+The term read in is: ack(0, 0, 0)
+\end{verbatim}
+Type abort, norm, list, read, strat, quit, help --> {\em n}
+\begin{verbatim}
+The term to be normalized is: ack(0, 0, 0)
+The normal form of the  term is: 0
+Processor time used = 0.0 sec
+\end{verbatim}
+Type abort, norm, list, read, strat, quit, help --> {\em r}
+\begin{verbatim}
+Input a term in the form T or T if C :
+\end{verbatim}
+{\em ack(0, s(s(0)), s(s(s(0))))}
+\begin{verbatim}
+The term read in is:  ack(0, s(s(0)), s(s(s(0))))
+\end{verbatim}
+Type abort, norm, list, read, strat, quit, help --> {\em n}
+\begin{verbatim}
+The term to be normalized is: ack(0, s(s(0)), s(s(s(0))))
+The normal form of the term is: s(s(s(s(s(0)))))
+\end{verbatim}
+Type abort, norm, list, read, strat, quit, help --> {\em r}
+\begin{verbatim}
+Input a term in the form T  or T if C :
+\end{verbatim}
+{\em ack(s(s(s(0))), s(s(0)), s(s(s(0))))}
+\begin{verbatim}
+The term read in is:  ack(s(s(s(0))), s(s(0)), s(s(s(0))))
+\end{verbatim}
+Type abort, norm, list, read, strat, quit, help --> {\em n}
+\begin{verbatim}
+The term to be normalized is: ack(s(s(s(0))), s(s(0)), s(s(s(0))))
+The normal form of the term is:
+s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(0)))))))))))))))))))))))))))
+Processor time used = 1.333333333333333 sec
+\end{verbatim}
+\rm
+\normalsize

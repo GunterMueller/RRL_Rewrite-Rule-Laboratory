@@ -1,0 +1,59 @@
+This directory contains some command files of RRL. RRL is an interactive 
+theorem prover, you may talk to it by type rrl commands.
+The file with the suffix ".cmd" contains a sequence of rrl commands. To execute
+the commands in such a file, use the rrl command "auto". For example, if
+you want to execute the commands in the file named "try.cmd", do it as follows:
+        % rrl
+        ... ...
+        RRL-> auto try
+
+Below we describe shortly some ".cmd" files in this directory:
+
+Testing RRL:
+
+demo-test.cmd: this is a concatenation of several "cmd" files to show 
+  different features of RRL: producing canonical systems for free groups,
+  free abelian groups, free rings; finding solutions by narrowing;
+  inductionless induction proofs; testing sufficient completeness
+  of equational specifications; first order propositional calculus using 
+  the Grobner basis approach; first order predicate calculus using
+  conditional rewrite rules.
+  This file is used by the author to test RRL each time a change is made
+  to the code.
+
+
+Illustrations of Generating Canonical Rewriting Systems:
+
+demo-ring.cmd: generating a canonical rewriting system for free rings.
+demo-g1.cmd: generating a canonical rewriting system from a single axiom
+  of free groups.
+
+
+Proofs of Ring Commutativity Problems:
+
+demo-x3x.cmd: proving x^3 = x implies the ring commutativity.
+demo-x3xp.cmd: using the polynomial representation.
+demo-x3xpc.cmd: generating a canonical system for the ring plus x^3 = x.
+demo-x4x.cmd: proving x^4 = x implies the ring commutativity.
+demo-x6x.cmd: proving x^6 = x implies the ring commutativity.
+
+
+Illustration of Narrowing:
+
+demo-narrow.cmd: finding solutions for a map connection problem.
+
+
+Illustrations of Clausal Superposition and Conditional Rewriting:
+
+demo-steam.cmd:	prove steamroller problem.
+demo-set.cmd: prove a lemma from the set theory.
+demo-sam.cmd: prove SAM's lemma.
+demo-line.cmd: prove a lemma about hardware specification.
+
+
+Illustrations of Cover Set Induction Method:
+
+demo-gcd.cmd: proving gcd is commutative.
+demo-queue.cmd:	proving the validity of ADT implementation.
+demo-sort.cmd: proving the correctness of quick-sort algorithm.
+demo-prime.cmd:	proving the unique prime factorization in number theory.

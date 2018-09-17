@@ -1,0 +1,351 @@
+\documentstyle[11pt]{article}
+\parskip 5pt
+\topmargin -0.3in
+\textheight 9in
+\textwidth 6.2in
+\oddsidemargin=0.2in
+\evensidemargin=0.2in
+\newcommand{\Grobner}{Gr\"{o}bner\ }
+\newcommand{\Groebner}{Gr\"{o}bner\ }
+\newcommand{\RRL}{{\sl RRL}\ }
+\newcommand{\ERRL}{{\sl RRL}}
+\pagestyle{empty}
+\begin{document}
+\title{An Overview of Rewrite Rule Laboratory (RRL)\thanks
+{Partially supported by the National Science Foundation Grant
+no. CCR-8408461.}}
+\author{{\bf Deepak Kapur} \\
+Department of Computer Science \\
+State University of New York at Albany \\
+Albany, NY 12222 \\
+kapur@albanycs.albany.edu \\
+\and
+{\bf Hantao Zhang} \\
+Department of Computer Science \\
+The University of Iowa \\
+Iowa City, IA 52242 \\
+hzhang@herky.cs.uiowa.edu}
+
+\date{}
+\maketitle
+
+\section{What is \ERRL?}
+
+{\sl Rewrite Rule Laboratory} (\ERRL) is a theorem proving environment
+for experimenting with existing automated reasoning algorithms for
+equational logic based on rewriting techniques as well as for
+developing new reasoning algorithms
+\cite{KapurSiva,KZ87,KZ881}.  Reasoning
+algorithms are used in many application areas in computer science and
+artificial intelligence, in particular, analysis of specifications of
+abstract data types, verification of hardware and software, synthesis
+of programs from specifications, automated theorem proving, expert
+systems, deductive data basis, planning and recognition, logic
+programming, constraint satisfaction, natural language processing,
+knowledge-based systems, robotics, vision.  
+
+The project for developing rewrite rule laboratories was jointly
+conceived in 1983 by the first author and David Musser at Rensselaer
+Polytechnic Institute (RPI) and John Guttag of MIT when rewrite
+methods were gaining attention because of their use in the analysis of
+algebraic specifications of user-defined data types.  The work on the
+\RRL project was started at General Electric Corporate Research and
+Development (GECRD) and RPI in Fall 1983, following a workshop on
+rewrite rule laboratories in Schenectady, New York
+\cite{Guttagetal84}.  Since then, \RRL has continued to evolve.
+\RRL is written in a subset of Zeta Lisp that is (almost) compatible
+with Franz Lisp and is more than 15,000 lines of code.  In order to
+make \RRL portable and available for wider distribution, conscious
+attempt was made not to use special features of Zeta Lisp and the Lisp
+machine environment.
+ 
+\RRL was initially used to study existing algorithms, including the
+Knuth-Bendix completion procedure \cite{KnuthBendix}, and
+Dershowitz's algorithm for recursive path ordering \cite{Dershowitz}
+to orient equations into terminating rewrite
+rules \cite{KapurSiva}.  However, this environment soon began serving as a
+vehicle for generating new ideas, concepts and algorithms which could
+be implemented and tested for their effectiveness.  Experimentation
+using \RRL has led to development of new heuristics for decision
+procedures and semi-decision procedures in theorem proving
+\cite{KMN84,ZK882}, complexity studies of primitive operations
+used in \RRL \cite{KN871}, and new approaches for first-order theorem
+proving \cite{KN85,ZK881}, proofs by induction
+\cite{KNZ861,ZKM}.
+
+\RRL has been distributed to over 20 universities and research
+laboratories. Any one interested in obtaining a copy of \RRL can write
+to the authors.
+
+\section{What can \RRL do?}
+
+\RRL currently
+provides facilities for
+\begin{itemize}
+\item 
+automatically proving theorems in first-order predicate calculus
+with equality,
+\item
+generating decision procedures for first-order (equational)
+theories using completion procedures,
+\item 
+proving theorems by 
+induction using different approaches - methods
+based on the {\sl proof by consistency} approach \cite{Musser80,KM84}
+(also called the {\sl inductionless-induction} approach) as well as 
+the explicit induction approach, and
+\item 
+checking the consistency and completeness of equational
+specifications.
+\end{itemize}
+
+The input to \RRL is a first-order theory specified by a finite set of
+axioms.  Every axiom is first transformed into an equation (or a
+conditional equation).  The kernel of \RRL is the {\sl extended
+Knuth-Bendix completion procedure} \cite{KnuthBendix,LB77,PS81} which
+first produces terminating rewrite rules from equations and then
+attempts to generate a canonical rewriting system for the theory
+specified by a finite set of formulas.  If \RRL is successful in
+generating a canonical set of rules, these rules associate a unique
+normal form for each congruence class in the congruence relation
+induced by the theory.  These rules thus serve as a decision procedure
+for the theory.  
+
+For proving a single first-order formula, \RRL also supports the
+proof-by-contradiction (refutational) method. The set of hypotheses
+and the negation of the conclusion are given as the input, and \RRL
+attempts to generate a contradiction, which is a system including the
+rule $true \rightarrow false$.
+
+New algorithms and methods for automated reasoning have been developed
+and implemented in \ERRL.  \RRL has two different methods implementing
+the proof by consistency approach for proving
+properties by induction: the {\sl test set} method developed in
+\cite{KNZ861} as well as the method using {\sl quasi-reducibility}
+developed in \cite{JK86}.  These methods can be used for checking
+structural properties of equational specifications such as the {\sl
+sufficient-completeness} \cite{KNZ85} and consistency properties
+\cite{Musser80,KM84}.
+ 
+Recently, a method based on the concept of a {\it cover set} of a
+function definition has been developed for mechanizing proofs by
+explicit induction for equational specifications \cite{ZKM}.  The
+method is closely related to Boyer and Moore's approach.  It
+has been successfully used to prove over a hundred theorems about
+lists, sequences, and number theory including the unique prime
+factorization theorem for numbers; see \cite{ZKM}.
+ 
+\RRL supports an implementation of a first-order theorem proving method
+based on polynomial representation of formulas using the exclusive-or
+connective as `+' and the and connective as `.' \cite{Hsiang85}, and
+using \Groebner basis like completion procedure \cite{KN85}.  Its
+performance compares well with theorem provers based on resolution
+developed at Argonne National Lab as well as theorem provers based on
+the connection graph approach developed at SRI International and University of
+Kaiserslautern. Most of the hardware verification work mentioned later
+in the section on applications of \RRL was done using this method of
+theorem proving.
+ 
+Recently, another method for automatically proving theorems in
+first-order predicate calculus with equality using conditional
+rewriting has also been implemented and successfully tried on a number
+of problems \cite{ZK881}.  This method combines ordered resolution and
+oriented paramodulation of Hsiang and Rusinowitch \cite{HR87} into a
+single inference rule, called {\it clausal superposition}, on
+conditional rewrite rules. These rewrite rules can be used to simplify clauses
+using conditional rewriting.
+ 
+\RRL supports different strategies for normalization and generation of
+critical pairs and other features. These strategies play a role
+similar to the various strategies and heuristics available in
+resolution-based theorem provers. \RRL provides many options to the
+user to adapt it to a particular application domain. Because of
+numerous options and strategies supported by \ERRL, it can be used as a
+laboratory for testing algorithms and strategies. 
+
+\section{Some Applications of \RRL}
+ 
+\RRL has been successfully used to attack difficult problems
+considered a challenge for theorem provers.  An automatic proof of a
+theorem that an associative ring in which every element $x$ satisfies
+$x^3 = x,$ is commutative, was obtained using \RRL in nearly 2 minutes
+on a Symbolics machine.  Previous attempts to solve this problem using
+the completion procedure based approach required over 10 hours of
+computing time \cite{Stickel84}.  With some special heuristics
+developed for the family of problems that for $n > 1$, for every $x$,
+$x^n = x$ implies that an associative ring is commutative, \RRL takes
+5 seconds for the case when $n$ = 3, 70 seconds for $n$ = 4, and 270
+seconds for $n$ = 6 \cite{KMN84,ZK882}.  To our knowledge, this is the
+first computer proof of this theorem for $n$ = 6. Using algebraic
+techniques, we have been able to prove this theorem for many even
+values of $n$. \RRL has also been used to prove the equivalence of
+different non-classical axiomatizations of free groups developed by
+Higman and Neumann to the classical three-law characterization
+\cite{KZ882}.
+ 
+\RRL can be also used as a tool for demonstrating approaches towards
+specification and verification of hardware and software.  \RRL is a
+full-fledged theorem prover supporting different methods for
+first-order and inductive theorem proving in a single reasoning
+system.  It has been successfully used at GECRD for hardware
+verification. Small combinational and sequential circuits, leaf cells
+of a bit-serial compiler have been verified \cite{NS881}. The most
+noteworthy achievement has been the detection of 2 bugs in a VHDL
+description of a 10,000 transistor chip implementing Sobel's edge
+detection algorithm for image processing and after fixing those bugs,
+verifying the chip description to be consistent with its behavioral
+description \cite{NS882}.
+
+\RRL has also been used in teaching a course on theorem proving
+methods based on rewrite techniques, 
+providing students with an opportunity to try methods and
+approaches discussed in the course.  It has served as a basis for
+class projects and thesis research. 
+
+Additional details about the capabilities of \RRL and the associated theory
+as well as possible applications of \RRL can be found in the 
+papers listed in the selected bibliography at the end of this write-up.
+
+\section{Future Plans}
+
+We plan to extend \RRL to make it more useful and convenient for
+reasoning about software and hardware.  The test set and cover set methods
+for supporting automatic proofs by induction in \RRL will be further
+developed and integrated, with a particular emphasis on the cover set
+method.  Approaches for reasoning with incomplete specifications will
+also be investigated.
+
+In addition, theoretical and experimental research in developing
+heuristics, including identifying unnecessary computations for
+completion procedures as well as for first-order theorem proving will
+be undertaken to improve their performance.  Complexity studies and
+efficient implementations of primitive operations will also be
+continued and results will be incorporated into \ERRL.
+
+\begin{thebibliography}{99}
+
+\bibitem{Dershowitz}Dershowitz, N. (1987). Termination of rewriting.
+{\sl J. of Symbolic Computation}.
+
+\bibitem{Guttagetal84}Guttag, J.V., Kapur, D., Musser, D.R. (eds.)
+(1984).  Proceedings of an {\sl NSF Workshop on the Rewrite Rule
+Laboratory} Sept. 6-9 Sept. 1983, General Electric Research and
+Development Center Report 84GEN008.
+
+\bibitem{Hsiang85}Hsiang, J. (1985). Refutational theorem proving
+using term-rewriting systems. {\sl Artificial Intelligence} Journal,
+25, 255-300.
+
+\bibitem{HR87} Hsiang, J., and Rusinowitch, M. (1986). ``A new method for 
+establishing refutational completeness in theorem proving,''
+{\sl Proc. 8th Conf. on Automated Deduction},
+LNCS No. 230, Springer Verlag, 141-152.
+
+\bibitem{JK86}Jouannaud, J., and Kounalis, E. (1986).
+Automatic proofs by induction in equational theories without
+constructors.  Proc. of {\sl Symposium on Logic in Computer Science},
+358-366.
+
+\bibitem{KM84}Kapur, D., and Musser, D.R. (1984). Proof by
+consistency.  In Reference \cite{Guttagetal84}, 245-267.
+Also in the {\it
+Artificial Intelligence} Journal, Vol. 31, Feb. 1987, 125-157. 
+
+\bibitem{KMN84}Kapur, D., Musser, D.R., and Narendran, P. (1984). Only
+prime superpositions need be considered for the Knuth-Bendix
+completion procedure.  GE Corporate Research
+and Development Report, Schenectady.  Also in {\it Journal of Symbolic Computation} Vol. 4, August 1988.
+ 
+\bibitem{KN85}Kapur, D., and Narendran, P. (1985).
+An equational approach to theorem proving
+in first-order predicate calculus. Proc. of {\sl 8th IJCAI},
+Los Angeles, Calif.
+
+\bibitem{KN871} Kapur, D., and Narendran, P. (1987). Matching, Unification and
+Complexity. {\it SIGSAM Bulletin}.
+
+\bibitem{KNZ85}Kapur, D., Narendran, P., and Zhang, H (1985). On
+sufficient completeness and related properties of term rewriting
+systems.  GE Corporate Research and Development Report, Schenectady,
+NY.  {\it Acta Informatica,} Vol. 24, Fasc. 4, August 1987, 395-416.
+
+\bibitem{KNZ861}Kapur, D., Narendran, P., and Zhang, H. (1986). Proof
+by induction using test sets. {\sl
+Eighth International Conference on
+Automated Deduction} (CADE-8), Oxford, England, July 1986, 
+Lecture Notes in Computer Science, 230, Springer Verlag, 
+New York, 99-117.
+
+\bibitem{KapurSiva}Kapur, D. and Sivakumar, G. (1984) Architecture of
+and experiments with RRL, a Rewrite Rule Laboratory. In: Reference
+\cite{Guttagetal84}, 33-56.
+
+\bibitem{KZ87} Kapur, D., and Zhang, H. (1987). {\it RRL: A Rewrite Rule Laboratory -
+User's Manual.} GE Corporate Research and Development Report,
+Schenectady, NY, April 1987.
+
+\bibitem{KZ881} Kapur, D., and Zhang, H. (1988).
+{\sl RRL: A Rewrite Rule Laboratory}.  Proc. of {\it Ninth
+International Conference on Automated Deduction} (CADE-9), Argonne,
+IL, May 1988.
+
+\bibitem{KZ882} Kapur, D., and Zhang, H. (1988). Proving equivalence of 
+different axiomatizations of free groups.  {\it J. of Automated
+Reasoning} 4, 3, 331-352.
+
+\bibitem{KnuthBendix}Knuth, D.E. and Bendix, P.B. (1970). Simple word
+problems in universal algebras.  In: {\sl Computational Problems in
+Abstract Algebras.} (ed. J.  Leech), Pergamon Press, 263-297.
+
+\bibitem{LB77}Lankford, D.S., and Ballantyne, A.M.
+(1977). Decision procedures for simple equational theories with
+commutative-associative axioms: complete sets of
+commutative-associative reductions.
+Dept. of Math. and Computer Science, University of Texas, Austin,
+Texas, Report ATP-39.
+
+\bibitem{Musser80}Musser, D.R. (1980). On proving inductive
+properties of abstract data types. Proc. {\sl 7th Principles of
+Programming Languages (POPL)}.
+
+\bibitem{NS881} Narendran, P., and Stillman, J. (1988). Hardware verification in the 
+Interactive VHDL Workstation. In: {\sl VLSI Specification,
+Verification and Synthesis } (eds. G. Birtwistle and P.A.
+Subrahmanyam), Kluwer Academic Publishers, 217-235.
+
+\bibitem{NS882} Narendran, P., and Stillman, J. (1988).
+Formal verification of the Sobel image processing chip.  GE Corporate
+Research and Development Report, Schenectady, NY, November 1987. Proc.
+{\sl Design Automation Conference}.
+
+\bibitem{PS81}Peterson, G.L., and Stickel, M.E. (1981).
+Complete sets of reductions for some equational theories. {\sl J.
+ACM}, 28/2, 233-264.
+
+\bibitem{Stickel84}
+Stickel, M.E. (1984). ``A case study of theorem proving by the
+Knuth-Bendix method: discovering that $x^3 = x$ implies ring
+commutativity'', Proc. of 7th Conf. on Automated Deduction,
+Springer-Verlag LNCS 170, pp. 248-258.
+
+\bibitem{ZK881} Zhang, H., and Kapur, D. (1987). First-order
+theorem proving using conditional rewriting. 
+Proc. of {\it Ninth International
+Conference on Automated Deduction} (CADE-9), Argonne, IL, May 1988.
+
+\bibitem{ZK882} Zhang, H., and Kapur, D. (1989). Consider
+only general superpositions in completion procedures. {\it This
+Proceedings}.
+
+\bibitem{ZKM} Zhang, H., Kapur, D., and Krishnamoorthy,
+M.S.  (1988). A mechanizable induction principle for equational
+specifications.  Proc.
+of {\it Ninth International Conference on Automated Deduction}
+(CADE-9), Argonne, IL, May 1988.
+
+\end{thebibliography}
+
+\end{document}
+
+
+

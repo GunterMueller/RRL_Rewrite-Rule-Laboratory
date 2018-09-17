@@ -1,0 +1,50 @@
+\chapter{Input syntax of RRL}
+\small
+\begin{tabbing}
+ $<$arity$>$ ::= {\tt [}$<$function$>$ : $<$type$>$, $\cdots$, $<$type$>$ -$>$ 
+$<$type$>${\tt ]} \\
+ $<$type$>$ ::= type name or sort name \\
+ $<$equation$>$ ::= \= $<$formula$>$ $|$ $<$assertion$>$ == $<$rightside$>$ 
+		     $|$ $<$assertion$>$ {\em {\tt ---}$>$} $<$rightside$>$\\
+                    \> $|$ $<$assertion$>$ := $<$rightside$>$ \\
+ $<$rightside$>$ ::= $<$assertion$>$ $|$ $<$assertion$>$ {\em if} $<$assertion$>$\\
+ $<$formula$>$ ::= \=     {\em all} $<$varlist$>$ $<$formula$>$
+                      $|$ {\em exist} $<$varlist$>$ $<$formula$>$ \\
+\>	   	      $|$ ($<$formula$>$ $<$connective$>$ $<$formula$>$) 
+		      $|$ {\em not} ($<$formula$>$) $|$ $<$assertion$>$ \\
+ $<$assertion$>$ ::= \= ($<$assertion$>$ $<$connective$>$ $<$assertion$>$)
+                      $|$ {\em not} ($<$assertion$>$) \\
+ \>                   $|$ {\em true} $|$ {\em false}
+                      $|$ $<$atom$>$\\
+ $<$connective$>$ ::= {\em and} $|$ {\em or} $|$ {\em xor} $|$ {\em -$>$} $|$ {\em equ} \\
+ $<$atom$>$ ::= $<$predicate$>$ $<$term-args$>$ \\
+ $<$predicate$>$ ::= $<$function$>$ $|$ = $|$ {\em eq} $|$ {\em cond} \\
+ $<$term$>$ ::= $<$item$>$ $|$ $<$item$>$ $<$infix-operator$>$ $<$term$>$\\
+ $<$item$>$ ::= $<$variable$>$ $|$ $<$constant$>$ 
+		$|$ $<$function$>$ $<$term-args$>$ $|$ ( $<$term$>$ )\\
+ $<$term-args$>$ ::= $<$nothing$>$ $|$ ($<$term$>$ $<$comma-args$>$)\\
+ $<$comma-args$>$ ::= $<$nothing$>$ $|$ , $<$term$>$ $<$comma-args$>$\\
+ $<$varlist$>$ ::= ($<$variable$>$ $<$comma-varlist$>$) $|$ $<$variable$>$\\
+ $<$comma-varlist$>$ ::= $<$nothing$>$ $|$ , $<$variable$>$ $<$comma-varlist$>$\\
+ $<$infix-operator$>$ ::= $<$function$>$\\
+ $<$constant$>$ ::= A number $|$ $<$function$>$ \\
+ $<$function$>$ ::= \= A letter in [a .. t] followed by a sequence of alphanumeric  characters or \\
+ \>  a word of \{ + - \& \^ \$ \# @ ! : . = \}, 
+except {\tt ---}$>$, ==, :=, {\em if}\\
+ $<$variable$>$ ::= A letter in [u .. z] followed by a sequence of alphanumeric characters\\ \\
+ Formulas are any first-order logic formulas. \\
+ Assertions are quantifier-free formulas. \\
+ Terms are built from variables and operators.\\
+ Numbers can only be used as constants.\\
+ Infix format functions are available.\\
+ All predicates must have different names from all functions.\\
+ All predicates and functions must be used with the same number of arguments.\\
+ All free variables are considered as universally quantified variables.\\
+ The \= pre-defined precedence relation on predicates and 
+the logical connectives is:\\
+\>  {\tt  <predicates> $>$ not $>$ and $>$ -> $>$ \{all, exists\} $>$ equ $>$ \{or, xor\}} \\
+ No precedence relation between predicates and functions is given. \\
+ All infix operators associate to the right.
+\end{tabbing}
+\normalsize
+\rm

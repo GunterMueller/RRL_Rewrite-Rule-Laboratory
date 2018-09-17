@@ -1,0 +1,17 @@
+This directory contains several examples of the cover set induction
+as implemented in RRL.
+
+prime.cmd     ;; the unique prime factorization theorem
+queue.cmd     ;; representing queues by lists
+qsort.cmd     ;; verification of quick-sort algorithm
+ramsey.cmd    ;; Ramsey's theorem in graph theory
+remain.cmd    ;; the Chinese remainder theorem
+lagrange.cmd  ;; Lagrange's theorem in group theory
+gopher.cmd    ;; a little exercise about flattening lists.
+card.cmd      ;; the Gilbreath card trick
+
+To run any of these examples in RRL, please enter
+RRL first, and then type the command "auto". Then RRL asks
+a file name which contains a sequence of RRL commands.
+The default suffix of this file is ".cmd".
+

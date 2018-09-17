@@ -1,0 +1,24 @@
+In this directory is the code for RRL Version 2.1.
+You can use this with Franz Lisp or Common Lisp (KCL, IBCL, Symbolics).
+
+Installing consists of 2 steps.
+
+1) Compiling the code first.
+
+  On Unix systems this can be done by typing one of the following:
+
+   build franz   (for Franz Lisp)
+   build kcl     (for KCL)
+   build ibcl    (for IBCL)
+
+  On the Symbolics (first copy the code to *.lisp instead of *.lsp)
+  and then (load "system")
+
+Compiling takes an hour on a Sun-3 with IBCL.
+Check the file compile.out for compiler messages.
+
+2) Starting RRL after compiling.
+
+   Start Lisp and then type:
+     (load "system")   ;to load the compiled code
+     (start-rrl)       ; to start RRL. (in Common Lisp)

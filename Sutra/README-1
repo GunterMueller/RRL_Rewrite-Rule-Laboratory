@@ -1,0 +1,79 @@
+This README file was written by Steve Greenbaum at HP Labs, 12/19.
+The original RRL README file is now called RRL-README.
+
+I did a simple port to Allegro Common Lisp 3.0.3 (from Franz, Inc.), and Lucid
+Common Lisp (HP-Lucid 2.15).  Most of the porting was for I/O, which used some
+non-portable functions.
+
+I did not make the build procedure save an image of the loaded system, but you
+might want to do that.  Here is how you build the system - you may have to
+adjust some files to get it to work (explained afterwards):
+
+------------------------------------------------------------------------------
+
+(1) Go to the "rrl" directory.
+
+(2) Type "build LISP-NAME" to the shell, where LISP-NAME is the name of your
+lisp executable.  For example, "build lucid" if your lisp is called "lucid".
+This will start Lisp in the background, and will compile the RRL files.  When
+it is done, look at file "compile.out" for error messages.
+
+It is not easy to tell when the compile is done - you can check with "tail
+compile.out".  Or, edit file "build" and remove the backgrounding "&", and
+then just wait for the "build LISP-NAME" to return.  [NOTE TO RRL AUTHORS: I
+think you should remove the "&" from build, so users can decide for
+themselves.  They can do "build LISP-NAME &" if they want backgrounding.
+Also, you do not need to redirect the output for them, since users can do that
+themselves too, although this point is less important.]
+
+If you are a Lisp sophisticate, you probably want to build the system
+interactively instead of using "build".  To do this, start lisp and load
+"system.lsp".
+
+(3) After the files are compiled by step 2, load RRL by starting lisp and
+loading "system.lsp".
+
+(4) To start RRL running, type either:
+	(start-rrl)
+from the USER package (the default package), or
+	(start-up)
+from the RRL package.  If you don't know what packages are, just use
+"(start-rrl)" and don't worry.
+
+(5) You may want to save an RRL image.  Consult your lisp manual for how to do
+this.  The Lucid I know uses function "disksave".  Allegro uses "dumplisp".
+You might consider using "(user::start-rrl)" or "(rrl::start-up)" as a restart
+function in the save.
+
+------------------------------------------------------------------------------
+
+Files that may need changing to run RRL on your system.  You should only need
+to change these if you have trouble building the system.
+
+
+build - If your lisp is not represented in the `switch' statement, add it.
+
+system.lsp - You may need to add something so your lisp knows that ".lsp"
+files are lisp source.	This needs to be coordinated with the defparameter of
+*rrl-pathname-extensions* in "rrl.lsp".  Another alternative is to rename the
+source ".lsp" files so they have an extension your lisp knows about.  [NOTE TO
+RRL AUTHORS: This part of the system should be reorganized so all the file
+type information is in one place.  Variable *rrl-pathname-extensions* is
+almost enough, but the load of "rrl" in system.lsp does not take advantage of
+it.  Also, most implementations have lists of extensions that tell the loader
+and/or compiler how to treat files.  Then again, perhaps your idea of just
+renaming the files is easier, but that seems worse to me since everyone has to
+do that, whereas setting up the extensions inside lisp only has to be done
+once for each implementation.]
+
+rrl.lsp - The defparameter of variable "*rrl-pathname-extensions*" may need to
+adjusted to reflect file types.  This needs to be coordinated with code in
+system.lsp.
+
+bug-fixes.lsp - See this if you need to work around a bug in your lisp
+implementation.
+
+
+Note that if you change any source file other than "rrl.lsp", rebuilding RRL
+will recompile the file.  If you change "rrl.lsp" and there is already a
+compiled version of it, delete the compiled version before rebuilding RRL.

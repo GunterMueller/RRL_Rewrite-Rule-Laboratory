@@ -1,0 +1,58 @@
+;; created 2/9/90  siva@udel.edu
+
+This directory contains version 1.0 of SUTRA
+which is RRL converted to work with Common Lisp also.
+Instructions are given below for buliding RRL.
+See other README-? files for more information/changes
+if the instructions below are not sufficient. 
+
+You can use this with Franz Lisp or
+Common Lisp (KCL, IBCL, Allegro, Lucid, Symbolics).
+
+Installing consists of 2 steps.
+
+1) Compiling the code first.
+
+  On Unix systems this can be done by typing:
+
+   build LISP-NAME
+
+where LISP-NAME is  one of franz, kcl, ibcl, allegro, lucid.
+
+  On the Symbolics (first copy the code to *.lisp instead of *.lsp)
+  and then (load "rrl")
+
+Compiling takes about an hour on a Sun-3 with KCL.
+
+Note: you may wish to redirect output of build to some file
+      and background it by using   
+             build kcl > compile.out &
+
+
+2) Starting RRL after compiling.
+
+   Start Lisp and then type:
+     (load "rrl")   ;to load the compiled code
+     (start-rrl)       ; to start RRL. (in Common Lisp)
+
+If you have a lot of disk-space (4 Meg or so) you can
+save an image of RRL using (save "File-name") in kcl
+or "dumplisp" or some such construct to avoid step 2 each time.
+But loading the files takes only a couple of minutes.
+
+If you wish to use RRL from some other directory than where
+this code is, (for example if the code is in /usa/rrl)
+then before loading rrl.lsp do 
+ (setq *rrl-directory*  "/usa/rrl/") before the
+ (load "/usa/rrl") and then
+ (start-rrl)
+
+==========
+When using RRL, if it ever breaks and goes back to Lisp top-level,
+use (resume-rrl) to get back to RRL.
+
+E-mail bugs etc. to  siva@udel.edu or kapur@cs.albany.edu or
+                     hantao@herky.cs.uiowa.edu.
+
+=====
+ 

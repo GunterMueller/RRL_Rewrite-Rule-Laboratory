@@ -1,0 +1,250 @@
+\chapter{Illustration of the clausal superposition method}
+\normalsize
+\rm
+This example illustrates a refutational proof method based on
+conditional rewrite rules. Suppose the file {\em geom.eqn} contains 
+the following clauses:
+\begin{quote}
+\small
+\begin{verbatim}
+; For any two distinct points, there is a unique line through them.
+on(z1, ln(z1, z2)) or (z1 = z2) or not point(z1) or not point(z2)
+on(z2, ln(z1, z2)) or (z1 = z2) or not point(z1) or not point(z2)
+line(ln(z1, z2)) or (z1 = z2) or not point(z1) or not point(z2)
+not on(z1, y3) or (z1 = z2) or not on(z2, y3) or (y3 = y4) or not on(z1, y4) or  
+  not on(z2, y4) or not point(z1) or not point(z2) or not line(y3) or not line(y4)
+; For any line, there are at least two distinct points on the line.
+on(pt1(y1), y1) or not line(y1) 
+on(pt2(y1), y1) or not line(y1) 
+point(pt1(y1)) or not line(y1) 
+point(pt2(y1)) or not line(y1) 
+not (pt1(y1) = pt2(y1)) or not line(y1)
+; For any line, there is a point not on the line.
+not on(pt3(y1), y1) or not line(y1)
+point(pt3(y1)) or not line(y1) 
+; There is a point on every line.
+on(pt, y1) or not line(y1)
+; There exists a line.
+line(a)
+; There is a point on every line.
+point(pt)       
+\end{verbatim}
+\end{quote}
+\RRL proves that the above set is inconsistent by generating the rule
+{\tt false ---> true}.
+\scriptsize
+\tt
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> option trace 1
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> option prove 
+Following methods are available:
+  Deduction:
+     (f) forward reasoning --- using completion
+     (s) refutation        --- using boolean-ring method
+     (c) refutation        --- using conditional rules
+  Induction:
+     (e) explicit          --- using the cover-set method
+     (s) inductionless     --- using the test set method
+     (g) inductionless     --- using the ground-reducibility method
+Please make your choice: 
+(current value: s) (f,c,e,s,g) c
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> read geom
+New constant set is: { a, pt }
+Equations read in are:
+ 1. on(z1, ln(z1, z2)) == true  if  not((z1 = z2)) & (point(z1) and point(z2))  [user, 1]
+ 2. on(z2, ln(z1, z2)) == true  if  not((z1 = z2)) & (point(z1) and point(z2))  [user, 2]
+ 3. line(ln(z1, z2)) == true  if  not((z1 = z2)) & (point(z1) and point(z2))  [user, 3]
+ 4. on(z1, y3) == false  if  not((z1 = z2)) & (on(z2, y3) and (not((y3 = y4)) and (on(z1, y4) and 
+      (on(z2, y4) and (point(z1) and (point(z2) and (line(y3) and line(y4))))))))  [user, 4]
+ 5. on(pt1(y1), y1) == true  if  line(y1)  [user, 5]
+ 6. on(pt2(y1), y1) == true  if  line(y1)  [user, 6]
+ 7. point(pt1(y1)) == true  if  line(y1)  [user, 7]
+ 8. point(pt2(y1)) == true  if  line(y1)  [user, 8]
+ 9. (pt1(y1) = pt2(y1)) == false  if  line(y1)  [user, 9]
+10. on(pt3(y1), y1) == false  if  line(y1)  [user, 10]
+11. point(pt3(y1)) == true  if  line(y1)  [user, 11]
+12. on(pt, y1) == true  if  line(y1)  [user, 12]
+13. line(a)  [user, 13]
+14. point(pt)  [user, 14]
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> kb
+
+This eqn cannot be oriented into a rule: 
+  pt2(y3) == z2  if  
+        { line(y4),
+          point(z2),
+          on(z2, y4),
+          on(pt2(y3), y4),
+          (y4 = y3) <=> false,
+          on(z2, y3),
+          line(y3) }   [6, 4]
+Type left_right, makeeq, operator, postpone, right_left, undo, quit, help --> p
+
+This eqn cannot be oriented into a rule: 
+  pt1(y3) == z2  if  
+        { line(y4),
+          point(z2),
+          on(z2, y4),
+          on(pt1(y3), y4),
+          (y4 = y3) <=> false,
+          on(z2, y3),
+          line(y3) }   [5, 4]
+Type left_right, makeeq, operator, postpone, right_left, undo, quit, help --> p
+
+This eqn cannot be oriented into a rule: 
+  ln(z1, z2) == y4  if  
+        { (pt = z2) <=> false,
+          on(z2, y4),
+          line(y4),
+          point(z2),
+          point(z1),
+          (z2 = z1) <=> false }   [2, 15]
+Type left_right, makeeq, operator, postpone, right_left, undo, quit, help --> p
+
+This eqn cannot be oriented into a rule: 
+  ln(z2, z21) == y4  if  
+        { (pt = z2) <=> false,
+          on(z2, y4),
+          line(y4),
+          point(z21),
+          point(z2),
+          (z2 = z21) <=> false }   [1, 15]
+Type left_right, makeeq, operator, postpone, right_left, undo, quit, help --> p
+
+In on(z2, y3) == true  if  
+        { point(z2),
+          (pt2(y3) = z2) <=> false,
+          line(y3),
+          (pt2(y3) = pt) <=> false }   [23, 2]
+    the premise (pt2(y3) = z2) <=> false is released,
+    because the equation is true under its negation.
+
+In on(z2, y3) == true  if  
+        { point(z2),
+          (pt1(y3) = z2) <=> false,
+          line(y3),
+          (pt1(y3) = pt) <=> false }   [21, 2]
+    the premise (pt1(y3) = z2) <=> false is released,
+    because the equation is true under its negation.
+
+Inconsistent Relation Derived:
+     [32] false ---> true  [deleted, 13]
+
+Input #1, produces:
+      [1] on(z1, ln(z1, z2)) ---> true if 
+        { (z2 = z1) <=> false,
+          point(z1),
+          point(z2) } 
+Input #2, produces:
+      [2] on(z2, ln(z1, z2)) ---> true if 
+        { (z2 = z1) <=> false,
+          point(z1),
+          point(z2) } 
+Input #3, produces:
+      [3] line(ln(z1, z2)) ---> true if 
+        { (z2 = z1) <=> false,
+          point(z1),
+          point(z2) } 
+Input #4, produces:
+      [4] on(z1, y3) ---> false if 
+        { (z2 = z1) <=> false,
+          on(z2, y3),
+          (y4 = y3) <=> false,
+          on(z1, y4),
+          on(z2, y4),
+          point(z1),
+          point(z2),
+          line(y3),
+          line(y4) } 
+Input #5, produces:
+      [5] on(pt1(y1), y1) ---> true if  { line(y1) } 
+Input #6, produces:
+      [6] on(pt2(y1), y1) ---> true if  { line(y1) } 
+Input #7, produces:
+      [7] point(pt1(y1)) ---> true if  { line(y1) } 
+Input #8, produces:
+      [8] point(pt2(y1)) ---> true if  { line(y1) } 
+Input #9, produces:
+      [9] (pt2(y1) = pt1(y1)) ---> false if  { line(y1) } 
+Input #10, produces:
+     [10] on(pt3(y1), y1) ---> false if  { line(y1) } 
+Input #11, produces:
+     [11] point(pt3(y1)) ---> true if  { line(y1) } 
+Input #12, produces:
+     [12] on(pt, y1) ---> true if  { line(y1) } 
+Input #13, produces:
+     [13] line(a) ---> true
+Input #14, produces:
+     [14] point(pt) ---> true
+Rule [12] superposed into Rule [4], reduced by Rules [12], and [14], produces:
+     [15] on(z2, y3) ---> false if 
+        { line(y4),
+          point(z2),
+          on(z2, y4),
+          (y4 = y3) <=> false,
+          (pt = z2) <=> false,
+          line(y3) } 
+Rule [6] superposed into Rule [15], reduced by Rules [8], [14], and [12], produces:
+     [18] on(pt2(y3), y4) ---> false if 
+        { line(y3),
+          (pt2(y3) = pt) <=> false,
+          (y4 = y3) <=> false,
+          line(y4) } 
+Rule [5] superposed into Rule [15], reduced by Rule [7], produces:
+     [19] on(pt1(y3), y4) ---> false if 
+        { line(y3),
+          (pt1(y3) = pt) <=> false,
+          (y4 = y3) <=> false,
+          line(y4) } 
+Rule [1] superposed into Rule [19], reduced by Rules [3], and [7], produces:
+     [21] ln(pt1(y3), z2) ---> y3 if 
+        { (pt1(y3) = pt) <=> false,
+          line(y3),
+          point(z2),
+          (pt1(y3) = z2) <=> false } 
+Rule [1] superposed into Rule [18], reduced by Rules [3], and [8], produces:
+     [23] ln(pt2(y3), z2) ---> y3 if 
+        { (pt2(y3) = pt) <=> false,
+          line(y3),
+          point(z2),
+          (pt2(y3) = z2) <=> false } 
+Rule [23] superposed into Rule [2], reduced by Rules [6], and [8], produces:
+     [24] on(z2, y3) ---> true if 
+        { point(z2),
+          line(y3),
+          (pt2(y3) = pt) <=> false } 
+Rule [10] superposed into Rule [24], reduced by Rules [11], [8], and [6], produces:
+     [25] line(y3) ---> false if  { (pt2(y3) = pt) <=> false } 
+Rule [13] superposed into Rule [25], reduced by Rules [24], and [25], produces:
+     [26] pt2(a) ---> pt
+Rule [26] superposed into Rule [9], reduced by Rule [13], produces:
+     [28] (pt1(a) = pt) ---> false
+Rule [21] superposed into Rule [2], reduced by Rules [5], and [7], produces:
+     [30] on(z2, y3) ---> true if 
+        { point(z2),
+          line(y3),
+          (pt1(y3) = pt) <=> false } 
+Rule [10] superposed into Rule [30], reduced by Rules [11], and [25], produces:
+     [31] line(y3) ---> false if  { (pt1(y3) = pt) <=> false } 
+Rule [13], deleted by Rule [31], reduced by Rules [28], and [31], produces:
+     [32] false ---> true
+
+The proof length (unifications) is 12.
+Processor time used                  = 24.17 sec
+\end{verbatim}
+\rm
+\normalsize

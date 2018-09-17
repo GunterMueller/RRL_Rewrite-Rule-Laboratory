@@ -1,0 +1,33 @@
+This directory contains the 10 equality problems in Overbeek's
+competition.  HERKY can solve the first nine automatically.
+To see how these problems are solved, please follow the instructions
+below:
+
+1. At first, install HERKY as described in HERKY.readme. If init.lsp
+   is not presented in this directory, please copy it into this
+   directory.
+
+2. If your lisp cannot automatically load "init.lsp", you need
+   to insert the line (load "init.lsp") in the beginning of compete.cmd
+
+3. Type the unix command:
+   % lisp < compete.cmd > compete.out &
+   It takes about 24 minutes on Sun sparcstation 2 to finish.
+   The output of HERKY is in compete.out and you may look at it
+   using more or any editor.
+
+4. To compare the cpu time of your lisp on your machine with Sun
+   common lisp or akcl on sparcs 1 and 2, type
+   % grep "Time used" compete.out > mytime
+   and then compare the times in mytime and compete.time.
+
+5. If you like to run a single competition problem, you need to
+   (a) enter HERKY,
+   (b) type HERKY's command "option auto t"
+   (c) type HERKY's command "auto" and then type the file name
+       "compete4.cmd" if you like to run the fourth competition 
+       problem.
+   Note that the cpu time might be higher than that in mytime
+   because it's costy to print things in lisps. You may reduce
+   printing messages by HERKY's command "option trace 1".
+

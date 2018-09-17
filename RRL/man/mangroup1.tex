@@ -1,0 +1,316 @@
+\chapter{Invoking {\em akb} on a single axiom of free groups}
+\normalsize
+\rm
+This example is another equational axiomatization of free groups
+using a single axiom and the right division
+operator /. Higman showed that this single axiom is
+sufficient to characterize free groups. This example illustrates
+the use of the automatic completion command in RRL in which
+no user assistance is required; the program itself determines
+in a systematic (and exhaustive) manner the precedence
+relation over the function symbols to orient equations. RRL
+provides facilities to change parameters to suit this automatic
+facility to families of examples. This examples also illustrates
+the mechanism in RRL to introduce new function symbols when
+equations are generated in which neither side has variables
+which include the variables of the other side. The goal here is
+also to generate a complete system, which is closely related
+to the complete system in the previous Appendix. RRL can also
+be used to show equivalence of two different axiomatizations
+of free groups.
+
+For generating a complete system from an axiomatization in the automatic
+mode of orienting rules from equations, the user simply invokes
+{\em akb} on the axiomatization. Of course, 
+the user can provide hints to the termination algorithm
+by specifying precedence on some function symbols using
+the {\em oper prec} command before invoking {\em akb}. Further,
+the parameters to the termination algorithm
+can be suitably chosen using the {\em option autoorder} command
+(see Section 3.5.2). (In the transcript below, minimal tracing
+information is being printed.)
+
+\small
+\tt
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em read group1}
+\begin{verbatim}
+Equations read in are:
+ 1. (x / ((((x / x) / y) / z) / (((x / x) / x) / z))) == y  [user, 1]
+Time = 0.13 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em option trace 1}
+\begin{verbatim}
+Time = 0.02 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em akb}
+\begin{verbatim}
+----- Step 1 -----
+This eqn cannot be oriented into a rule: 
+  (x / ((y / z) / (((x / x) / x) / z))) == (((((x / x) / (x / x)) / y) / z1) / 
+                          ((((x / x) / (x / x)) / (x / x)) / z1))  [1, 1]
+Introduce new operator.
+----- Step 2 -----
+Trying to orient equation: 
+  (x / ((y / z) / (((x / x) / x) / z))) == f1(x, y)  [1, 1]
+  To prove:  (x / ((y / z) / (((x / x) / x) / z)))  >  f1(x, y)
+  Here are some precedence suggestions:
+       1.  / > f1
+Either type a list of numbers or
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> auto
+Precedence relation, / = f1, is added.
+----- Step 3 -----
+Trying to orient equation: 
+  f1(x, f1((x / x), y)) == ((y / z) / ((((x / x) / (x / x)) / (x / x)) / z))  [3, 4]
+  To prove:  ((y / z) / ((((x / x) / (x / x)) / (x / x)) / z))  >  f1(x, f1((x / x), y))
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> auto
+The equation is postponed.
+----- Step 4 -----
+This eqn cannot be oriented into a rule: 
+  f1(x, (x / x)) == (y / y)  [16, 4]
+Introduce new operator.
+----- Step 5 -----
+Trying to orient equation: 
+  f1(x, (x / x)) == f2  [16, 4]
+  To prove:  f1(x, (x / x))  >  f2
+  Here are some precedence suggestions:
+       1.  f1 > f2
+Either type a list of numbers or
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> auto
+Precedence relation, f1 = f2, is added.
+----- Step 6 -----
+This eqn cannot be oriented into a rule: 
+  (((f2 / y) / z) / (f2 / z)) == f1(x, y)  [deleted, 18]
+Introduce new operator.
+----- Step 7 -----
+Trying to orient equation: 
+  (((f2 / y) / z) / (f2 / z)) == f3(y)  [deleted, 18]
+  To prove:  (((f2 / y) / z) / (f2 / z))  >  f3(y)
+  Here are some precedence suggestions:
+       1.  / > f3
+Either type a list of numbers or
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> auto
+Precedence relation, / = f3, is added.
+----- Step 8 -----
+Trying to orient equation: 
+  (x / (y / f3(y1))) == ((x / y1) / y)  [52, 57]
+  To prove:  (x / (y / f3(y1)))  >  ((x / y1) / y)
+        or:  (x / (y / f3(y1)))  <  ((x / y1) / y)
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> auto
+The equation is postponed.
+----- Step 9 -----
+Trying to orient equation: 
+  (x / (y / f3(y1))) == ((x / y1) / y)  [63, 57]
+  To prove:  (x / (y / f3(y1)))  >  ((x / y1) / y)
+        or:  (x / (y / f3(y1)))  <  ((x / y1) / y)
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> auto
+The equation is postponed.
+----- Step 10 -----
+Trying to orient equation: 
+  (x / (y / (f3(z) / y1))) == (((x / z) / y1) / y)  [57, 57]
+  To prove:  (x / (y / (f3(z) / y1)))  >  (((x / z) / y1) / y)
+        or:  (x / (y / (f3(z) / y1)))  <  (((x / z) / y1) / y)
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> auto
+The equation is postponed.
+----- Step 11 -----
+Trying to orient equation: 
+  ((y / f3(z)) / f3(z1)) == (y / (f3(z1) / z))  [74, 50]
+  To prove:  ((y / f3(z)) / f3(z1))  >  (y / (f3(z1) / z))
+        or:  ((y / f3(z)) / f3(z1))  <  (y / (f3(z1) / z))
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> auto
+The equation is postponed.
+----- Step 12 -----
+Trying to orient equation: 
+  ((y / f3(z)) / y1) == (y / (y1 / z))  [74, 51]
+  To prove:  ((y / f3(z)) / y1)  >  (y / (y1 / z))
+        or:  ((y / f3(z)) / y1)  <  (y / (y1 / z))
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> auto
+The equation is postponed.
+----- Step 13 -----
+Trying to orient equation: 
+  ((y / f3(z)) / f3(z1)) == (y / (f3(z1) / z))  [74, 50]
+  To prove:  ((y / f3(z)) / f3(z1))  >  (y / (f3(z1) / z))
+        or:  ((y / f3(z)) / f3(z1))  <  (y / (f3(z1) / z))
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> auto
+Operator, /, given status: rl
+----- Step 14 -----
+Your system is canonical.
+ [20] (y / y) ---> f2  [16, 4]
+ [23] f1(x, y) ---> f3(y)  [deleted, 18]
+ [24] f3(f2) ---> f2  [deleted, 21]
+ [26] (x / f2) ---> x  [deleted, 16]
+ [37] (f2 / y) ---> f3(y)  [26, 22]
+ [39] f3(f3(y)) ---> y  [deleted, 35]
+ [50] ((y / z) / f3(z)) ---> y  [39, 49]
+ [51] ((y / f3(y1)) / y1) ---> y  [39, 50]
+ [64] f3((y / x)) ---> (x / y)  [50, 52]
+ [86] (y / (y1 / z)) ---> ((y / f3(z)) / y1)  [74, 51]
+Processor time used                = 18.5 sec
+Number of rules generated          = 86
+Number of critical pairs           = 127
+Time spent in normalization        = 9.42 sec          (50.90 percent of time)
+Time spent while adding rules      = 5.03 sec          (27.21 percent of time)
+  (keeping rule set reduced)
+Time spent in unification          = 1.12 sec          (6.04 percent of time)
+Time spent in ordering             = 3.55 sec          (19.19 percent of time)
+Total processor time used (include 'undo' action) = 23.07 sec
+Time = 23.3 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em a}\\
+Type your equations, enter a ']' when done.\\
+{\em x * y == x / f3(y)\\
+i(x) == f3(x)\\
+e == f2\\
+]}
+\begin{verbatim}
+Equations read in are:
+ 1. (x * y) == (x / f3(y))  [user, 11]
+ 2. i(x) == f3(x)  [user, 12]
+ 3. e == f2  [user, 13]
+New constant set is: { e }
+Time = 0.03333333333333854 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em oper prec}
+\begin{verbatim}
+Type operators in decreasing precedence.
+  (eg. 'i * e' to set i > * > e) 
+\end{verbatim}
+--> {\em i * e /}
+\begin{verbatim}
+Precedence relation, i > *, is added.
+Precedence relation, * > e, is added.
+Precedence relation, e > /, is added.
+Time = 0.01666666666666572 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em opt tr 2}
+\begin{verbatim}
+Time = 0.01666666666666572 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em kb}
+\begin{verbatim}
+----- Step 15 -----
+Adding rule:  [92] (x * y) ---> (x / f3(y))  [user, 11]
+Adding rule:  [93] i(x) ---> f3(x)  [user, 12]
+Adding rule:  [94] e ---> f2  [user, 13]
+Computing critical pairs with: 
+   [94] e ---> f2  [user, 13]
+Computing critical pairs with: 
+   [93] i(x) ---> f3(x)  [user, 12]
+Computing critical pairs with: 
+   [92] (x * y) ---> (x / f3(y))  [user, 11]
+
+Your system is canonical.
+
+ [22] (y / y) ---> f2  [17, 4]
+ [25] f1(x, y) ---> f3(y)  [deleted, 19]
+ [26] f3(f2) ---> f2  [deleted, 23]
+ [28] (x / f2) ---> x  [deleted, 17]
+ [40] (f2 / y) ---> f3(y)  [28, 24]
+ [42] f3(f3(y)) ---> y  [deleted, 38]
+ [54] ((y / z) / f3(z)) ---> y  [42, 53]
+ [56] ((y / f3(y1)) / y1) ---> y  [42, 54]
+ [69] f3((y / x)) ---> (x / y)  [54, 57]
+ [91] (y / (y1 / z)) ---> ((y / f3(z)) / y1)  [79, 56]
+ [92] (x * y) ---> (x / f3(y))  [user, 11]
+ [93] i(x) ---> f3(x)  [user, 12]
+ [94] e ---> f2  [user, 13]
+  ... ....
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em prove}
+\begin{verbatim}
+Type equation to prove in the format:  L == R (if C) 
+Enter a ']' to exit when no equation is given.
+\end{verbatim}
+{\em e * x == x}
+\begin{verbatim}
+Yes, it is equational theorem.
+Time = 0.03333333333333144 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em prove}
+\begin{verbatim}
+Type equation to prove in the format:  L == R (if C) 
+Enter a ']' to exit when no equation is given.
+\end{verbatim}
+{\em i(x) * x == e}
+\begin{verbatim}
+Yes, it is equational theorem.
+Time = 0.0 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em prove}
+\begin{verbatim}
+Type equation to prove in the format:  L == R (if C) 
+Enter a ']' to exit when no equation is given.
+\end{verbatim}
+{\em (x * y) * z == x * (y * z)}
+\begin{verbatim}
+Yes, it is equational theorem.
+Time = 0.06666666666666288 sec
+\end{verbatim}
+\rm
+\normalsize

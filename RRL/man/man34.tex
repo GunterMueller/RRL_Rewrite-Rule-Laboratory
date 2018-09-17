@@ -1,0 +1,855 @@
+\section{The Knuth-Bendix Completion Procedure: \em kb}
+
+The command {\em kb} invokes the extended completion procedure on the
+existing system which in general is a combination of rules and
+equations.  Depending upon the properties of function symbols
+appearing in the rules and equations, and structure of rules and
+equations, different completion procedures are invoked.  If some
+logical formula is included in the current system, then the completion
+procedure for first-order predicate calculus is invoked.  If there
+exist some conditional equations or rules in the current system, then
+the conditional completion procedure is applied.
+  
+\subsection{Behaviors of the Completion Procedure}
+
+Invoking {\em kb} can result
+in one of the following possibilities:
+\begin{enumerate}
+\item \RRL stops with a set of rules. In this case,
+if the resulting set of rules includes
+{\tt true -> false}, then the input axioms are
+inconsistent. If the rule {\tt true -> false} is not in
+the result and none of the operators is specified
+to be associative-commutative, the resulting
+system is a complete set of rules,
+which is a decision procedure for the input
+axioms. However, if some operators are declared
+to be associative-commutative, then an AC-ordering
+is applied when some conditions are satisfied. 
+If these conditions are not satisfied, then the result of {\em kb} is a
+locally-confluent set of rules, as the
+result is not guaranteed to be a terminating set of rules.
+The termination algorithm used
+in \RRL does not work for many equations using
+associative-commutative operators,
+although our experience suggests that for many associative-commutative 
+examples, termination of the rules can be easily ensured.
+\item During the running of the completion
+procedure, an equation may be encountered that cannot
+be oriented into a rule because of reasons
+discussed in the next subsections. In that case, the user has many
+options: 
+\begin{itemize}
+\item quit and retry using a different
+termination ordering (see below), 
+\item  orient
+equations by hand, in which case, if \RRL stops
+with a set of rules, the result is a locally-confluent \cite{Huet80}
+system as \RRL does not guarantee that
+the rules terminate, or
+\item  undo previous choices made about making rules from equations
+until an \RRL state is reached
+from where a desired choice can be
+made.
+\end{itemize}
+\item \RRL keeps generating new rules, until
+interrupted by the user by {\em $\uparrow$-C} on UNIX systems and by
+the {\em abort} (or {\em $\uparrow$-abort}) key on the Lisp machine.
+On UNIX, the user is then talking to Lisp; typing {\em $\uparrow$-D}
+or {\em (rrl)} will bring the user back to \ERRL.  It is also possible
+to specify the maximum run time for which \RRL should be run on a
+problem; this is done using the command {\em option/brake/runtime}.
+When the specified maximum run time is elapsed,
+\RRL will stop. Then the user may continue by increasing the run time
+limit or quit the
+completion procedure.
+\end{enumerate}  
+Appendix C is a transcript of invoking {\em kb} on an equational
+axiomatization of free groups. Appendix E is a transcript of invoking
+{\em kb} on an axiomatization of free abelian groups.
+
+\subsection{Introducing New Operators}
+
+An interesting feature of the completion procedure is that it can
+generate an equation which cannot be made into a rewrite rule. This
+happens if both sides of an equation have a variable(s) whose value
+can be arbitrarily chosen without affecting the validity of the
+equation. A simple example of such an equation is:
+\begin{center}
+\tt   x / x == y / y.
+\end{center}
+\RRL then prompts the user with the following
+message:
+\begin{verbatim}
+This eqn cannot be oriented into a rule:
+  (x / x) == (y / y)  [3, 4]
+\end{verbatim}
+\tt 
+Type left\_right, makeeq, operator, postpone, right\_left, undo, quit, help -->\\
+\rm
+giving the user an option of either
+\begin{itemize}
+\item
+to postpone the
+equation for consideration later with the hope
+that it would get simplified and the result
+can be made into a rule, or
+
+\item to orient the equation by hand (either left to right or right to left);
+then, the rewrite rule will not be used for rewriting, or,
+
+\item to make the rewrite rule $eq(t_1 , t_2) \rightarrow true$
+from the equation $t_1 = t_2$, or
+
+\item introduce a new
+operator capturing what variables the value of
+each side really depends upon.
+
+\end{itemize}  
+
+In case a new operator symbol is to be introduced, this is illustrated below:\\\
+\tt 
+Type left\_right, makeeq, operator, postpone, right\_left, undo, quit, help --> {\em operator}\\
+----- Step 4 -----\\
+Give me a new operator name: {\em e}
+\begin{verbatim}
+Trying to orient equation: 
+  (x / x) == e  [3, 4]
+\end{verbatim}
+\rm
+
+The feature of introducing new operators
+turns out to be extremely useful. It has been
+successfully employed to show the equivalence of different
+axiomatizations of free groups, for example; see Appendix D.
+
+\section{Orienting Equations as Rules: {\em kb, akb, makerule}}
+An integral part of the completion procedure is a way to orient
+equations into rewrite rules.  This is done either interactively with the
+user's help or in a totally automatic mode. When the command {\em kb}
+is invoked, equations are oriented in an interactive mode. The command
+{\em akb} supports the automatic mode for orienting equations into
+rules.
+  
+In the interactive mode, rules can be made from equations manually
+or using an algorithm for {\em recursive path ordering} ({\em
+rpo})\cite{Dershowitz82} and {\em lexicographic} recursive path
+ordering ({\em lrpo}) \cite{KaminLevy}\cite{Dershowitz87}.  We have
+found {\em rpo} and {\em lrpo} efficient and fairly easy to implement.  Both of
+them extend a precedence relation on function symbols to terms.  As
+discussed above, for interactive as well as automatic modes, an
+initial precedence relation on functions and their statuses can be
+specified using the operator command before invoking {\em kb} or {\em
+akb}.
+  
+The ordering {\em rpo} possesses the incrementality property in the sense that
+the precedence relation on function symbols can be incrementally
+specified as the completion procedure proceeds.  In {\em rpo}, every
+function has a multiset status meaning that every argument to the
+function is given equal weight.  In the case of {\em lrpo}, when an operator
+is incrementally set to have a left-to-right or right-to-left
+status, rules already oriented have to be checked again to make sure
+that the orientation is consistent with the status. If a proposed
+extension to the precedence relation is inconsistent, \RRL notifies the
+user of that error.
+
+\subsection{Interactive Mode}
+
+Whenever an equation to be made into a rule
+cannot be oriented by the algorithm using the
+existing precedence relation, \RRL presents the
+user with different possible ways to handle that case:
+\begin{enumerate}
+\item enhance the precedence, that is,
+add some relation on operators to the precedence; 
+\item change the status of some operators; 
+\item introduce a new operator;
+\item use the command {\em undo} to cancel a previous choice;
+\item interrupt and start with a new ordering using 
+whatever is in the rule set and equation set;
+\item orient equations into rules manually - {\em lr}, left-to-right, 
+or {\em rl}, right-to-left.
+\end{enumerate}
+
+A typical \RRL message in this case looks like:
+\begin{verbatim}
+ ... ...
+Trying to orient equation: 
+  (i(x) * x) == e  [user, 2]
+
+  To prove:  (i(x) * x)  >  e
+  Here are some precedence suggestions:
+       1.  * > e
+       2.  i > e
+Either type a list of numbers or
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> 
+\end{verbatim}
+  
+The user is asked to make one of the six choices listed above, or to
+make two operators to have equivalent precedence and status. All
+possible extensions of the precedence relation are presented.  There
+is no guarantee that each of the extensions is likely to work; in this
+sense, the algorithm for suggesting precedence does not try to be
+smart.  If the proposed extension to the precedence relation is
+inconsistent with the existing precedence or cannot orient the rule,
+the user is notified.  It is possible to display the current
+precedence relation on functions and their status using the {\em
+display} command at this stage.
+
+It is possible that the equation may not be orientable no matter how
+the precedence relation is extended.  In such a situation, it is
+better to 
+\begin{itemize}
+\item postpone the equation with the hope that it will get
+simplified later with other rules and the simplified form can be
+oriented, 
+\item introduce a new operator, or 
+\item undo to a previous
+choice to make an alternative choice.
+\end{itemize}
+
+For the user who knows {\em rpo} or {\em lrpo}, the interactive mode is more
+effective.  In most examples discussed in the Appendices, equations
+are interactively orienting into rules by specifying precedence
+relation on function symbols.
+
+The first time the user chooses to orient an equation manually,
+\RRL prompts with the following
+warning.
+\begin{verbatim}
+ ... ...
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+\end{verbatim}
+\tt RRL>KB> {\em lr}
+\begin{verbatim}
+Orientation of equations being done manually.
+
+!!!!!! Warning: Rewriting may not terminate !!!!
+!!!!!! Warning: Resulting system will be locally-confluent;
+         But it may not be canonical  !!!!
+
+Is it ok to continue (y,n)?
+\end{verbatim}
+\rm  
+Equations should be manually oriented only if rules can be proved to
+be terminating. \RRL provides a limited check for a possible loop in
+rewriting; if a term is rewritten quite a lot, then 
+\RRL stops with a warning
+of a possible loop in rewriting. The maximal number of rewritings
+in a normalization is 1000 by default; this number can be reset
+by the user using the command {\em option/brake/normalize}.
+
+The command {\em makerule} can be used to
+make rules from equations without invoking the completion procedure.
+The result is a terminating rewriting system.
+This command is useful to support other methods like
+narrowing, explicit induction or computing by rewriting, 
+where a canonical rewriting system may not exist.
+Appendix K includes an example: A
+recursive definition of Ackermann's function is given
+and is transformed into a terminating rewriting system using
+{\em makerule}; its execution on two inputs is illustrated, too.
+
+\subsection{Automatic Mode}
+
+In the automatic mode, \RRL itself makes choices when an equation
+cannot be oriented into a rule using the existing precedence relation.
+Starting with the initial precedence, \RRL tries to find a precedence
+under which each rule is terminating. The method used is called 
+{\em automatic ordering with bounded depth-first search} ({\em autoorder});
+see also \cite{DetlefsForgaard}.
+  
+There are several options for
+autoorder as the following message indicates:\\ \\
+\tt
+RRL-> {\em option autoorder}
+\begin{verbatim}
+Type eq-pre, lr-rl, new-oper, postpone, keep-rule, post-limit, rule-limit, 
+     quit, help --> 
+\end{verbatim}
+\rm
+\begin{enumerate}
+\item If two function symbols are not comparable
+in the existing precedence relation, it is possible
+to relate the precedence of the function symbols in two ways:
+\begin{enumerate}
+\item make the function symbols have the same precedence at first.
+\item make one function symbol to have greater precedence than
+the other function symbol at first.
+\end{enumerate}
+The command to set this option is: {\em option/autoorder/eq-pre}.
+The default option is to make the function symbols have equivalent
+precedence first.
+\item When an operator (whose arity is bigger than 1) has no status (i.e.,
+it has multi-set status meaning that all arguments are treated equally),
+there are two options in giving it a status: 
+\begin{enumerate} 
+\item left-to-right
+status first;
+\item right-to-left status at first.
+\end{enumerate}
+The command to set this option is: {\em option/autoorder/lr-rl}.
+The default option is to try right-to-left status first.
+\item It is always possible to introduce a new operator for
+an unoriented equation. However this can be done
+\begin{enumerate}
+\item before extending the existing
+precedence relation; 
+\item after trying extending 
+precedence but before trying assigning status and
+\item finally, after trying extending precedence and assigning status.
+\end{enumerate}
+The command to set this option is: {\em option/autoorder/new-oper}.
+The default is (i), to introduce a new operator as soon as possible.
+\item 
+It is always possible to postpone an unoriented equation:
+\begin{enumerate}
+\item either without first extending the precedence relation; 
+\item or, after having tried to extend the precedence but before trying to
+assign status; 
+\item or, after having tried to extend the precedence
+and status. 
+\end{enumerate}  
+If choices 3 and 4 can both be made, then 3 is preferred
+over 4.
+
+The command to set this option is: {\em option/autoorder/postpone}.
+The default is to postpone an equation after extending precedence but before
+assigning status to an operator.
+\item In general, some new rules are
+generated when the precedence is
+changed. If we want to cancel the previous choices, then we have two choices:
+keep the new generated rules in the system as 
+equations (since they are valid consequences) or not.
+
+The command to set this option is: {\em option/autoorder/keep-rule}.
+The default is not to keep the new generated rules in the system because
+it has been found in practice that in many cases keeping
+these rules does not help the completion procedure in generating
+a complete system.
+\end{enumerate}
+  
+Besides the above choices, there are two other parameters in {\em autoorder}: 
+one is the maximum number of equations that can be postponed; the other is
+the maximum number of rules that can added to the system without
+changing the precedence relation. The first bound prevents \RRL from
+infinitely postponing equations; the second bound prevents \RRL from
+infinitely generating rules without changing the precedence.
+The commands to set these bounds are: {\em
+option/autoorder/post-limit} and {\em option/autoorder/rule-limit}.
+The default value for post-limit is 5 and for rule-limit is 50.
+
+The default values for various options for the automatic mode of the
+termination algorithm have been arrived after experimenting with many
+examples in algebra. These values may not be optimal in other
+application areas.
+  
+Orienting equations without any assistance from the user using the
+{\em akb} command is illustrated in Appendix D in which a complete
+system is generated from single equation axiomatization of free groups
+due to Higman. In this example, \RRL discovers new operators for
+identity and inverse.
+
+\subsection{Conditional Rewrite Rules \label{condi}}  
+
+In cases of proof by refutation using conditional rewrite rules 
+or proof by induction using the cover set method, the user must
+input clauses or (conditional) equations to \ERRL. For example,
+the following two formulas are acceptable by these 
+two methods:
+\begin{verbatim}
+            p(x) if q(x) and r(x)
+            p(x) or not q(x) or not r(x)
+\end{verbatim}
+while the following input is illegal to these two methods:
+\begin{verbatim}
+            all x (p(x) or not q(x) or not r(x))
+            p(x) or not (q(x) and r(x))
+\end{verbatim}
+even though all the above four formulas are logically equivalent; however, 
+they are acceptable by the method based on the boolean ring approach.
+
+Clauses are always written in the form of conditional equations in \ERRL.
+Given a conditional equation, \RRL chooses a maximal (under a given
+ordering) literal
+appearing in it as the body of a conditional rewrite rule and 
+puts the remaining literals into the condition of the rule.
+For example, for the equation {\tt p(x) if q(x) and r(x)},
+if {\tt p > q > r}, then the rule is 
+\begin{verbatim}
+            p(x) ---> true if q(x) and r(x).
+\end{verbatim}
+If the order is {\tt r > q > q}, then the rule is 
+\begin{verbatim}
+            r(x) ---> false if q(x) and not p(x).
+\end{verbatim}
+If more than one literal are maximal, \RRL chooses the first
+maximal literal (counted from left to right) as the body and
+only one rule is made from the given equation; this is in contrast
+to a statement made in \cite{ZK88} that ``more than one rule is
+made from a clause if there are more than maximal literals in
+the clause.'' Such rules are not used for rewriting.
+Note also that the condition of a rule may contain variables 
+which do not appear in the body of the rule.
+
+\section{Parameters to the Completion Procedure}
+
+The completion procedure has three strategies as
+its parameters.
+\begin{itemize}
+     \item Normalization strategy;
+     \item Critical pair strategy;
+     \item Strategy for picking next equation for processing.
+\end{itemize}
+These strategies are different
+for different completion procedures and are described
+in the following subsections.
+
+\subsection{Normalization Strategy: {\em option/norm, norm}}
+
+\subsubsection{Unconditional Rewriting}
+
+Four methods of normalizing a term with respect to a set of
+unconditional rules are supported.  For discussing different
+normalization methods, it is necessary to refer to subterms in
+a term.  Using a tree representation of a term, its subterms can be
+uniquely identified by {\em positions} which are sequence of positive
+integers (see \cite{KMN84} for a definition of positions
+for flattened terms when associative-commutative operators appear in
+terms). A position of a term can also be used to uniquely identify
+every node in its tree representation. 
+The position of the empty
+sequence corresponds to the root of the tree representing the term.
+A position $p_1$ corresponds to
+a node that is
+the parent of another node identified by
+another position $p_2$ if and only if $p_2 = p_1 \cdot i$, where
+$i$ is a positive integer less than or equal to the arity of 
+the outermost function
+symbol of the subterm at $p_1$.
+\begin{description} 
+\item{\bf Leftmost-outermost:} This strategy
+attempts to apply a rule as near the root of a term as possible. If
+the rewriting at the root is not possible, then the left-most child of
+the root is completely explored before we get to the other children of
+the root.  
+
+\item{\bf Leftmost-innermost:} In this strategy, a term is
+explored in depth-first order while locating subterms at which
+rewriting may be possible. A parent position
+is processed only after its children have been explored. That is, if
+we are trying to match a rule at position $p$, we must have already
+normalized the children of $p$. It is as if we traverse up from the
+leaves applying a rule at the first rewritable position. 
+
+\item{\bf Efficient Innermost:} This is essentially an improvement on
+leftmost-innermost strategy.  In the leftmost-innermost strategy, we
+do not utilize the information that whenever we rewrite at a position
+$p$, the substitution for the variables are already normalized and we do
+not have to start again from the leaves to ensure the term is
+normalized. This is done by keeping the bindings of the variables
+separate and not replacing them in the term when we do a rewrite.
+
+\item{\bf Efficient Outermost:} This is
+a mixture of the leftmost-outermost strategy and efficient innermost
+strategy. It is motivated by the fact that the main goal of
+reduction is to normalize
+a term and not just to rewrite it in a single step.
+The leftmost-outermost strategy is used first to rewrite the
+term from the root to the leaves. Then the efficient innermost
+strategy is used to go up if some children of the root are reduced.
+\end{description}
+
+The distinction between the two outermost
+strategies can be illustrated by 
+a simple example: Suppose
+$R$ contains
+\[\begin{array}{rlcl}
+  1. & f(g(x)) & \rightarrow & x, \\
+  2. & h(x) & \rightarrow & g(x),
+\end{array}\]
+and the term to be normalized is $t = f(h(a))$.  $R$ is matched first
+against the whole term $t$ (i.e. at its root position), and then at
+the position 1 of $t$ in both strategies.  The subterm $h(a)$
+can be reduced to $g(a)$ by Rule 2, so the subterm of $t$ at position
+1 is replaced by $g(a)$. The rewriting is continued from the subterm
+at position 1 onwards instead of going back to the root of the new
+term.  $R$ is matched against subterms at positions 1 and 1.1 and it
+is found that $g(a)$ is in normal form.  The
+rewriting is tried once again from the root downwards.  Now $R$ can
+match against $f(g(a))$ by Rule 1 at the root position.  The result of
+this rewriting is $g(a)$ with the substitution $\sigma = \{ x/g(a)
+\}$.  In the efficient outermost strategy, because $\sigma(x) = g(a)$
+is already known to be in normal form,
+the rewriting process stops.
+In the leftmost-outermost strategy, it is checked that $g(a)$ is in normal
+form. The distinction between efficient innermost and leftmost innermost
+is similar.
+
+Each of the four normalization methods for unconditional rewriting is
+complete in the sense that at the end, the result is in normal form
+if the set of rules is terminating.  They affect only the time spent
+in normalization.  However, in the presence of commutative, or
+associative-commutative operators, only the first rewriting strategy
+(leftmost-outermost) is supported.
+
+\subsubsection{Conditional Rewriting}
+
+Only one strategy, named ``leftmost-innermost'',
+is supported for this kind of conditional rewriting.
+However, \RRL provides an option to set the {\em depth} of
+conditional rewriting.
+{\em depth} is associated with conditions of rewrite rules,
+because conditional rewriting is recursively defined
+as ``a conditional rewrite rule can reduce a term if the condition
+of the rule can be {\em reduced} to be true''.
+We illustrate the notion of 
+the {\em depth} by a simple example: Given two rules
+\[\begin{array}{rlll}
+1. & x \leq x & \rightarrow & true, \\
+2. & x \leq s(y) & \rightarrow & true~{\bf if}~ x \leq y,
+\end{array}\]
+the depth of rewriting $0 \leq 0$ to $true$ is 1 because 
+the rule 1 is unconditional. 
+The depth of rewriting 
+$0 \leq s(0)$ to $true$ 
+is 2 because the rule 2 applies first, and the depth of
+rewriting its condition to true is 1.
+Similarly, the depth of rewriting $0 \leq s^i (0)$ to $true$ is $i~+~1$
+because the rule 2 applies first, and the depth of
+rewriting its condition to true is $i$.
+
+In some examples, the depth of a rewriting can be infinity. 
+For instance, using the rule 
+\[ a \rightarrow b ~{\bf if}~ a \neq c\]
+to normalize the term $a$, 
+where $a~ >~ b~ >~ c$, the depth is infinite. 
+To avoid this case,
+there are two choices:
+one is to use only terminating rules of which
+every term in the condition is less than the left side of the rule
+under a given reduction ordering; 
+the other
+is to limit the depth of each rewriting to a reasonable number.
+Both criteria work well to guarantee the termination.
+For pragmatic reasons, we prefer the second criterion.
+In \ERRL, this number can be set by the command 
+{\em option/brake/depth}; the default depth is 3.
+
+\subsection{Strategy for Processing Next Equation}
+
+There are three sources of equations: 
+\begin{enumerate}
+\item the user (input), 
+\item critical pairs and 
+\item deleted rules.
+\end{enumerate}
+  
+The user's equations (except logical formulas) are processed in the
+order in which they were input (queue).  The equations (except logical
+formulas) obtained from critical pairs, are processed as soon as a
+critical pair is generated. Rules are added (if necessary) soon after
+the critical pairs are computed and processed.  As critical pairs are
+processed immediately, many rules are added during the superposition
+process. If these newly added rules delete some other rules, the
+deleted rules can be processed in three different ways. This is
+discussed in a later subsection.
+
+There are three options to organize the processing of logical formulas
+(no matter how they are generated): (1) stack, (2) queue (default),
+(3) sorted list.  The command to set option is {\em option/fopc/list}.\\ \\
+\tt
+RRL-> {\em option fopc}\\ \\
+Type break-ass, bound, restrict, list, match, paramodulation, quit, help --> {\em help}
+\begin{verbatim}
+break-ass        - Specify how long assertions should be broken 
+bound            - Give a bound on number of rules made from critical pairs
+restrict         - Set restrictions on making superpositions
+list             - Set strategy for organize formulas
+match            - Set strategy for boolean matching
+paramodulation   - Set flag for paramodulation
+quit             - Quit
+help             - Print this message.
+\end{verbatim}
+Type break-ass, bound, restrict, list, match, paramodulation, quit, help --> {\em list} \\
+Organize assertions as stack (s) queue (q) or sorted list (l) ? \\
+(current value: q) (s,q,l) \\ \\
+\rm
+The default is the {\em queue} organization.
+
+Other parameters in the fopc option are explained later.
+
+\subsection{Critical Pair Strategy: {\em option/critical}}
+
+\RRL supports different options for processing critical pairs.\\ \\
+\tt
+RRL-> {\em option critical}\\
+Type deleted, inside, organize, paramodulation, pick, quit, rulesize, \\
+\hspace*{0.4in} 
+     restrict, with, help --> {\em help}
+\begin{verbatim}
+deleted          - Set strategy for processing deleted rules
+organize         - Set strategy for organizing marked rules
+paramodulation   - Set flag for paramodulation
+pick             - Set strategy for picking an unmarked rule
+quit             - Quit
+rulesize         - Specify a measure for the size of rules
+restrict         - Set restrictions on making superpositions
+with             - Set strategies for choosing rules to do critical pairs with
+help             - Print this message.
+\end{verbatim}
+\rm
+  
+For picking a rule from
+not previously chosen (unmarked) rules for generating critical pairs, three options
+are currently supported: 
+\begin{enumerate}
+\item choose the earliest generated rule; 
+\item choose the earliest generated smallest rule or
+\item choose the latest generated smallest rule.  
+\end{enumerate}
+The default option is 2. 
+After a rule is picked and its critical pairs are computed, it is marked.
+The command to set the critical pair strategy is:
+{\em option/critical/pick}.
+  
+Having picked a rule based on a selected option, 
+there are again three options to chose the 
+other rules to compute critical pairs with the picked rule: 
+\begin{enumerate}
+\item choose all earlier generated rules (compared to the picked rule);
+\item choose the rules previously picked for computing critical pairs (default for generating complete systems for equational
+theories);
+\item choose all rules except that those already
+computed critical pairs with the currently picked rule (default
+for theorem proving in predicate calculus).
+\end{enumerate}
+The command to select this option is: {\em option/critical/with}.
+  
+There are three ways to organize previously picked (marked) rules: 
+\begin{enumerate}
+\item stack, 
+\item queue, 
+\item sorted list (default). 
+\end{enumerate}
+The command to set this option is {\em option/critical/organize}. 
+
+There are three options available to process equations converted from
+deleted rules:
+
+\begin{enumerate}
+\item Process it as soon as a rule is deleted;
+\item Process all deleted rules only after a critical pair is computed
+and is processed (default option);
+\item Process them after quitting the superposition process.
+\end{enumerate}
+The command to set these options is {\em option/critical/deleted}. 
+For example,\\ \\
+\tt
+RRL-> {\em option critical}\\
+Type deleted, inside, organize, paramodulation, pick, quit, rulesize, \\
+\hspace*{0.4in} 
+     restrict, with, help --> {\em deleted} \\
+Process deleted rule at once (1), or all deleted rules together (2), or \\
+after the superposition process (3) \\
+(current value: 2) (1/2/3) {\em 3} \\
+\rm
+\\ If a rule is deleted outside of the superposition process, then 
+the deleted rule will be processed immediately.
+
+\subsection{Restricting Superpositions}
+
+There are three options for restricting superpositions
+between rules corresponding
+to logical formulas for first-order
+predicate calculus theorem proving. With these restrictions,
+the theorem proving methods for first-order predicate calculus are
+incomplete.
+\begin{enumerate}
+\item don't compute critical pairs with itself (idempotency);
+\item compute critical pairs with unit rules (clause)
+only; this is similar to unit resolution
+strategy which is not refutationally complete;
+\item compute critical pairs with input rules (clause)
+only; this is similar to input resolution
+strategy which is not refutationally complete.
+\end{enumerate}
+
+These options are included for the sake of efficiency.
+This is done using {\em option/fopc/restrict}.\\ \\
+\tt
+RRL-> {\em option critical restrict} \\
+Superposing with any rule (1), without itself (2), with unit rules (3), \\
+\hspace*{0.4in} 
+    or with input rules (4) ? \\
+(current value: 1) (1,2,3,4) 
+\rm
+
+\section{Speeding Up the Completion Procedure: \em option/fastkb}
+
+In order to speed-up the completion procedure for the associative-commutative
+case, two different critical pair criteria have been implemented. In addition,
+when a theory includes associative-commutative function symbols $+$ and $*$
+such that $*$ distributes over $+$, then terms can be represented
+more efficiently in sum of products form with these properties
+of $+$ and $*$ built into the term structure.
+  
+\subsection{Blocking:\em option/fastkb/blocking}
+
+In the completion procedure, certain critical pairs which are obtained
+by substitutions that are reducible need not be considered as they
+can be proved to be redundant \cite{KMN84}. Identifying such critical
+pairs does not turn out to be efficient for examples not involving
+associative-commutative functions. However, in the presence of any
+associative-commutative functions, not considering such critical pairs
+turn out to be quite efficient as they are many such critical pairs.
+As a result, the default value for the option {\em blocking} is {\em
+on} in the presence of associative-commutative functions.  However, it
+can be turned off by the user if desired. Since there is
+hardly any gain in identifying unblocked critical pairs in the
+absence of associative-commutative functions, the blocking option
+is not supported when no function is associative-commutative.
+
+\subsection{Symmetry Checking: \em option/fastkb/symmetry}
+
+In the presence of associative-commutative functions,
+some subterms of the left side of a rule may be ``symmetric''
+(two terms are said to be {\em symmetric} in a rewrite rule
+if one becomes the other after properly renaming variables in 
+the rewrite rule).
+In this case, similar to blocking, there is no need to superpose
+other rules at these symmetric subterms more than once \cite{ZK89}.
+Moreover, there is no need to process ``symmetric'' unifiers,
+which are computed by an associative-commutative unification
+algorithm, more than once. 
+If no functions are associative-commutative, symmetry checking
+is reduced to identity checking. That is, there is 
+no need to superpose at identical subterms of a rule more than once.
+\RRL does symmetry checking by default. 
+The user may turn it off by the command {\em option/fastkb/symmetry}.
+
+\subsection{Polynomial Processing: \em option/fastkb/polynomial}
+
+When the axiom set contains the function $*$ and $+$,
+where $+$ is an associative-commutative operator and $*$ satisfies
+the distribution law over $+$, it is often inefficient to
+simplify terms using the rewrite rules made from the distribution law.
+\RRL provides an option to efficiently handle this case.\\
+\\
+{\tt RRL->} {\em option fastkb polynomial}
+\begin{verbatim}
+Set the polynomial flag on means that the following axioms will be built in:
+             x + y == y + x
+       (x + y) + z == x + (y + z)
+       (x + y) * z == (x * z) + (y * z)
+       z * (x + y) == (z * x) + (z * y)
+       (x * y) * z == x * (y * z)
+Do you want to set it ? (t,nil) 
+\end{verbatim}
+
+The function names $*$ and $+$ are fixed for the above axioms.
+In order to turn the {\em polynomial} flag off, 
+\RRL must be reinitialized. 
+
+\section{Changing Defaults}
+
+It is possible to change the default values of various options as well
+as various flags if they do not suit the needs of the user.  This can
+be done by the command {\em option}, as illustrated in the 
+previous sections, or 
+by creating a file {\em init-rrl.flag}. The initial values of
+various flags different from their default values can be specified in
+the file  {\em init-rrl.flag} 
+which consists of a sequence of flag-name and its initial
+value as follows:\\ \\ {\em delete-rule 1\\ pick-rule l\\
+critical-with m\\}\\ The first line above, for example, sets the
+processing-deleted-rule-strategy to 1, i.e., process deleted rules
+only after computing a critical pair.  All the flags
+and their default values are listed below
+(use option to see their meaning).
+
+\begin{tabular}{lcc}
+{\bf Name} & {\bf Domain} & {\bf Default value} \\
+{\tt trace} & \{1, 2, 3\} & 2 \\
+{\tt pick-rule} & \{l, e, o\} & l \\
+{\tt critical-with} & \{m, o, a\} & m \\
+{\tt delete-rule} & \{1, 2, 3\} & 2 \\
+{\tt mark-rule} & \{1, 2, 3\} & 3 \\
+{\tt rule-size} & \{s, d\} & s \\
+{\tt normalization} & \{o, i, g, m\} & o \\
+{\tt blocking} & \{y, n\} & y \\
+{\tt lrpo} & \{t, nil\} & t \\
+{\tt manual} & \{t, nil\} & nil \\
+{\tt new-operator} & \{1, 2\} & 1 \\
+{\tt status} & \{1, 2\} & 2 \\
+{\tt precedence} & \{1, 2\} & 1 \\
+{\tt equal-arity} & \{y, n\} & y \\
+{\tt resume-rule} & \{y, n\} & n \\
+{\tt post-position} & \{1, 2, 3\} & 2 \\
+{\tt max-position} & any integer & 5 \\
+{\tt max-new-rule} & any integer & 50 \\
+{\tt post-ass-list} & \{s, q, l\} & q \\
+{\tt more-break} & \{y, n\} & n
+\end{tabular}
+\normalsize
+\rm
+
+\section{\RRL States:  {\em history, undo, clean, save, load}}
+
+\RRL provides the ability for the user to backtrack to previous steps
+when the completion procedure is invoked or
+where any decision regarding the orientation of rules was made.  
+In order to implement the backtracking mechanism, the
+state of the completion procedure at every decision step is saved. The
+state of \RRL consists of 
+\begin{itemize}
+\item the current sets of equations and rules,
+\item whether a function is commutative or associative and commutative,
+\item whether a function is a constructor, 
+\item whether equations are being manually oriented, automatically
+oriented or interactively oriented, and if not-manually oriented, the
+precedence relation on functions, and status of every function, 
+\item values of flags
+indicating the strategy to be used for normalization, generating
+critical pairs, processing critical pairs.
+\end{itemize}
+
+The following commands can be used to manipulate \RRL states:
+
+\begin{description}
+\item{\em undo} Whenever a choice is made by the user to extend
+the precedence relation or the {\em kb} command is called, the state of
+the \RRL is stored in a history. If the user subsequently finds that a
+wrong choice was made at some stage, then it is possible to backtrack
+by invoking {\em undo} until that stage, make a different choice and
+proceed again. It is also possible to keep {\em undoing} previous
+decisions until the original system is restored after which the {\em
+undo} command has no effect.
+
+\item{\em clean} To support the {\em undo} feature, \RRL keeps record of
+the state of the system whenever the user gives a command that changes
+the system state.  For large examples, storing this information takes
+up considerable storage which makes the garbage collection operation
+in LISP quite
+expensive. It is possible for the user to wipe out the history by
+invoking the {\em clean} command. As a result of clean, \RRL can become
+faster; however the {\em undo} command does not have any effect.
+If the user does not want to save any state into the history, 
+he (or she) may set
+the option by the command {\em option/history/no-history}.
+
+\item{\em history} Save the current state of \RRL into the history.
+This command is useful after {\em clean} is used.
+
+\item{\em save} When the user has made considerable progress in working
+on a problem using \RRL but had to interrupt his session because of
+various reasons, \RRL provides a facility using which it is possible
+for the user to resume at a later stage from the point of interruption
+without losing any information.  The user can use {\em save} to save
+the current state of \RRL into a file with the suffix {\tt .rrl}.
+
+\item{\em load} Load a state of \RRL from a file created by {\em save}.
+\end{description}

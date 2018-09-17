@@ -1,0 +1,281 @@
+\chapter{Commands}
+
+\section{Top Level: {\em rrl}}
+When the user types {\em rrl} on a machine where \RRL has been
+installed, the user enters the top level and gets the following
+message:
+
+\begin{verbatim}
+****************************************************************************
+****                                                                    ****
+****               WELCOME TO REWRITE RULE LABORATORY (RRL)             ****
+****                                                                    ****
+****************************************************************************
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> 
+\end{verbatim}  
+At that stage, \RRL is ready to accept any of the commands listed
+above.  The top-level prompt by \RRL is {\tt RRL->}.  We group
+commands by their functionality and describe each command below. A
+list of commands with a single sentence description is given in
+Appendix A.
+  
+In this manual, we use {\em /} to separate successive commands. Each
+command has its sub-sequence starting with its initial letter as its
+abbreviated name insofar as the subsequence disambiguates the command.
+For example, {\em r} is the same as {\em read}.  For clarity, we shall
+mostly use the full names of the commands in this manual.
+In the following, \RRL prompts are in {\tt typewriter} font while the
+user's response is {\em emphasized}.
+
+\section{Input and Output: {\em add, read, write, delete, list, init}}
+
+The input to \RRL is a set of equations or formulas in first-order logic.
+\begin{description} 
+   \item{\em add} reads input from the keyboard.
+   \item{\em read} reads input from a file prepared by the user. 
+   \item{\em write} writes the equations and/or rules
+at that stage into a file specified by the
+user. 
+   \item{\em list} displays the equations and rules in the
+system at that stage.
+   \item {\em delete} deletes specified rules or equations from the current
+system. One parameter ({\em e/r}) and a list of numbers are needed to tell
+\RRL to delete the specified equations ({\em e}) or rules ({\em r}).
+Note that the number of each rule is fixed while the number of an equation
+is floating. That is, after deleting the first equation, then the second
+equation (if any) becomes the number one.
+   \item {\em init} Cleans out all rules and equations. All global parameters
+and flags are
+initialized. All flags are set to initial values.  \RRL is ready to be
+executed on a new input.
+\end{description}
+
+For the command {\em read}, in a file name {\em myfile.eqn}, 
+it is sufficient to specify {\em myfile}. 
+When the {\em write} command is typed, 
+the user is prompted for whether the whole
+system is to be saved, or a component of it, as illustrated below: 
+\\ \\
+{\tt Type quit, equations-only, rules-only, all, kb-state, help --> {\em help}}
+\begin{verbatim}
+quit             - Quit without saving anything.
+equations-only   - Save only equations.
+rules-only       - Save only rules.
+all              - Save both equations and rules.
+kb-status        - Save KB statistics in a file with the suffix `.out'.
+help             - Print this message.  
+\end{verbatim}
+The user must choose one from the above list.
+  
+The syntax of equations or formulas is given in Appendix B.
+\RRL distinguishes among five categories of tokens (or words):
+\begin{description}
+ \item{\bf Meta tokens:}  {\tt \{ ,  (  )  [ ]  ==  ---> := if ; \} };
+ \item{\bf Logic operators:} {\tt true, false, not, and, or, xor 
+\rm (exclusive-or), \tt -> \rm (implication), \\
+\tt equ \rm (equivalence), \tt all, exist\rm };
+ \item{\bf Variables:}  any alphanumeric strings 
+beginning with {\tt u, v, w, x, y, {\rm or} z};
+ \item{\bf Predicates:} any printable strings except the above and numbers.
+The symbol {\tt eq} stands for a pre-defined
+equality predicate.
+ \item{\bf Operators:} same as predicates and in addition, numbers as constants.
+\end{description}
+  
+The print names of the operators {\tt and} and {\tt xor} are {\tt \&}
+and {\tt +}, respectively. The symbol {\tt \&}
+can be used in the input for {\tt and} but {\tt +}
+cannot be used for {\tt xor}. We now give some
+examples. \\ \\
+{\tt 
+RRL-> {\em add} \\
+Type your equations, enter a ']' when done.\\
+\em x * 0 == x\\
+x * (1 + y) == x + (x * y)\\
+x / y == x * i(y) if not(eq(y, 0))\\
+iszero(0)\\
+iszero(x * y) equ (iszero(x) or iszero(y))\\
+]} \\ \\
+The first two equations in the above input are unconditional
+equations, {\tt x} is a variable, {\tt *} is a binary infix operator,
+{\tt ==} separates the left side of an equation from the
+right side.  The third is a conditional equation -- {\tt if}
+separates the condition from the equation. The last two are formulas
+where {\em iszero} is a predicate.
+  
+Formulas are abbreviated forms of equations. Each of
+the following two
+equations, for example, is equivalent to the last formula 
+in the above example.
+\begin{center}
+\em iszero(x * y) equ (iszero(x) or iszero(y)) == true\\
+iszero(x * y) == (iszero(x) or iszero(y))
+\end{center}
+  
+Every operator and predicate are assumed to be of a fixed arity.  A
+binary operator in an expression (term) can be written as infix or prefix. 
+The following precedence relation among predicate or logical operators is 
+assumed: 
+\begin{verbatim}
+        predicates > not > and > -> > { all, exists } > equ > { or, xor }
+\end{verbatim}
+For example, {\tt (p and q or r)} is parsed as {\tt ((p and q) or r)}.
+When the parentheses between infix operators are omitted, the parser
+assumes them to be right-associative. For example, {\tt x + y + z + u}
+is parsed as {\tt (x + (y + (z + u)))}.
+  
+An equation can take more than one line to write. The last token in an
+unfinished line must be an infix operator, 
+the character {\tt (} or an {\tt ,}.
+  
+\RRL appends a
+message at the end of each equation or rule, giving the source of
+that equation or rule. For example, {\tt [user, 1]} means that
+equation (or rule) is the first one given by the user. ${\tt [deleted, 10]}$
+means that equation (or rule) is made from rule 10 which
+got deleted because its left side could be rewritten
+by some other rule. ${\tt
+{[3, 4]}}$ means that equation (or rule) is made from a critical pair of
+the rules 3 and 4.
+
+{\em add} and {\em read} commands can be also used to specify
+the arity of an operator. For example, to specify that $0$ is a constant
+of sort $num$, $suc$ is a unary function of sort $num$, 
+$+$ is a binary function on $num$, and $odd$
+is a predicate defined on $num$, we may declare them by \\ 
+\\ 
+{\tt 
+RRL-> {\em add}\\
+Type your equations, enter a ']' when done.\\
+\em {[0: num]} \\
+{[suc: num -$>$ num]} \\
+{[+ : num, num -$>$ num]} \\
+{[odd : num -$>$ bool]} \\
+]} \\ \\
+Arity (or sort) declarations can be mixed with equations in any order.
+A good practice is to declare an operator first, then followed by
+its definition. $bool$ and $univ$ are two pre-defined sort names.
+If no declaration is given for a function, then by default
+that function is of sort $univ$, which is a super-sort containing any other
+sort. Any predicate is assumed to be of sort $bool$.
+
+\section{Specifying Properties of Operators: {\em operator}}
+
+In addition to axioms characterizing operators,
+some properties of operators can also be
+specified using commands in \ERRL. \\ \\
+\tt 
+RRL-> {\em operator} \\
+Type order, rulesize, display, constructor, commutative, acoperator, \\
+\hspace*{0.4in}
+     transitive, divisible, equivalence, precedence, quit, status, weight, \\
+\hspace*{0.4in}
+     help --> \em help
+\begin{verbatim}
+order         - Choose the ordering to be used for ensuring termination.
+rulesize      - Choose a measure for the size of rules.
+display       - Display precedence and status of operators for ordering.
+constructor   - Declare operators to be constructors.
+commutative   - Declare operators to be commutative.
+acoperator    - Declare operators to be associative and commutative.
+transitive    - Declare operators to be transitive.
+divisible     - Declare operators to be left and right divisible.
+equivalence   - Specify operators whose precedence is equivalent for ordering.
+precedence    - Specify precedence on operators for ordering.
+quit          - Quit.
+status        - Specify the status of an operator.
+weight        - Set the weight of operators (used for ordering and rulesize?).
+help          - Print this message.
+\end{verbatim}
+\rm
+For example,
+the commutativity property of an operator can be
+specified using the command {\em operator/commutative} as follows: \\ \\
+\tt
+RRL-> {\em operator}\\
+Type order, rulesize, display, constructor, commutative, acoperator, \\
+\hspace*{0.4in}
+     transitive, divisible, equivalence, precedence, quit, status, weight, \\
+\hspace*{0.4in}
+     help --> {\em commutative} \\
+Type operators you wish to make commutative: {\em f}\\
+The operator 'f' is commutative now.\\ \\
+\rm
+Similarly, an operator with the associativity and commutativity can be
+specified using the command {\em operator/acoperator}. 
+A transitive relation
+(predicate) can be specified using the command {\em operator/transitive}.
+  
+Algorithms for checking the sufficient completeness property of a
+specification as well as for proving equations by induction require that
+certain functions in an input theory be distinguished to be
+constructors based on their semantics. Constructors are functions that
+are solely used to construct the values in a universe of discourse.
+An operator can be specified to be a constructor using the command
+{\em operator/constructor}.
+
+As discussed later, \RRL has an algorithm based on lexicographic
+recursive path ordering for determining the orientation of equations
+to terminating rules. This algorithm uses precedence relation on the
+function symbols in the formulas.  The {\em operator} command is used
+to specify the precedence information, such as equivalence or
+inequivalence among operators, precedence on operators as well as
+their status, i.e., the order in which their arguments must be
+compared. \\ \\
+\tt
+RRL-> {\em operator}\\
+Type order, rulesize, display, constructor, commutative, acoperator, \\
+\hspace*{0.4in}
+     transitive, divisible, equivalence, precedence, quit, status, weight, \\
+\hspace*{0.4in}
+     help --> {\em precedence} \\
+Type operators in decreasing precedence.\\
+\hspace*{0.4in} (eg. 'i * e' to set i > * > e) \\
+--> {\em i * e}\\
+Precedence relation, i > *, is added.\\
+Precedence relation, * > e, is added.\\
+\hspace*{0.4in} ...\\
+RRL-> {\em operator}\\
+Type order, rulesize, display, constructor, commutative, acoperator, \\
+\hspace*{0.4in}
+     transitive, divisible, equivalence, precedence, quit, status, weight, \\
+\hspace*{0.4in}
+     help --> {\em status} \\
+Type operator you wish to set status for: {\em *}\\
+Type lr, rl, help --> {\em lr}\\
+Operator, *, given status: lr \\ \\
+\rm
+The precedence information specified so far can be
+displayed using the {\em display} command within
+{\em operator} command.\\ \\
+\tt
+RRL-> {\em operator}\\
+Type order, rulesize, display, constructor, commutative, acoperator, \\
+\hspace*{0.4in}
+     transitive, divisible, equivalence, precedence, quit, status, weight, \\
+\hspace*{0.4in}
+     help --> {\em display}
+\begin{verbatim}
+There are no equivalent operators.
+Precedence relation now is: 
+   i > * e 
+   * > e 
+Operators with status are:
+   * with left-to-right status.
+\end{verbatim}
+\rm
+In case of logical formulas, rules are made from them assuming a total
+lexicographic order on predicate symbols unless stated differently. So,
+if the user wishes to impose a different precedence relation on
+predicate symbols, it must be stated using the {\em
+operator/precedence} command before invoking the completion procedure.
+
+In addition to specifying these properties of operators, the {\em
+operator/order/m} command is used to specify whether equations are to be
+oriented manually.  In that case, it is the user's responsibility to
+orient equations into rules so that the rewriting process terminates.
+

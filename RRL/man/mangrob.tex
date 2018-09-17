@@ -1,0 +1,406 @@
+\chapter {Illustration of the Gr\"{o}bner basis method} 
+\section{An example from Propositional Calculus}
+\normalsize 
+\rm 
+An example from propositional calculus is illustrated, which
+is a modification of an
+example from \cite{Carroll}. We are given a set of hypotheses
+describing a situation, and the goal is to deduce everything about the
+situation.  \RRL can be used to generate a complete system for these
+hypotheses which can be used to answer queries about the situation.
+\begin{center}
+\bf Definition of Symbols
+\end{center}
+\begin{tabular}{clcl}
+a & some English sing & c & some monitors are awake \\
+e & some Scotch dance & k & some Irish fight \\
+m & some Welsh eat & r & some Germans play \\
+t & some Eleven are not oiling & &
+\end{tabular}
+%\vspace{0.5in}
+\small
+\tt
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em r carroll2.pc}
+\begin{verbatim}
+Equations read in are:
+ 1. a  [user, 1]
+ 2. ((e and k) -> m)  [user, 2]
+ 3. (r -> t)  [user, 3]
+ 4. (r -> (e or not(m)))  [user, 4]
+ 5. ((not(e) and not(k)) -> r)  [user, 5]
+ 6. ((c and (m and e)) -> false)  [user, 6]
+ 7. ((not(r) and (not(m) and k)) -> false)  [user, 7]
+ 8. ((not(e) and r) -> not(a))  [user, 8]
+ 9. ((a and not(c)) -> not(k))  [user, 9]
+10. ((c and t) -> e)  [user, 10]
+New constant set is: { c, t, r, m, k, e, a }
+Time = 0.2000000000000028 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em kb}
+\begin{verbatim}
+----- Step 1 -----
+Adding rule:   [1] a ---> true  [user, 1]
+Adding rule:   [2] e & k & m ---> e & k  [user, 2]
+Adding rule:   [3] r & t ---> r  [user, 3]
+Adding rule:   [4] e & m & r ---> m & r  [user, 4]
+Adding rule:   [5] e & k & r ---> (true + e + k + e & k 
+                                   + r + e & r + k & r)  [user, 5]
+Adding rule:   [6] c & e & m ---> false  [user, 6]
+Adding rule:   [7] k & m & r ---> (k + k & m + k & r)  [user, 7]
+Adding rule:   [8] e & r ---> r  [user, 8]
+  Deleting rule:  [4] e & m & r ---> m & r  [user, 4]
+  Deleting rule:  [5] e & k & r ---> (true + e + k + e & k + 
+                                      r + e & r + k & r)  [user, 5]
+Adding rule:   [9] e & k --->  (true + e + k)  [deleted, 5]
+  Deleting rule:  [2] e & k & m ---> e & k  [user, 2]
+Adding rule:  [10] k & m ---> (true + e + k + m + e & m)  [deleted, 2]
+  Deleting rule:  [7] k & m & r ---> (k + k & m + k & r)  [user, 7]
+Adding rule:  [11] e & m --->  (true + e + m)  [deleted, 7]
+  Deleting rule:  [6] c & e & m ---> false  [user, 6]
+  The right hand side is reducible:
+     [10] k & m ---> (true + e + k + m + e & m)  [deleted, 2]
+Adding rule:  [12] c & m ---> (c + c & e)  [deleted, 6]
+Adding rule:  [13] c & k ---> k  [user, 9]
+Adding rule:  [14] c & e & t ---> c & t  [user, 10]
+Computing critical pairs with: 
+    [1] a ---> true  [user, 1]
+Computing critical pairs with: 
+   [13] c & k ---> k  [user, 9]
+Adding rule:  [15] c & e ---> (true + c + e)  [9, 13]
+  The right hand side is reducible:
+     [12] c & m ---> (c + c & e)  [deleted, 6]
+  Deleting rule: [14] c & e & t ---> c & t  [user, 10]
+Adding rule:  [16] k ---> (true + e)  [12, 13]
+  Deleting rule:  [9] e & k ---> (true + e + k)  [deleted, 5]
+  Deleting rule: [10] k & m ---> k  [deleted, 2]
+  Deleting rule: [13] c & k ---> k  [user, 9]
+Adding rule:  [17] e & t ---> t  [deleted, 14]
+Computing critical pairs with: 
+   [16] k ---> (true + e)  [12, 13]
+Computing critical pairs with: 
+   [17] e & t ---> t  [deleted, 14]
+Computing critical pairs with: 
+   [15] c & e ---> (true + c + e)  [9, 13]
+Computing critical pairs with: 
+   [12] c & m ---> (true + e)  [deleted, 6]
+Computing critical pairs with: 
+   [11] e & m ---> (true + e + m)  [deleted, 7]
+Computing critical pairs with: 
+    [8] e & r ---> r  [user, 8]
+Computing critical pairs with: 
+    [3] r & t ---> r  [user, 3]
+Your system is canonical.
+  [1] a ---> true  [user, 1]
+  [3] r & t ---> r  [user, 3]
+  [8] e & r ---> r  [user, 8]
+ [11] e & m ---> (true + e + m)  [deleted, 7]
+ [12] c & m ---> (true + e)  [deleted, 6]
+ [15] c & e ---> (true + c + e)  [9, 13]
+ [16] k ---> (true + e)  [12, 13]
+ [17] e & t ---> t  [deleted, 14]
+\end{verbatim}
+
+\normalsize
+\rm
+\vspace{0.5in}
+\section{Proving a First-order Formula}
+\normalsize
+\rm
+The following example illustrates the use of \RRL for proving
+first-order formula using the refutational approach. The first formula
+is the hypothesis, and the second formula is the negated conclusion.
+The goal is to check whether a contradiction is generated.
+
+For proving a formula in first-order predicate calculus,
+the following steps may be followed:
+\begin{enumerate}
+\item Give the hypotheses in a formula.
+\item Give the negation of the conclusion.
+\item Specify any preferred precedence relation on symbols in the formulae.
+\item Invoke {\em kb}. If a contradiction is generated, then the hypotheses imply the conclusion. If \RRL stops with a complete system,
+then the hypotheses do not imply the conclusion.
+\end{enumerate}
+Instead of giving the negation of the conclusion, it is also possible
+to invoke the {\em refute} command which prompts
+for a set of formulae; the last formula in the input is assumed to be
+a conclusion and thus negated before {\em kb} is automatically invoked.
+
+\scriptsize
+\small
+\tt
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em r murray1}
+\begin{verbatim}
+Equations read in are:
+ 1. all z (all y ((isequal(y, z) equ all x ((member(x, y) equ member(x, z))))))  [user, 1]
+ 2. not(all x (all y ((isequal(x, y) equ isequal(y, x)))))  [user, 2]
+Time = 0.06666666666666288 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em option fopc break-ass n}
+\begin{verbatim}
+Time = 0.03333333333330302 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em kb}
+\begin{verbatim}
+----- Step 1 -----
+Adding rule:   [1] (isequal(y, z) & member(x, y) + isequal(y, z) & member(x, z)) ---> false  [user, 1]
+  s1(y, z) is a skolem function for x
+     in the assertion: all x ((member(x, y) equ member(x, z)))
+Adding rule:   [2] (member(s1(y, z), y) + member(s1(y, z), z)) ---> (true + isequal(y, z))  [user, 1]
+  s2 is a skolem function for x
+     in the assertion: not(all x (all y ((isequal(x, y) equ isequal(y, x)))))
+  s3 is a skolem function for y
+     in the assertion: not(all x (all y ((isequal(x, y) equ isequal(y, x)))))
+Adding rule:   [3] (isequal(s2, s3) + isequal(s3, s2)) ---> true  [user, 2]
+Computing critical pairs with: 
+    [3] (isequal(s2, s3) + isequal(s3, s2)) ---> true  [user, 2]
+Adding rule:   [4] (isequal(s2, s3) & member(x, s3) + isequal(s3, s2) & member(x, s2)) ---> 
+                                    member(x, s2)  [1, 3]
+Adding rule:   [5] (member(x, s2) + member(x, s3)) ---> false  [1, 3]
+Adding rule:   [6] (isequal(s2, s3) & member(x, s2) + isequal(s3, s2) & member(x, s3)) --->  
+                                    member(x, s3)  [1, 3]
+Adding rule:   [7] isequal(s2, s3) & isequal(s3, s2) ---> false  [idem, 3]
+Computing critical pairs with: 
+    [7] isequal(s2, s3) & isequal(s3, s2) ---> false  [idem, 3]
+Computing critical pairs with: 
+    [5] (member(x, s2) + member(x, s3)) ---> false  [1, 3]
+Adding rule:   [8] (isequal(s2, z) & member(x, z) + isequal(s2, z) & member(x, s3)) ---> false  [1, 5]
+Adding rule:   [9] (isequal(s3, z) & member(x, z) + isequal(s3, z) & member(x, s2)) ---> false  [1, 5]
+Adding rule:  [10] (isequal(y, s2) & member(x, y) + isequal(y, s2) & member(x, s3)) ---> false  [1, 5]
+Adding rule:  [11] (isequal(y, s3) & member(x, y) + isequal(y, s3) & member(x, s2)) ---> false  [1, 5]
+Adding rule:  [12] (member(s1(s2, z), z) + member(s1(s2, z), s3)) ---> (true + isequal(s2, z))  [2, 5]
+Adding rule:  [13] (member(s1(s3, z), z) + member(s1(s3, z), s2)) ---> (true + isequal(s3, z))  [2, 5]
+Adding rule:  [14] (member(s1(y, s2), y) + member(s1(y, s2), s3)) ---> (true + isequal(y, s2))  [2, 5]
+Adding rule:  [15] (member(s1(y, s3), y) + member(s1(y, s3), s2)) ---> (true + isequal(y, s3))  [2, 5]
+Adding rule:  [16] member(x, s2) & member(x, s3) ---> member(x, s2)  [idem, 5]
+Computing critical pairs with: 
+   [16] member(x, s2) & member(x, s3) ---> member(x, s2)  [idem, 5]
+Adding rule:  [17] isequal(s3, z) & member(x, z) & member(x, s2) ---> isequal(s3, z) & member(x, s2)  [1, 16]
+Adding rule:  [18] isequal(y, s2) & member(x, y) & member(x, s3) ---> isequal(y, s2) & member(x, s2)  [1, 16]
+Adding rule:  [19] isequal(y, s3) & member(x, y) & member(x, s2) ---> isequal(y, s3) & member(x, s2)  [1, 16]
+Adding rule:  [20] member(s1(s2, z), z) & member(s1(s2, z), s3) --->  
+                           isequal(s2, z) & member(s1(s2, z), s3)  [2, 16]
+Adding rule:  [21] member(s1(s3, z), z) & member(s1(s3, z), s2) --->  
+                           isequal(s3, z) & member(s1(s3, z), s2)  [2, 16]
+Adding rule:  [22] member(s1(y, s2), y) & member(s1(y, s2), s3) --->  
+                           isequal(y, s2) & member(s1(y, s2), s3)  [2, 16]
+Adding rule:  [23] member(s1(y, s3), y) & member(s1(y, s3), s2) --->  
+                           isequal(y, s3) & member(s1(y, s3), s2)  [2, 16]
+Adding rule:  [24] isequal(s3, z) & member(x, z) & member(x, s3) ---> isequal(s3, z) & member(x, s2)  [9, 16]
+Adding rule:  [25] isequal(y, s2) & member(x, y) & member(x, s2) ---> isequal(y, s2) & member(x, s2)  [10, 16]
+Adding rule:  [26] isequal(y, s3) & member(x, y) & member(x, s3) ---> isequal(y, s3) & member(x, s2)  [11, 16]
+Adding rule:  [27] isequal(s2, s2) & member(s1(s2, s2), s3) ---> member(s1(s2, s2), s2)  [12, 16]
+Adding rule:  [28] isequal(s2, s3) & member(s1(s2, s3), s2) ---> member(s1(s2, s3), s2)  [12, 16]
+Adding rule:  [29] member(s1(s2, z), z) & member(s1(s2, z), s2) --->  
+                           isequal(s2, z) & member(s1(s2, z), s2)  [12, 16]
+Adding rule:  [30] isequal(s3, s2) & member(s1(s3, s2), s3) ---> member(s1(s3, s2), s3)  [13, 16]
+Adding rule:  [31] isequal(s3, s3) & member(s1(s3, s3), s2) ---> member(s1(s3, s3), s2)  [13, 16]
+Adding rule:  [32] member(s1(s3, z), z) & member(s1(s3, z), s3) --->  
+                           isequal(s3, z) & member(s1(s3, z), s3)  [13, 16]
+Adding rule:  [33] isequal(s3, s2) & member(s1(s3, s2), s2) ---> member(s1(s3, s2), s2)  [14, 16]
+Adding rule:  [34] member(s1(y, s2), y) & member(s1(y, s2), s2) --->  
+                           isequal(y, s2) & member(s1(y, s2), s2)  [14, 16]
+Adding rule:  [35] isequal(s2, s3) & member(s1(s2, s3), s3) ---> member(s1(s2, s3), s3)  [15, 16]
+Adding rule:  [36] member(s1(y, s3), y) & member(s1(y, s3), s3) --->  
+                           isequal(y, s3) & member(s1(y, s3), s3)  [15, 16]
+Computing critical pairs with: 
+   [35] isequal(s2, s3) & member(s1(s2, s3), s3) ---> member(s1(s2, s3), s3)  [15, 16]
+Adding rule:  [37] isequal(y, s3) & isequal(s2, s3) & member(s1(s2, s3), y) --->  
+                           isequal(y, s3) & member(s1(s2, s3), s3)  [1, 35]
+Adding rule:  [38] isequal(s2, s3) ---> true  [2, 35]
+  Deleting rule:  [3] (isequal(s2, s3) + isequal(s3, s2)) ---> true  [user, 2]
+  Deleting rule:  [4] (isequal(s2, s3) & member(x, s3) + isequal(s3, s2) & member(x, s2)) --->  
+                           member(x, s2)  [1, 3]
+  Deleting rule:  [6] (isequal(s2, s3) & member(x, s2) + isequal(s3, s2) & member(x, s3)) --->  
+                           member(x, s3)  [1, 3]
+  Deleting rule:  [7] isequal(s2, s3) & isequal(s3, s2) ---> false  [idem, 3]
+  Deleting rule: [28] isequal(s2, s3) & member(s1(s2, s3), s2) ---> member(s1(s2, s3), s2)  [12, 16]
+  Deleting rule: [35] isequal(s2, s3) & member(s1(s2, s3), s3) ---> member(s1(s2, s3), s3)  [15, 16]
+  Deleting rule: [37] isequal(y, s3) & isequal(s2, s3) & member(s1(s2, s3), y) --->  
+                           isequal(y, s3) & member(s1(s2, s3), s3)  [1, 35]
+Adding rule:  [39] isequal(s3, s2) ---> false  [deleted, 7]
+  Deleting rule: [30] isequal(s3, s2) & member(s1(s3, s2), s3) ---> member(s1(s3, s2), s3)  [13, 16]
+  Deleting rule: [33] isequal(s3, s2) & member(s1(s3, s2), s2) ---> member(s1(s3, s2), s2)  [14, 16]
+Adding rule:  [40] member(s1(s3, s2), s2) ---> false  [deleted, 33]
+Adding rule:  [41] member(s1(s3, s2), s3) ---> false  [deleted, 30]
+Computing critical pairs with: 
+   [39] isequal(s3, s2) ---> false  [deleted, 7]
+Computing critical pairs with: 
+   [38] isequal(s2, s3) ---> true  [2, 35]
+Computing critical pairs with: 
+   [41] member(s1(s3, s2), s3) ---> false  [deleted, 30]
+Adding rule:  [42] isequal(s3, z) & member(s1(s3, s2), z) ---> false  [1, 41]
+Adding rule:  [43] isequal(y, s3) & member(s1(s3, s2), y) ---> false  [1, 41]
+Derived:  [44] true ---> false  [2, 41]
+Your system is not consistent.
+Processor time used                = 16.47 sec
+Number of rules generated          = 44
+Number of critical pairs           = 98
+Time spent in normalization        = 9.53 sec     (57.89 percent of time)
+Time spent while adding rules      = 1.43 sec     (8.70 percent of time)
+  (keeping rule set reduced)
+Time spent in unification          = 0.37 sec     (2.23 percent of time)
+Time spent in ordering             = 0.88 sec     (5.36 percent of time)
+Time spent in boolean translation  = 6.03 sec     (36.64 percent of time)
+Total time (including 'undo' action) = 16.47 sec
+Time = 16.48333333333333 sec
+\end{verbatim}
+\rm
+\normalsize
+\vspace{0.5in}
+\section{Illustration of Paramodulation}
+\rm
+The simple example below illustrates the need for handling formula
+involving equality relation when they are part of a larger formula.
+RRL has a special option for turning the paramodulation-like facility
+using {\em option fopc paramodulation yes}, which is generally turned
+off because it generates too many rules. This example also illustrates
+that in the default mode, the theorem proving method in RRL is {\bf
+incomplete} for first-order predicate calculus with equality. However,
+with the paramodulation option set, the theorem proving method is {\bf
+complete} for first-order predicate calculus with equality.
+
+For proving a formula expressed using the equality predicate,
+it is recommended that the user first try RRL without turning
+on the paramodulation option as many formulae can be proved 
+in this way. If it appears that a formula cannot be proved,
+then the paramodulation option can be turned on and the proof
+of the formula retried.
+
+\small
+\tt
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em a}
+\begin{verbatim}
+Type your equations, enter a ']' when done.
+\end{verbatim}
+{\em eq(a, b) or eq(c,d)\\
+eq(a, c) or eq(b, d)\\
+not (eq(a, d) or eq(b, c))\\
+] }
+\begin{verbatim}
+Equations read in are:
+ 1. (eq(a, b) or eq(c, d))  [user, 1]
+ 2. (eq(a, c) or eq(b, d))  [user, 2]
+ 3. not((eq(a, d) or eq(b, c)))  [user, 3]
+New constant set is: { d, c, b, a }
+Time = 0.09999999999999964 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em kb}
+\begin{verbatim}
+----- Step 1 -----
+Adding rule:   [1] eq(a, b) & eq(c, d) ---> 
+               (true + 
+                eq(a, b) + 
+                eq(c, d))  [user, 1]
+Adding rule:   [2] eq(a, c) & eq(b, d) ---> 
+               (true + 
+                eq(a, c) + 
+                eq(b, d))  [user, 2]
+Adding rule:   [3] eq(a, d) ---> false  [user, 3]
+Adding rule:   [4] eq(b, c) ---> false  [user, 3]
+Computing critical pairs with: 
+    [4] eq(b, c) ---> false  [user, 3]
+Computing critical pairs with: 
+    [3] eq(a, d) ---> false  [user, 3]
+Computing critical pairs with: 
+    [2] eq(a, c) & eq(b, d) ---> 
+               (true + 
+                eq(a, c) + 
+                eq(b, d))  [user, 2]
+Computing critical pairs with: 
+    [1] eq(a, b) & eq(c, d) ---> 
+               (true + 
+                eq(a, b) + 
+                eq(c, d))  [user, 1]
+Your system is canonical.
+  [1] eq(a, b) & eq(c, d) ---> 
+               (true + 
+                eq(a, b) + 
+                eq(c, d))  [user, 1]
+  [2] eq(a, c) & eq(b, d) ---> 
+               (true + 
+                eq(a, c) + 
+                eq(b, d))  [user, 2]
+  [3] eq(a, d) ---> false  [user, 3]
+  [4] eq(b, c) ---> false  [user, 3]
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em undo}
+\begin{verbatim}
+----- The original system is restored -----
+Equations:
+ 1. (eq(a, b) or eq(c, d))  [user, 1]
+ 2. (eq(a, c) or eq(b, d))  [user, 2]
+ 3. not((eq(a, d) or eq(b, c)))  [user, 3]
+No rules in current system.
+Time = 0.01666666666666661 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em opt fopc para}
+\begin{verbatim}
+Use paramodulation (y) or not (fast & incomplete) (n) ?
+\end{verbatim}
+(current value: n) (y,n) {\em y}
+\begin{verbatim}
+Time = 0.03333333333333321 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em kb}
+\begin{verbatim}
+----- Step 1 -----
+Adding rule:   [1] eq(a, b) & eq(c, d) ---> 
+               (true + 
+                eq(a, b) + 
+                eq(c, d))  [user, 1]
+Adding rule:   [2] eq(a, c) & eq(b, d) ---> 
+               (true + 
+                eq(a, c) + 
+                eq(b, d))  [user, 2]
+Adding rule:   [3] eq(a, d) ---> false  [user, 3]
+Adding rule:   [4] eq(b, c) ---> false  [user, 3]
+Computing critical pairs with: 
+    [4] eq(b, c) ---> false  [user, 3]
+Adding rule:   [5] eq(a, c) ---> false  [1, 4]
+  Deleting rule:  [2] eq(a, c) & eq(b, d) ---> 
+               (true + 
+                eq(a, c) + 
+                eq(b, d))  [user, 2]
+Adding rule:   [6] eq(b, d) ---> false  [1, 4]
+Derived:   [7] true ---> false  [deleted, 2]
+Your system is not consistent.
+\end{verbatim}
+\rm
+\normalsize
+

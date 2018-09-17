@@ -1,0 +1,72 @@
+This directory contains a Common Lisp version of RRL.
+
+The following files and subdirectories are provided:
+
+README:          This file.
+code:            The directory in which RRL's source files reside.
+init.lsp:        A lisp file; a duplicate of this file is in code.
+induc:           The directory which contains examples of RRL's command files for using
+                    the cover set induction.
+TEST.cmd:        The input file for testing RRL.
+TEST.time:       The time statistics of testing RRL.
+
+1. How to install RRL:
+
+At first, use an editor to modify the variable *rrl-directory*
+in init.lsp.  For example if the code is in "/usa/rrl", 
+you must modify *rrl-directory* as follows:
+  (defvar *rrl-directory* "/usa/rrl/") 
+After this is done, you may copy this file into "code" or any directory
+you wish to run RRL.
+
+To load and compile RRL, enter your Common Lisp and then type:
+     (load "init.lsp")   ; to load the RRL code if your lisp cannot load 
+                         ; this file automatically.
+     (start)             ; to start RRL.
+
+If you have a lot of disk-space (4 Meg or so) you can
+save an image of RRL using (save "File-name") in KCL.
+But loading the files takes only a couple of minutes.
+
+2. How to test RRL:
+
+Suppose your lisp is akcl. The following unix command can be used to test RRL:
+     % akcl < TEST.cmd > TEST.out &
+The output is in file TEST.out.
+
+If your common lisp cannot the file "init.lsp" automatically, you have to add the line
+     (load "init.lsp")
+in the file "TEST.cmd".
+
+To compare the cpu times of your lisp on your machine with akcl on Sun sparc 1 and 2,
+you may type 
+   % grep "cumul" TEST.out > mytime
+and compare mytime with TEST.time.
+
+See also the file README.exp in the directory "induc".
+
+3. How to run RRL:
+
+This step is the same as loading RRL. You have to load RRL's code in
+a Common Lisp and then type (start).
+
+Some on-line helps are provided; the best way to use RRL is to look at
+examples provided in "induc".
+
+If you wish to use RRL from some other directory than where
+this code is, copy init.lsp into the directory you wish to work.
+
+When using RRL, if it ever breaks and goes back to Lisp top-level,
+use (rrl) or (init) to get back to RRL.
+
+4. Report bugs of RRL:
+
+Please send anything regarding rrl to  
+       hzhang@cs.uiowa.edu.
+
+
+Thank you very much for your interests,
+
+Hantao Zhang
+
+

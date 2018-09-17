@@ -1,0 +1,246 @@
+\chapter{Illustration of narrowing}
+\normalsize
+\rm
+This example illustrates another feature of RRL, which is the ability
+to solve equations (formulae) in a given theory. Normally, this is
+done by first generating a complete rewriting system for the given
+theory and then using the {\em narrow} command. Narrow command can
+also be used without generating a complete rewriting system insofar as
+the theory is converted into a set of rewrite rules first. The example
+below is done in this way. 
+
+The example is a map problem in which
+no adjacent regions can have the same color; this is specified
+using the next relation. The input also
+includes a formula (user 14) specifying
+the adjacency relation among
+various regions;
+this is expressed using the {\em map} predicate. The goal is to find assignments for color
+to some of the regions assuming that other regions have already
+been given specific colors.
+
+Notice that (i) the precedence relation among some of
+the predicates is specified prior to invoking {\em narrow}, and (ii)
+the {\sl lrpo} (pure lexicographic ordering) is used for 
+making rules from equations instead of the default ordering
+of using both size and {\sl lrpo} for comparing monomials (conjunctions
+of atomic formulae).
+RRL first gives two solutions. When {\em narrow}
+is invoked again, it continues the computation and generates more
+solutions.
+
+\scriptsize
+\tt
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em r narrow1}
+\begin{verbatim}
+Equations read in are:
+ 1. next(b, ay)  [user, 1]
+ 2. next(b, g)  [user, 2]
+ 3. next(b, r)  [user, 3]
+ 4. next(g, ay)  [user, 4]
+ 5. next(g, b)  [user, 5]
+ 6. next(g, r)  [user, 6]
+ 7. next(r, ay)  [user, 7]
+ 8. next(r, g)  [user, 8]
+ 9. next(r, b)  [user, 9]
+10. next(ay, b)  [user, 10]
+11. next(ay, g)  [user, 11]
+12. next(ay, r)  [user, 12]
+13. all x (not(next(x, x)))  [user, 13]
+14. all x5 (all x4 (all x3 (all x2 (all x1 ((map(x1, x2, x3, x4, x5) equ  (next(x1, x2) and (next(x1, x3) and 
+    (next(x1, x5) and (next(x2, x3) and (next(x2, x4) and (next(x2, x5) and next(x3, x4)))))))))))))  [user, 14]
+New constant set is: { r, g, ay, b }
+Time = 0.2666666666666666 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em opt order}
+\begin{verbatim}
+Orient by hand (m), or by lrpo (l) or size + lexicography (s) ?
+\end{verbatim}
+(current value: s) (m,l,s) {\em l}
+\begin{verbatim}
+Time = 0.03333333333333344 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em oper prec}
+\begin{verbatim}
+Type operators in decreasing precedence.
+  (eg. 'i * e' to set i > * > e) 
+\end{verbatim}
+--> {\em map next}
+\begin{verbatim}
+Precedence relation, map > next, is added.
+Time = 0.0 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em makerule}
+\begin{verbatim}
+Adding rule:   [1] next(b, ay) ---> true  [user, 1]
+Adding rule:   [2] next(b, g) ---> true  [user, 2]
+Adding rule:   [3] next(b, r) ---> true  [user, 3]
+Adding rule:   [4] next(g, ay) ---> true  [user, 4]
+Adding rule:   [5] next(g, b) ---> true  [user, 5]
+Adding rule:   [6] next(g, r) ---> true  [user, 6]
+Adding rule:   [7] next(r, ay) ---> true  [user, 7]
+Adding rule:   [8] next(r, g) ---> true  [user, 8]
+Adding rule:   [9] next(r, b) ---> true  [user, 9]
+Adding rule:  [10] next(ay, b) ---> true  [user, 10]
+Adding rule:  [11] next(ay, g) ---> true  [user, 11]
+Adding rule:  [12] next(ay, r) ---> true  [user, 12]
+Adding rule:  [13] next(x, x) ---> false  [user, 13]
+Adding rule:  [14] next(x1, x2) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+Adding rule:  [15] next(x1, x3) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+Adding rule:  [16] next(x1, x5) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+Adding rule:  [17] next(x2, x3) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+Adding rule:  [18] next(x2, x4) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+Adding rule:  [19] next(x2, x5) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+Adding rule:  [20] next(x3, x4) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+Adding rule:  [21] map(x1, x2, x3, x4, x5) ---> next(x1, x2) & next(x1, x3) & next(x1, x5) 
+                       & next(x2, x3) & next(x2, x4) & next(x2, x5) & next(x3, x4)  [user, 14]
+  Deleting rule: [14] next(x1, x2) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+  Deleting rule: [15] next(x1, x3) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+  Deleting rule: [16] next(x1, x5) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+  Deleting rule: [17] next(x2, x3) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+  Deleting rule: [18] next(x2, x4) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+  Deleting rule: [19] next(x2, x5) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+  Deleting rule: [20] next(x3, x4) & map(x1, x2, x3, x4, x5) ---> map(x1, x2, x3, x4, x5)  [user, 14]
+Time = 9.283333333333331 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em narrow} \\
+From the keyboard or a file ? (k,f) {\em k}\\
+Type your equations, enter a ']' when done.\\
+{\em map(b, ay, x3, x4, x5)\\
+]}
+\begin{verbatim}
+Equations read in are:
+ 1. map(b, ay, x3, x4, x5)  [user, 15]
+----- Step 1 -----
+Adding rule:  [22] next(x3, x4) & next(ay, x3) & next(ay, x4) & next(ay, x5) & next(b, x3) & next(b, x5) ---> 
+                           solution(x3, x4, x5)  [user, 15]
+Computing critical pairs with: 
+   [22] next(x3, x4) & next(ay, x3) & next(ay, x4) & next(ay, x5) & next(b, x3) & next(b, x5) --->
+                           solution(x3, x4, x5)  [user, 15]
+Adding rule:  [23] next(x3, x4) & next(ay, x3) & next(ay, x4) & next(ay, x5) & next(b, x3) & next(b, x5) --->
+                           solution(x3, x4, x5) & next(x3, x4)  [idem, 22]
+Adding rule:  [24] next(x3, x4) & next(ay, x3) & next(ay, x4) & next(ay, x5) & next(b, x3) & next(b, x5) --->
+                           solution(x3, x4, x5) & next(ay, x3)  [idem, 22]
+Adding rule:  [25] next(x3, x4) & next(ay, x3) & next(ay, x4) & next(ay, x5) & next(b, x3) & next(b, x5) --->
+                           solution(x3, x4, x5) & next(ay, x4)  [idem, 22]
+Adding rule:  [26] next(x3, x4) & next(ay, x3) & next(ay, x4) & next(ay, x5) & next(b, x3) & next(b, x5) --->
+                           solution(x3, x4, x5) & next(ay, x5)  [idem, 22]
+Adding rule:  [27] next(x3, x4) & next(ay, x3) & next(ay, x4) & next(ay, x5) & next(b, x3) & next(b, x5) --->
+                           solution(x3, x4, x5) & next(b, x3)  [idem, 22]
+Adding rule:  [28] next(x3, x4) & next(ay, x3) & next(ay, x4) & next(ay, x5) & next(b, x3) & next(b, x5) --->
+                           solution(x3, x4, x5) & next(b, x5)  [idem, 22]
+Adding rule:  [35] next(x5, x4) & next(ay, x4) & next(ay, x5) & next(b, x5) --->
+                           solution(x5, x4, x5)  [idem, 22]
+Adding rule:  [36] next(x3, x5) & next(ay, x3) & next(ay, x5) & next(b, x3) & next(b, x5) --->
+                           solution(x3, x5, x5)  [idem, 22]
+Adding rule:  [42] next(ay, x4) & next(ay, x5) & next(b, x5) & next(g, x4) ---> solution(g, x4, x5)  [2, 22]
+Adding rule:  [43] next(x3, x4) & next(ay, x3) & next(ay, x4) & next(b, x3) ---> solution(x3, x4, g)  [2, 22]
+Adding rule:  [45] next(ay, x4) & next(ay, x5) & next(b, x5) & next(r, x4) ---> solution(r, x4, x5)  [3, 22]
+Adding rule:  [46] next(x3, x4) & next(ay, x3) & next(ay, x4) & next(b, x3) ---> solution(x3, x4, r)  [3, 22]
+Adding rule:  [48] next(ay, x5) & next(b, x5) ---> solution(g, b, x5)  [5, 22]
+Adding rule:  [49] next(ay, x5) & next(b, x5) ---> solution(g, r, x5)  [6, 22]
+Adding rule:  [51] next(ay, x5) & next(b, x5) ---> solution(r, g, x5)  [8, 22]
+Adding rule:  [52] next(ay, x5) & next(b, x5) ---> solution(r, b, x5)  [9, 22]
+Adding rule:  [55] next(x3, b) & next(ay, x3) & next(ay, x5) & next(b, x3) & next(b, x5) --->
+                           solution(x3, b, x5)  [10, 22]
+Adding rule:  [59] next(x3, g) & next(ay, x3) & next(ay, x5) & next(b, x3) & next(b, x5) --->  
+                           solution(x3, g, x5)  [11, 22]
+Adding rule:  [63] next(x3, r) & next(ay, x3) & next(ay, x5) & next(b, x3) & next(b, x5) --->  
+                           solution(x3, r, x5)  [12, 22]
+Computing critical pairs with: 
+   [52] next(ay, x5) & next(b, x5) ---> solution(r, b, x5)  [9, 22]
+Adding rule:  [71] next(ay, x5) & next(b, x5) ---> solution(r, b, x5) & next(ay, x5)  [idem, 52]
+Adding rule:  [72] next(ay, x5) & next(b, x5) ---> solution(r, b, x5) & next(b, x5)  [idem, 52]
+Adding rule:  [74] solution(r, b, g) ---> true  [2, 52]
+Adding rule:  [75] solution(r, b, r) ---> true  [3, 52]
+Processor time used                = 20.53 sec
+Number of rules generated          = 80
+Number of critical pairs           = 58
+Time spent in normalization        = 16.23 sec     (79.06 percent of time)
+Time spent while adding rules      = 1.30 sec     (6.33 percent of time)
+  (keeping rule set reduced)
+Time spent in unification          = 0.08 sec     (0.41 percent of time)
+Time spent in ordering             = 0.85 sec     (4.14 percent of time)
+Time spent in boolean translation  = 17.32 sec     (84.33 percent of time)
+Total time (including 'undo' action) = 20.53 sec
+
+And the answer is ...
+map(b, ay, r, b, r)  [user, 15]
+map(b, ay, r, b, g)  [user, 15]
+Time = 20.61666666666666 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em narrow}\\
+Continue previous linear completion (y,n) {\em y}
+\begin{verbatim}
+----- Step 2 -----
+Computing critical pairs with: 
+   [72] next(ay, x5) & next(b, x5) ---> solution(r, b, x5) & next(b, x5)  [idem, 52]
+Adding rule:  [81] solution(r, b, x5) & next(ay, x5) & next(b, x5) ---> next(ay, x5) & next(b, x5)  [idem, 72]
+Computing critical pairs with: 
+   [71] next(ay, x5) & next(b, x5) ---> solution(r, b, x5) & next(ay, x5)  [idem, 52]
+Computing critical pairs with: 
+   [51] next(ay, x5) & next(b, x5) ---> solution(r, g, x5)  [8, 22]
+Adding rule:  [97] next(ay, x5) & next(b, x5) ---> solution(r, g, x5) & next(ay, x5)  [idem, 51]
+Adding rule:  [98] next(ay, x5) & next(b, x5) ---> solution(r, g, x5) & next(b, x5)  [idem, 51]
+Adding rule:  [100] solution(r, g, g) ---> true  [2, 51]
+Adding rule:  [101] solution(r, g, r) ---> true  [3, 51]
+
+And the answer is ...
+map(b, ay, r, g, r)  [user, 15]
+map(b, ay, r, g, g)  [user, 15]
+Time = 2.400000000000002 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em narrow}\\
+Continue previous linear completion (y,n) {\em y}
+\begin{verbatim}
+----- Step 3 -----
+ ...
+Adding rule:  [126] solution(g, r, g) ---> true  [2, 49]
+Adding rule:  [127] solution(g, r, r) ---> true  [3, 49]
+
+And the answer is ...
+map(b, ay, g, r, r)  [user, 15]
+map(b, ay, g, r, g)  [user, 15]
+Time = 2.533333333333331 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em narrow}\\
+Continue previous linear completion (y,n) {\em y}
+\begin{verbatim}
+----- Step 4 -----
+ ...
+Adding rule:  [152] solution(g, b, g) ---> true  [2, 48]
+Adding rule:  [153] solution(g, b, r) ---> true  [3, 48]
+
+And the answer is ...
+map(b, ay, g, b, r)  [user, 15]
+map(b, ay, g, b, g)  [user, 15]
+Time = 2.483333333333338 sec
+\end{verbatim}
+\rm
+\normalsize

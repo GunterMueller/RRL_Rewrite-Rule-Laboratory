@@ -1,0 +1,33 @@
+#! /bin/csh -f
+
+switch ($1)
+case *franz:
+	    touch dummy.lsp
+	    foreach file (*.lsp)
+	    mv $file $file:r.l
+	    end
+            make -f franz-make   
+            breaksw
+case *kcl:
+	kcl -init < rrl.lsp   
+        breaksw
+case *ibcl:
+	ibcl -init < rrl.lsp   
+	breaksw
+case *acl:
+	acl < rrl.lsp   
+	breaksw
+case *lucid:
+	lucid < rrl.lsp   
+	breaksw
+default:
+	echo "You have not given the name of the Lisp-version. Assuming IBCL.."
+	ibcl -init < rrl.lsp   
+	breaksw
+endsw
+
+echo "Compiling... ..."
+#  "Check  for messages later"
+echo "If all goes well, compiling takes about an hour on a Sun-3."
+
+exit $status

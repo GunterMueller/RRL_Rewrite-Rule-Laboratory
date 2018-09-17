@@ -1,0 +1,45 @@
+\chapter{RRL Commands}
+\small
+\rm
+Currently you can do the following:
+
+\begin{tabular}{ll}
+{\em Add} & --- Input equations from the terminal.\\
+{\em Akb} & --- Run the automatic Knuth-Bendix completion procedure. \\
+{\em Auto} & --- Automatically execute a sequence of commands in a `cmd' file.\\
+{\em Break} & --- Talk to Lisp directly.\\
+{\em Clean} & --- Clean the history stack to save space.\\
+{\em Delete} & --- Delete a list of equations or rules.\\
+{\em Grammer} & --- Display the input grammer of RRL.\\
+{\em History} & --- Put a copy of the current state into the history stack.\\
+{\em Init}   & --- Initialize RRL.\\
+{\em Kb}     & --- Run the Knuth-Bendix Completion Procedure.\\
+{\em List}   & --- List the current set of equations and rules.\\
+{\em Load}   & --- Load a system saved in a file by the {\em save} command.\\
+{\em Log}    & --- Register all commands in a file (to be used by {\em auto}).\\
+{\em Makerule} & --- Orient equations into rewrite rules without superposition. \\
+{\em Norm}   & --- Using different strategies to normalize a term.\\
+{\em Option} & ---  Set RRL flags and parameters.\\
+{\em Operator} & --- Set properties of operators (precedence, constructors, etc.).\\
+{\em Prove}  & --- Prove an equation by rewriting or by induction.\\
+{\em Quit}   & --- Quit RRL.\\
+{\em Read}   & --- Input equations from a file.\\
+{\em Refute} & --- Read a set of equations and negate the last one for refutation.\\
+{\em Save}   & --- Save the current state of RRL into a file. \\
+{\em Stats}  & --- List the current state of RRL. \\
+{\em Suffice} & --- Test sufficient completeness.\\
+{\em Undo}   & --- Undo RRL to the last user's interaction.\\
+{\em Unlog}  & --- Stop registrying commands into a file. \\
+{\em Write}  & --- Write equations and rules to a file.\\
+{\em Help}   & --- Give this message. 
+\end{tabular} 
+
+Note: One does not need to type the whole command name, a 
+substring will suffice except
+that the first letter must be given. If the typed substring matches more
+than one command, the first one is chosen. For example, when you 
+give {\em o} or {\em or}, RRL takes it for {\em operator}.
+When you give {\em od}, RRL takes it for {\em order}..
+No distinction is made between uppercase and lowercase characters.
+\normalsize
+\rm

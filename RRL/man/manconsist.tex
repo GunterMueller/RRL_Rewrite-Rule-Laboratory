@@ -1,0 +1,212 @@
+\chapter {Illustration of inductionless induction} 
+\normalsize 
+\rm 
+The inductionless induction or proof-by-consistency method for proving
+equations by induction is illustrated. Addition ($+$) and
+multiplication ($*$) are defined on natural numbers, and their
+additional properties are specified which can also be proved by
+induction. Then, another function $sum$, to stand for
+summation from $0$ to $x$, is also recursively defined.  The goal is
+to show that $sum(x) * s(s(0))$ is indeed $(x * x) + x$. 
+
+The following steps may be followed to prove an equation by induction
+using the proof-by-consistency method:
+\begin{enumerate}
+\item Give an axiomatization as input.
+\item Generate a complete rewriting system from the input.
+\item Attempt to prove the equation under consideration. If
+it is not in the equational theory, RRL will prompt asking whether
+the equation should be tried by induction. Respond with {\em y}.
+\item Specify the constructors of the domain on which induction is being
+performed. RRL will check whether the remaining functions are completely
+defined, the condition that must be satisfied for proof-by-consistency
+method to be applicable.
+\item If the functions are completely defined, then RRL will attempt
+to check for the consistency of the original theory augmented
+with the equation being proved. This is done by attempting to generate a
+complete system and ensuring that no equation relating unequal constructor
+values is generated.
+\item If an inconsistency is generated, then the complete
+system of the original theory is restored.
+\item If no inconsistency is generated, then
+the user is given the choice of adding the proved equation to the
+complete system of the original theory or restoring the complete
+system of the original theory.
+\end{enumerate}
+Often, while proving an equation by induction, a potentially
+infinite set of rules with similar structure is generated; these rules
+usually suggest a new lemma generalizing these rules, which should
+be proved before the original equation can be proved.
+
+\small
+\tt
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em induction1}
+\begin{verbatim}
+Equations read in are:
+ 1. (x + 0) == x  [user, 1]
+ 2. (x + s(y)) == s((x + y))  [user, 2]
+ 3. (x * 0) == 0  [user, 3]
+ 4. (x * s(y)) == ((x * y) + x)  [user, 4]
+ 5. sum(0) == 0  [user, 5]
+ 6. sum(s(x)) == (sum(x) + s(x))  [user, 6]
+New constant set is: { 0 }
+Time = 0.05000000000000027 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em oper ac +}
+\begin{verbatim}
+'+' is associative & commutative now.
+Time = 0.04999999999999982 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em oper comm *}
+\begin{verbatim}
+'*' is commutative now.
+Time = 0.01666666666666705 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em kb}
+\begin{verbatim}
+----- Step 1 -----
+Adding rule:   [1] (x + 0) ---> x  [user, 1]
+Trying to orient equation: 
+  (x + s(y)) == s((x + y))  [user, 2]
+  To prove:  (x + s(y))  >  s((x + y))
+        or:  (x + s(y))  <  s((x + y))
+  Here are some precedence suggestions:
+       1.  + > s                     2.  s > +
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em lr}
+\begin{verbatim}
+Orientation of equations being done manually.
+!!!!!! Warning: Rewriting may not terminate !!!!
+!!!!!! Warning: Resulting system will be locally-confluent;
+         But it may not be canonical  !!!!
+\end{verbatim}
+Is it ok to continue ? (y,n) {\em y}
+\begin{verbatim}
+----- Step 2 -----
+Adding rule:   [2] (x + s(y)) ---> s((x + y))  [user, 2]
+Adding rule:   [3] (x * 0) ---> 0  [user, 3]
+Trying to orient equation: 
+  (x * s(y)) == (x + (x * y))  [user, 4]
+  To prove:  (x * s(y))  >  (x + (x * y))
+        or:  (x * s(y))  <  (x + (x * y))
+  Here are some precedence suggestions:
+       1.  * > +                     2.  + > *
+       3.  s > +                     4.  + > s
+       5.  s > *                     6.  * > s
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em 1}
+\begin{verbatim}
+----- Step 3 -----
+Adding rule:   [4] (x * s(y)) ---> (x + (x * y))  [user, 4]
+Adding rule:   [5] sum(0) ---> 0  [user, 5]
+Trying to orient equation: 
+  sum(s(x)) == s((x + sum(x)))  [user, 6]
+  To prove:  sum(s(x))  >  s((x + sum(x)))
+        or:  sum(s(x))  <  s((x + sum(x)))
+  Here are some precedence suggestions:
+       1.  sum > s                   2.  s > sum
+       3.  sum > +                   4.  + > sum
+       5.  s > +                     6.  + > s
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> 1 3
+\begin{verbatim}
+----- Step 4 -----
+Adding rule:   [6] sum(s(x)) ---> s((x + sum(x)))  [user, 6]
+Your system is locally confluent.
+  [1] (x + 0) ---> x  [user, 1]
+  [2] (x + s(y)) ---> s((x + y))  [user, 2]
+  [3] (x * 0) ---> 0  [user, 3]
+  [4] (x * s(y)) ---> (x + (x * y))  [user, 4]
+  [5] sum(0) ---> 0  [user, 5]
+  [6] sum(s(x)) ---> s((x + sum(x)))  [user, 6]
+Time = 0.8666666666666663 sec.
+ ... ...
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em prove}
+\begin{verbatim}
+Type equation to prove in the format:  L == R (if C) 
+Enter a ']' to exit when no equation is given.
+\end{verbatim}
+{\em sum(x) * s(s(0)) == (x * x) + x}
+\begin{verbatim}
+No, it is not equational theorem.
+Normal form of the left hand side is:
+(sum(x) + sum(x))
+
+Normal form of the right hand side is:
+((x * x) + x)
+\end{verbatim}
+Do you want to see it is an inductive theorem ? {\em y}
+\begin{verbatim}
+----- Step 5 -----
+      Current Constructor Set  =  { }
+\end{verbatim}
+To prove the equation with the constructors ? (y,n) {\em y}
+\begin{verbatim}
+Note: Constructor set is empty.
+\end{verbatim}
+Type operators you wish to be constructor: {\em 0 s}
+\begin{verbatim}
+    Constructor Set =  { s, 0 }
+Specification of 'sum' is complete relative to { s, 0 }
+Specification of '*' is complete relative to { s, 0 }
+Specification of '+' is complete relative to { s, 0 }
+Processor time used      =  0.09999999999999964 sec
+Proving equation
+  (sum(x) * s(s(0))) == ((x * x) + x)  [user, 7]
+Trying to orient equation: 
+  (sum(x) + sum(x)) == (x + (x * x))  [user, 7]
+  To prove:  (sum(x) + sum(x))  >  (x + (x * x))
+        or:  (sum(x) + sum(x))  <  (x + (x * x))
+  Here are some precedence suggestions:
+       1.  sum > *                   2.  * > sum
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em 1}
+\begin{verbatim}
+----- Step 6 -----
+Adding rule:   [7] (sum(x) + sum(x)) ---> (x + (x * x))  [user, 7]
+
+Your system is locally confluent.
+  [1] (x + 0) ---> x  [user, 1]
+  [2] (x + s(y)) ---> s((x + y))  [user, 2]
+  [3] (x * 0) ---> 0  [user, 3]
+  [4] (x * s(y)) ---> (x + (x * y))  [user, 4]
+  [5] sum(0) ---> 0  [user, 5]
+  [6] sum(s(x)) ---> s((x + sum(x)))  [user, 6]
+  [7] (sum(x) + sum(x)) ---> (x + (x * x))  [user, 7]
+
+Following equation
+  (sum(x) * s(s(0))) == ((x * x) + x)  [user, 7]
+  is an inductive theorem in the current system.
+\end{verbatim}
+\rm
+\normalsize

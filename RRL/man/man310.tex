@@ -1,0 +1,386 @@
+\section{Narrowing: {\em narrow}}
+
+\RRL also supports the narrowing method of solving an equation in a
+given theory. In this method, in contrast to proof by normalization,
+two sides of the equation being solved are {\em narrowed} (unified
+with the left sides of rules) to look for a substitution of
+variables in the equation such that the result of applying the
+substitution on the equation is another equation which is a theorem in
+the given theory.
+
+It is often helpful at first to generate a complete system for the
+given theory, especially when many equations are intended to be solved
+in the theory, but this is not necessary. In case, there does not
+exist a complete system for the given theory or the user does not wish
+to generate a complete system because of considerable overhead
+involved in generating a complete system, rules can be generated from
+the formulas in the theory. These rules are then used to solve the
+equation using the linear completion procedure proposed by Dershowitz
+\cite{Dershowitz85}.
+
+The method can be used to implement logic programming in the rewriting
+paradigm. See an example in Appendix I.  We are not convinced of the
+usefulness of this method of solving equations because of its
+inefficiency. As a result, we have not experimented with the method or
+provided strategies to support different variations of the method.
+
+The {\em narrow} command in \RRL
+supports the narrowing concept.  Before the {\em narrow} command is
+invoked, formulas in a theory should be made into rules which may or
+may not be completed using the completion procedure. It is a good idea
+to complete a theory, if possible, especially in case many equations
+needs to be solved.  Completion in this case serves the role of
+compilation.
+
+Given a set of rules, the {\em narrow} command expects an equation as
+the input. Then, the linear completion procedure is invoked which
+gives a set of solutions to the equation. Additional solutions, if
+any, can be obtained by invoking the {\em narrow} command again and
+{\em continue} command. The user should be warned that the linear
+completion procedure often does not terminate.
+
+Appendix I is an illustration of the {\em narrow} command on an
+example from logic programming.
+
+\section{Testing Sufficient Completeness: {\em suffice}} 
+
+An equational axiomatization of functions can be checked for
+sufficient completeness. At first, functions must be classified into
+constructors and nonconstructors;
+this can be done
+using the {\em operator} command and within
+it, by a command {\em constructor}.
+A nonconstructor function is
+sufficiently complete (or completely defined) if it gives a
+constructor ground term (term without any variables built from
+constructors) as a result for every input made of constructor ground
+terms.
+
+The {\em suffice} command is provided to check the sufficient
+completeness property.  First, a complete rewriting system must be
+generated for the equational axiomatization.  Two methods are
+implemented in the current \RRL: one is based on the notion of {\em
+ground-reducibility} \cite{JK86}, the other is based on the
+concept of {\em test set} \cite{KNZ86}. Both methods need, as inputs,
+a complete rewriting system and a subset of operations identified as
+constructors.  If a nonconstructor function is not completely defined,
+both the methods generates a finite set of schema on which the
+function must be defined using additional axioms for it to be
+completely defined. Either method can be chosen using
+{\em option/prove} command and setting the value
+to be {\em ground-reducibility} or {\em test-set}; the default
+value is {\em test-set}.
+
+The user should be warned that {\em suffice} command is not fully
+integrated with the mechanisms in \RRL to handle
+associative-commutative constructors. However, whenever \RRL claims
+that a function is completely defined even in the presence of
+associative-commutative constructors, barring bugs in \ERRL, the
+function is completely defined. There do exist axiomatizations
+involving associative-commutative constructors which completely define
+functions, but \RRL may declare them to be not sufficiently complete.
+  
+The {\em suffice} command is illustrated in Appendix J.
+
+\section {Theorem Proving: {\em kb, refute, prove}}
+
+Four approaches to theorem proving
+are supported in \ERRL; all of them are based on rewriting systems.
+\begin{itemize}
+\item proof by forward reasoning;
+\item proof by refutation;
+\item proof by consistency (inductionless induction);
+\item proof by (explicit) induction.
+\end{itemize}
+For the last two approaches, 
+in addition to the axioms, 
+the user is required
+to input 
+the arity of each operator 
+(including its domain sort and codomain sorts).
+To choose which method to use, the command is {\em option/prove}:\\ 
+\\
+{\tt RRL->} {\em option prove}
+\begin{verbatim}
+Following methods are available:
+    Deduction:
+       (f) forward reasoning --- using completion
+       (s) refutation        --- using boolean-ring method
+       (c) refutation        --- using conditional rules
+    Induction:
+       (e) explicit          --- using the cover-set method
+       (s) inductionless     --- using the test set method
+       (g) inductionless     --- using the ground-reducibility method
+Please make your choice: 
+(current value: s) (f,c,e,s,g) 
+\end{verbatim}
+The default option is the {\em boolean-ring method} for 
+deductive theorem proving
+and the {\em test-set} method for inductive theorem proving.
+
+\subsection{Proof by Forward Reasoning: \em prove} 
+
+A special case of proof by forward reasoning is {\em proof by normalization},
+which has been intergrated as the first step
+into any other proof method.
+
+As emphasized quite a bit above,
+a complete rewriting system is a decision procedure
+for the equational theory defined by the rewriting system.  An
+equation is a theorem in the equational theory if and only if both sides of
+the equation are normalized to the same term using the complete
+rewriting system.  The command to do that is {\em prove}
+which takes an equation as input.  Both unconditional or
+conditional equation could be proved in this way.  
+If the proof by normalization method is the only one,
+it is assumed that
+a complete rewriting system is already generated using the {\em kb} or
+{\em akb} command. 
+If the rewriting system being considered is not complete, then an equation is still a theorem in the equational theory
+if the {\em prove} declares it to be so; otherwise, we cannot
+say that it is not an equational consequence.
+
+In Appendix C, after 
+a complete system for free groups is generated,
+the {\em prove} command is illustrated on an equation.
+
+If the chosen method is {\em forward reasoning} and the proof by normalization
+method fails to prove an equation, then \RRL puts the equation aside
+and invokes the Knuth-Bendix completion procedure. 
+During the completion,
+as long as the current rewriting system
+can reduce the equation to identity, \RRL stops and reports the success.
+This option has advantage over the proof by normalization method
+in that \RRL can still prove theorems in the equational theory
+which does not have finite canonical systems.
+
+\subsection{Proof by Refutation: \em kb, refute}
+
+In this approach, the input to \RRL
+is either the negation of a formula to be proved or equivalently,
+the hypotheses and the negation of the conclusion.
+This can also be done by invoking the command {\em refute} which
+accepts a list of equations as hypotheses and the last equation as the
+conclusion to be proved from the given hypothesis
+(the {\em refute} command negates the conclusion).  The Knuth-Bendix
+completion procedure is then run.  If an inconsistency is detected,
+for example, the rule {\tt true --> false}, {\tt x --> y}, or 
+{\tt x --> c}, where {\tt c} is a constant, is generated, then the original
+formula is valid.  This approach is mostly used for the first order
+predicate calculus; however, it can also be used for equational
+formulas. This approach can also be used to check whether a given theory
+is inconsistent. 
+
+Two methods of the same approach have been implemented in \ERRL:
+Depending on the chosen method, the input formulas are
+transformed into either 
+(i) polynomials of the boolean ring, then
+into (unconditional) rewrite rules, if using the boolean-ring method 
+or (ii) conditional rewrite rules, if using the conditional rule
+method. Note that for the conditional rule method, the legal input
+is either conditional equations or clauses (see Section~\ref{condi}).
+
+As stated above, for making rules from formulas,
+a total lexicographic order on predicate symbols
+(unless specified differently) is assumed which
+is extended to compare monomials (conjunction of atomic formulas)
+either by size (default) or by pure lexicographic ordering; arguments
+to predicate symbols are compared using {\em rpo} or {\em lrpo}. If the user
+wishes to impose a different order on predicate symbols,
+it can be done using the {\em operator/precedence} command
+before invoking the {\em kb} or {\em refute} commands.
+
+See Appendices F, G and H for examples illustrating different
+capabilities of \RRL for theorem proving in predicate calculus.
+
+For general theorem proving, the proof by refutation method
+is better than the proof by forward reasoning method because
+the negation of the conclusion may help to find the proof quickly.
+However, when the input is a set of pure equations and the conjecture
+is also a pure equation, it may be better to use
+the forward reasoning method because the negation of the conjecture
+will force \RRL to run the completion procedure
+for the first-order predicate calculus, which is less efficient
+than the completion procedure for pure equations.
+
+\subsection{Proof by Inductionless Induction: \em prove} 
+
+In the {\em prove} command, if the
+input equation cannot be proved to be a theorem by normalization, 
+\RRL prompts the user whether he (or she) want to checks
+whether the input equation is an inductive theorem, i.e., for every
+instantiation of variables in the equation by ground terms, the
+equation is in the equational theory.  If the equation is not an
+inductive theorem, \RRL notifies the user of that; it is possible to
+obtain from the generated rules the values of variables appearing in
+the equation for which the equation does not hold. If the equation is
+an inductive theorem, there are two possibilities: 
+\begin{enumerate}
+\item
+\RRL stops with
+a complete rewriting system, which implies that the equation is indeed
+an inductive theorem and the resulting complete rewriting system is a
+decision procedure for the augmented theory, 
+\item
+conditions similar
+to those discussed above when the command {\em kb} is invoked arise.
+\end{enumerate}  
+
+\RRL supports two methods of inductionless-induction. One is based on
+the ground-reducibility \cite{JK86}, the other is based on
+the test set \cite{KNZ86}.  The correctness of the two methods are
+proved for the left-linear systems. A theoretical result is known for
+an arbitrary rewriting system; it is, however, quite inefficient
+and is thus not implemented. Either method can be selected 
+using the {\em option/prove} command; the default is to
+use the test set method. When the system is not left-linear,
+no warning messages will be given by \ERRL; so the user is responsible
+in this case for the correctness of the result.
+  
+For both methods,
+identifying a subset of functions as constructors is
+necessary; 
+if no constructors exist, the user may declare all operators 
+are constructors and the methods still work. 
+If some operators are non-constructors,
+\RRL checks at first
+the sufficient completeness of these functions, then uses
+the inductionless induction method.
+
+The inductionless induction methods are 
+integrated only with the mechanisms to handle
+associative and commutative functions. As a result, the methods
+may not work in the presence of
+functions with other properties like transitivity, cancellation laws,
+distribution laws.
+  
+See Appendix L for an illustration of a proof by inductionless
+induction using \ERRL.
+
+\subsection{Proof by the Cover Set Induction: \em prove}
+
+In an algebraic specification of abstract data types,
+a function can be defined using a set of equations, which will be referred
+as {\em definition equations} of that function.
+In addition to the arity declaration of each function,
+the cover set method requires the user to distinguish between
+definition equations and properties of a function
+(previous proved lemmas or theorems).
+\RRL recognizes an equation with the token {\tt :=} as a definition
+equation of the outermost symbol of the left side of that equation.
+For instance, \RRL considers the first two of the following equations
+to be the definition of $+$, while the last one is a property of $+$
+($0 + x == x$ can be proved to be an inductive theorem if 
+0 and $suc$ are the only constructors).
+\begin{verbatim}
+        [+ : int, int -> int]
+        x + 0 := x
+        x + suc(y) := suc(x + y)
+        0 + x == x
+\end{verbatim}
+After all the equations are input to \ERRL, the user
+may invoke {\em makerule} or {\em kb} to obtain a set of terminating
+rewrite rules from the input equations. Note that the result of
+the {\em kb} is no long a canonical system even it stops 
+successfully. After declaring which operators are constructors,
+the user may prove an equation using the command {\em prove}.
+\RRL will choose induction scheme automatically, according
+to the function symbols appearing in the equation, along with the
+definition equations of each function symbol. Currently, \RRL does not
+support any methods for checking whether a cover set used for an
+induction scheme is complete, i.e., it covers all values (n-tuples of
+values) of a data structure on which the induction is being performed.
+
+Once an equation is proved, \RRL saves it in the system and is ready
+to prove others. See Appendix M for an illustration of 
+a proof by the cover set induction method.
+
+The cover set method 
+may fail to prove an equation;
+it is a drawback of this method that
+it is often not clear why it failed: whether the conjecture being proved is
+false or a proof of the conjecture needs additional lemmas.  
+The method does not provide any help to the user in the case of failure.
+If an important lemma is missing, it is the user's job to figure out
+what it is.
+
+\section{Registry of Commands: {\em log, unlog, auto}}
+
+\RRL provides a facility to register user's input or commands into a file, 
+which
+could be re-executed later.  The command to start registering the user's input
+is {\em log} which prompts the user to give a file
+name; the suffix {\tt .cmd} is appended to the given name. The
+commands {\em unlog} or {\em quit} can be used to close the {\tt cmd} file
+and stop registering the input.
+  
+The commands in a {\tt cmd} file could be 
+subsequently read and executed using the command
+{\em auto}, giving it a file name.  \RRL takes the input commands from
+the file and executes them one after another.
+  
+Command files thus made are useful for a demonstration, some routine work
+like initializing some flags etc., or testing a new change to \RRL using
+standard examples.
+  
+If a file {\tt init-rrl.cmd} is present in the subdirectory where \RRL
+is invoked, the commands in the file are executed first.  A use
+of {\tt init-rrl.cmd} is that the user could run \RRL on the background
+of the UNIX system and get a transcript of the execution at the same
+time. Following is a command file made to complete the group
+axiomatization with one equation in an automatic mode. The transcript
+file is {\em result}.\\ 
+\\
+\% {\em cat init-rrl.cmd}
+\begin{verbatim}
+add
+(x / ((((x / x) / y) / z) / (((x / x) / x) / z))) == y  
+]
+akb
+quit
+\end{verbatim}
+\% {\em rrl $>$ result \tt \&}
+\begin{verbatim}
+[1] 9860
+\end{verbatim}
+
+\section{Statistics Information and Trace Facilities}
+
+The command {\em stats} displays various statistics such as times
+spent in different operations, including normalization, adding rules,
+unification, and termination, as well as total numbers of rules and
+critical pairs ever generated, and total time. Whenever the {\em undo}
+command is invoked, information about the statistics gets garbled and
+cannot be trusted.
+  
+\RRL supports 3 different levels of trace messages. The default level
+value is 2 in which new rules added to the system and existing rules
+modified or deleted are displayed.  Level 1 suppresses most of the
+trace messages of level 2; it only gives information when the user
+needs to make a choice.  At level 3, critical pairs generated and
+processed are also displayed in addition to the information given at
+level 2. This selection is made using the {\em option/trace}
+command.
+
+\section{On-Line Help}
+Limited help is available on-line while running \ERRL. The user could
+get it at different command levels by invoking the {\em help} command.
+
+\section{Reporting Bugs and other problems}
+If the user encounters problems in using \RRL or finds bugs in \ERRL,
+please report them to Hantao Zhang or Deepak Kapur. Their mailing
+addresses as well as net addresses are given at the beginning of the
+manual. Any other feedback as well as information on how 
+\RRL is being used will be greatly appreciated.
+
+\subsubsection{Acknowledgements}
+
+\RRL has been designed in collaboration with G. Sivakumar.
+Dan Benanav, Chris Connolly, David Cyrluk, Tim Freeman,
+Richard Harris, Mark Lopez and Bill Shang also contributed to some
+parts of the code. David Cyrluk, David Musser, Paliath Narendran, and
+Jonathan Stillman provided valuable suggestions and feedback. John
+Guttag's group at MIT and Pierre Lescanne of CRIN, Nancy, also
+provided suggestions. Special thanks go to David Cyrluk for his help
+in fixing some bugs in \ERRL.
+

@@ -1,0 +1,57 @@
+         HOW  TO  INSTALL  HERKY
+
+Suppose you have the file herky.tar.Z in the directory YOURDIRECTORY/.
+
+1. Uncompress the tar file:
+
+   % zcat herky.tar.Z | tar xvf -
+
+2. Change the directory name:
+    Use an editor to read the file init.lsp (or the file code/init.lisp)
+    and replace the string "/home/zambini/hzhang/herky/" in 
+           (defconstant $herky-directory "/home/zambini/hzhang/herky/")
+    by YOURDIRECTORY (please use the full name of the directory).
+
+3. Compile/Load the Code:
+
+   % lisp                 /* invoke the common lisp whatever you have */
+   > (load "init.lsp")    /* Load the file "init.lsp". If it is the first
+                             time, it starts compiling. Otherwise,
+                             it loads all the compiled code */
+   > (init)               /* When loading/compiling is done, you may see
+                             the message "Type (init) to start". */
+                          /* When the following message appears,
+Type Add, Akb, Auto, Break, Cmd, Delete, Gc, Grammar, Init, Kb, List,
+     Makerule, Manager, Option, Operator, Prove, Quit, Read, Refute,
+     Stats, Test, Write or Help.
+HERKY-> 
+                            you are ready to run HERKY. */
+
+4. Test HERKY: See HERKY.test.
+   Also, you can test HERKY just after 3 is done.
+   ... ...
+   HERKY> test            /* HERKY will automatically execute a sequence
+                             of commands from some given "cmd" files. */
+
+5. Run HERKY:
+   Same as 3. To prepare an input file, see the cmd files in the 
+   subdirectory test/ for examples.
+
+6. Run HERKY in a directory other than YOURDIRECTORY:
+   For the first time, make a symbolic link to the file code/init.lisp
+      as follows:
+           % ln -s YOURDIRECTORY/code/init.lisp init.lsp
+      the rest is the same as 3.       
+
+7. Report bugs or problems to:
+      Hantao Zhang, 
+      Dept. of Computer Science
+      The University of Iowa
+      Iowa City, IA 52242
+      hzhang@cs.uiowa.edu
+
+
+Thank you for your interests,
+
+Hantao Zhang
+

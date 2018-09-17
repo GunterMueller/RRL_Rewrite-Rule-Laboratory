@@ -1,0 +1,185 @@
+\chapter{Generating a complete system with ac-operator}
+\normalsize
+\rm
+This transcript illustrates the completion procedure for
+equations when some function symbols are interpreted;
+in this axiomatization of free abelian groups, the binary function
+* is specified using the {\em operator} command to be associative and
+commutative. In this case also, the goal is to generate
+a complete system. Two different complete systems are generated
+by orienting the equation $i(z) * i(z1) == i(z1 * z)$ in two
+different ways both of which happen to be terminating.
+Each system has different canonical form for expressions.
+The termination of the case when the equation is oriented right-to-left
+can be shown using \ERRL, whereas the termination
+algorithm for associative-commutative rewriting in \RRL is not 
+powerful to show the termination in the case
+when the equation is oriented left-to-right.
+This transcript also illustrates the backtracking (or undo) feature in
+\ERRL.
+
+\small
+\tt
+\begin{verbatim}
+
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em r group}
+\begin{verbatim}
+Equations read in are:
+ 1. (e * x) == x  [user, 1]
+ 2. (i(x) * x) == e  [user, 2]
+ 3. (x * (y * z)) == ((x * y) * z)  [user, 3]
+New constant set is: { e }
+Time = 0.09999999999999432 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em oper ac *}
+\begin{verbatim}
+'*' is associative & commutative now.
+Time = 0.03333333333333144 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em kb}
+\begin{verbatim}
+----- Step 1 -----
+Adding rule:   [1] (x * e) ---> x  [user, 1]
+Trying to orient equation: 
+  (x * i(x)) == e  [user, 2]
+  To prove:  (x * i(x))  >  e
+  Here are some precedence suggestions:
+       1.  * > e
+       2.  i > e
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em 1 2}
+\begin{verbatim}
+----- Step 2 -----
+Adding rule:   [2] (x * i(x)) ---> e  [user, 2]
+Adding rule:   [3] i(e) ---> e  [2, 1]
+Adding rule:   [4] i(i(z)) ---> z  [2, 2]
+Adding rule:   [5] (z * i((z1 * z))) ---> i(z1)  [2, 2]
+Trying to orient equation: 
+  (z * i(z1)) == i((z1 * i(z)))  [2, 5]
+  To prove:  (z * i(z1))  >  i((z1 * i(z)))
+        or:  (z * i(z1))  <  i((z1 * i(z)))
+  Here are some precedence suggestions:
+       1.  * > i                     2.  i > *
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em 2}
+\begin{verbatim}
+----- Step 3 -----
+Adding rule:   [6] i((z * i(z1))) ---> (z1 * i(z))  [2, 5]
+Adding rule:   [7] i((z * z1)) ---> (i(z) * i(z1))  [2, 5]
+  Deleting rule:  [5] (z * i((z1 * z))) ---> i(z1)  [2, 2]
+  Deleting rule:  [6] i((z * i(z1))) ---> (z1 * i(z))  [2, 5]
+Your system is canonical.
+  [1] (x * e) ---> x  [user, 1]
+  [2] (x * i(x)) ---> e  [user, 2]
+  [3] i(e) ---> e  [2, 1]
+  [4] i(i(z)) ---> z  [2, 2]
+  [7] i((z * z1)) ---> (i(z) * i(z1))  [2, 5]
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em undo}
+\begin{verbatim}
+----- Return to Step 2 -----
+Equations:
+ 1. (z * i(z1)) == i((z1 * i(z)))  [2, 5]
+Rules:
+  [1] (x * e) ---> x  [user, 1]
+  [2] (x * i(x)) ---> e  [user, 2]
+  [3] i(e) ---> e  [2, 1]
+  [4] i(i(z)) ---> z  [2, 2]
+  [5] (z * i((z1 * z))) ---> i(z1)  [2, 2]
+Time = 0.05000000000001137 sec
+Type Add, Akb, Auto, Break, Clean, Delete, Dump, Grammar, Init, Kb, List,
+     Log, Makerule, Narrow, Norm, Order, Option, Operator, Prove, Quit, Read,
+     Refute, Stats, Suffic, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em kb}
+\begin{verbatim}
+----- Step 3 -----
+Trying to orient equation: 
+  (z * i(z1)) == i((z1 * i(z)))  [2, 5]
+  To prove:  (z * i(z1))  >  i((z1 * i(z)))
+        or:  (z * i(z1))  <  i((z1 * i(z)))
+  Here are some precedence suggestions:
+       1.  * > i                     2.  i > *
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em 1}
+\begin{verbatim}
+----- Step 4 -----
+Sorry did not work, try again.
+  To prove:  (z * i(z1))  >  i((z1 * i(z)))
+        or:  (z * i(z1))  <  i((z1 * i(z)))
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em undo}
+\begin{verbatim}
+----- Return to Step 3 -----
+Trying to orient equation: 
+  (z * i(z1)) == i((z1 * i(z)))  [2, 5]
+  To prove:  (z * i(z1))  >  i((z1 * i(z)))
+        or:  (z * i(z1))  <  i((z1 * i(z)))
+  Here are some precedence suggestions:
+       1.  * > i                     2.  i > *
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em rl}
+\begin{verbatim}
+Orientation of equations being done manually.
+!!!!!! Warning: Rewriting may not terminate !!!!
+!!!!!! Warning: Resulting system will be locally-confluent;
+         But it may not be canonical  !!!!
+\end{verbatim}
+Is it ok to continue ? (y,n) {\em y}
+\begin{verbatim}
+----- Step 4 -----
+Adding rule:   [6] i((z * i(z1))) ---> (z1 * i(z))  [2, 5]
+Trying to orient equation: 
+  i((z * z1)) == (i(z) * i(z1))  [4, 6]
+  To prove:  i((z * z1))  >  (i(z) * i(z1))
+        or:  i((z * z1))  <  (i(z) * i(z1))
+  Here are some precedence suggestions:
+       1.  i > *                     2.  * > i
+Either type a list of numbers or
+Type Abort, Display, Equiv, Twoway, Operator, Status, LR, RL, Postpone, MakeEq,
+     Quit, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em rl}
+\begin{verbatim}
+----- Step 5 -----
+Adding rule:   [7] (i(z) * i(z1)) ---> i((z * z1))  [4, 6]
+Your system is locally confluent.
+  [1] (x * e) ---> x  [user, 1]
+  [2] (x * i(x)) ---> e  [user, 2]
+  [3] i(e) ---> e  [2, 1]
+  [4] i(i(z)) ---> z  [2, 2]
+  [5] (z * i((z1 * z))) ---> i(z1)  [2, 2]
+  [6] i((z * i(z1))) ---> (z1 * i(z))  [2, 5]
+  [7] (i(z) * i(z1)) ---> i((z * z1))  [4, 6]
+\end{verbatim}
+\rm
+\normalsize

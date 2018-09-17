@@ -1,0 +1,255 @@
+\pagenumbering{roman}
+\tableofcontents
+\chapter{Introduction}
+\pagenumbering{arabic}
+
+\section{What is \ERRL?}
+
+\RRL is an interactive reasoning program based on rewriting techniques,
+with many primitives and algorithms
+for experimenting with existing automated reasoning algorithms 
+as well as for developing new reasoning algorithms
+\cite{KapurSiva,KZ881}.  Reasoning
+algorithms are used in many application areas in computer science and
+artificial intelligence, in particular, analysis of specifications of
+abstract data types, verification of hardware and software, synthesis
+of programs from specifications, automated theorem proving, expert
+systems, deductive data basis, planning and recognition, logic
+programming, constraint satisfaction, natural language processing,
+knowledge-based systems, robotics, vision.  
+
+The project for developing rewrite rule laboratories was jointly
+conceived in 1983 by the first author and David Musser of Rensselaer
+Polytechnic Institute (RPI) and John Guttag of MIT when rewrite
+methods were gaining attention because of their use in the analysis of
+algebraic specifications of user-defined data types.  The work on the
+\RRL project was started at General Electric Corporate Research and
+Development (GECRD) and RPI in Fall 1983, following a workshop on
+rewrite rule laboratories in Schenectady, New York
+\cite{Guttagetal84}.  Since then, \RRL has continued to evolve.
+\RRL has been designed by the authors in collaboration with G. Sivakumar.
+Most of the code in \RRL has been written by G. Sivakumar 
+(1983--1985) and
+the second author (1985--present). 
+\RRL is written in a subset of Zeta Lisp that is (almost) compatible
+with Franz Lisp and is more than 17,000 lines of code.  In order to
+make \RRL portable and available for wider distribution, conscious
+attempt was made not to use special features of Zeta Lisp and the Lisp
+machine environment.
+ 
+\RRL was initially used to study existing algorithms, including the
+Knuth-Bendix completion procedure \cite{KnuthBendix}, and
+Dershowitz's algorithm for recursive path ordering \cite{Dershowitz87}
+to orient equations into terminating rewrite
+rules \cite{KapurSiva}.  However, this environment soon began serving as a
+vehicle for generating new ideas, concepts and algorithms which could
+be implemented and tested for their effectiveness.  Experimentation
+using \RRL has led to development of new heuristics for decision
+procedures and semi-decision procedures in theorem proving
+\cite{KMN84,ZK89}, complexity studies of primitive operations
+used in \RRL \cite{KN87}, and new approaches for first-order theorem
+proving \cite{KN85,ZK88,Zhang88}, proofs by induction
+\cite{KNZ86,ZKM88,Zhang88}.
+
+\RRL has been distributed to over 20 universities and research
+laboratories. Any one interested in obtaining a copy of \RRL can write
+to the authors.
+
+\section{What can \RRL do?}
+
+\RRL currently
+provides facilities for
+\begin{itemize}
+\item 
+automatically proving theorems in first-order predicate calculus
+with equality,
+\item
+generating decision procedures for first-order (equational)
+theories using completion procedures,
+\item 
+checking the consistency and completeness of equational
+specifications, and
+\item 
+proving theorems by 
+induction using different approaches - methods
+based on the {\em proof by consistency} approach \cite{Musser80,KapurMusser84}
+(also called the {\em inductionless-induction} approach) as well as 
+the explicit induction approach.
+\end{itemize}
+
+The input to \RRL is a first-order theory specified by a finite set of
+axioms.  Every axiom is first transformed into an equation (or a
+conditional equation).  The kernel of \RRL is the {\em extended
+Knuth-Bendix completion procedure} \cite{KnuthBendix,LB77,PS81} which
+first produces terminating rewrite rules from equations and then
+attempts to generate a canonical rewriting system for the theory
+specified by a finite set of formulas.  If \RRL is successful in
+generating a canonical set of rules, these rules associate a unique
+normal form for each congruence class in the congruence relation
+induced by the theory.  These rules thus serve as a decision procedure
+for the theory.  
+
+For proving a single first-order formula, \RRL also supports the
+proof-by-contradiction (refutational) method. The set of hypotheses
+and the negation of the conclusion are given as the input, and \RRL
+attempts to generate a contradiction, which is a system including the
+rule $true \rightarrow false$.
+
+New algorithms and methods for automated reasoning have been developed
+and implemented in \ERRL. 
+\RRL supports an implementation of a first-order theorem proving method
+based on polynomial representation of formulas using the exclusive-or
+connective as `+' and the and connective as `.' \cite{Hsiang85}, and
+using \Groebner basis like completion procedure \cite{KN85}.  Its
+performance compares well with theorem provers based on resolution
+developed at Argonne National Lab as well as theorem provers based on
+the connection graph approach developed at SRI International and University of
+Kaiserslautern. Most of the hardware verification work mentioned later
+in the section on applications of \RRL was done using this method of
+theorem proving.
+ 
+Recently, another method for automatically proving theorems in
+first-order predicate calculus with equality using conditional
+rewriting has also been implemented and successfully tried on a number
+of problems \cite{ZK88}.  This method combines ordered resolution and
+oriented paramodulation of Hsiang and Rusinowitch \cite{HR86} into a
+single inference rule, called {\it clausal superposition}, on
+conditional rewrite rules. These rewrite rules can be used to simplify clauses
+using conditional rewriting.
+
+\RRL has two different methods implementing
+the proof by consistency approach for proving
+properties by induction: the {\em test set} method developed in
+\cite{KNZ86} as well as the method using {\em ground-reducibility}
+(or {\em quasi-reducibility})
+developed in \cite{JK86}.  These methods can be used for checking
+structural properties of equational specifications such as the {\em
+sufficient-completeness} \cite{KNZ85} and consistency properties
+\cite{Musser80,KapurMusser84}.
+
+Recently, a method based on the concept of a {\it cover set} of a
+function definition has been developed for mechanizing proofs by
+explicit induction for equational specifications \cite{ZKM88,Zhang88}.  The
+method is closely related to Boyer and Moore's approach.  It
+has been successfully used to prove over a hundred theorems about
+lists, sequences, and number theory including the unique prime
+factorization theorem for numbers; see \cite{ZKM88,Zhang88}.
+ 
+\RRL supports different strategies for normalization and generation of
+critical pairs and other features. These strategies play a role
+similar to the various strategies and heuristics available in
+resolution-based theorem provers. \RRL provides many options to the
+user to adapt it to a particular application domain. Because of
+numerous options and strategies supported by \ERRL, it can be used as a
+laboratory for testing algorithms and strategies. 
+
+\section{Some Applications of \RRL}
+ 
+\RRL has been successfully used to attack difficult problems
+considered a challenge for theorem provers.  An automatic proof of a
+theorem that an associative ring in which every element $x$ satisfies
+$x^3 = x,$ is commutative, was obtained using \RRL in nearly 2 minutes
+on a Symbolics machine.  Previous attempts to solve this problem using
+the completion procedure based approach required over 10 hours of
+computing time \cite{Stickel84}.  With some special heuristics
+developed for the family of problems that for $n > 1$, for every $x$,
+$x^n = x$ implies that an associative ring is commutative, \RRL takes
+5 seconds for the case when $n$ = 3, 70 seconds for $n$ = 4, and 270
+seconds for $n$ = 6 \cite{KMN84,ZK89}.  To our knowledge, this is the
+first computer proof of this theorem for $n$ = 6. Using algebraic
+techniques, we have been able to prove this theorem for many even
+values of $n$. \RRL has also been used to prove the equivalence of
+different non-classical axiomatizations of free groups developed by
+Higman and Neumann to the classical three-law characterization
+\cite{KZ882}.
+ 
+\RRL can be also used as a tool for demonstrating approaches towards
+specification and verification of hardware and software.  \RRL is a
+full-fledged theorem prover supporting different methods for
+first-order and inductive theorem proving in a single reasoning
+system.  It has been successfully used at GECRD for hardware
+verification. Small combinational and sequential circuits, leaf cells
+of a bit-serial compiler have been verified \cite{NS881}. The most
+noteworthy achievement has been the detection of 2 bugs in a VHDL
+description of a 10,000 transistor chip implementing Sobel's edge
+detection algorithm for image processing and after fixing those bugs,
+verifying the chip description to be consistent with its behavioral
+description \cite{NS882}.
+
+\RRL has also been used in teaching a course on theorem proving
+methods based on rewrite techniques, 
+providing students with an opportunity to try methods and
+approaches discussed in the course.  It has served as a basis for
+class projects and thesis research. 
+
+Additional details about the capabilities of \RRL and the associated theory
+as well as possible applications of \RRL can be found in the 
+papers listed in the selected bibliography at the end of this manual.
+
+\section{Organization of the Manual}
+  
+This manual is intended to introduce the reader to \RRL as a theorem
+prover. It assumes familiarity with the rewriting approach to theorem
+proving.  The reader may wish to consult the literature on the
+rewriting paradigm \cite{Huet80,Bundy,RTA85,JSC}.  In the next
+chapter, we outline the proof methods supported by \ERRL; they are
+mainly based on completion and rewriting concepts.  In Chapter III, we
+group the commands of \RRL by their functionality and describe what
+each command does.
+
+In order to help someone not very familiar with the rewriting
+paradigm, we have included transcripts of a number of examples which
+were run on \ERRL. These examples illustrate the capabilities and
+features of \RRL as a theorem prover.  The rest of the manual should be
+read along with these transcripts reproduced in the Appendices. Below,
+we list the examples discussed in the Appendices along with one
+sentence description.  A more detailed description is given at the
+beginning of the transcript in each Appendix.  The best way to
+familiarize with \RRL might be to compare what the user would like to
+do with the examples in the Appendices, pick the one which closely
+matches with the user's needs, and follow the commands in the
+transcript of that example.
+
+Appendices C, D, and E illustrate how \RRL can be used to generate a
+complete rewriting system for an equational theory.  
+As stated above, such a complete
+system is a decision procedure for the equational theory; in order to
+check whether an equation is a theorem or not, one just needs to
+normalize the two sides of the equation using this complete system and
+check whether the results are the same. Appendix D is also an
+illustration of how \RRL can be used to check the equivalence of two
+different axiomatization of the same theory.
+
+Appendices F, G and H illustrate \RRL as a refutational theorem
+prover. \RRL can also be used to generate a complete system from a set
+of axioms (if the \RRL terminates, which is guaranteed for
+propositional calculus) which serves as a decision procedure for these
+axioms. 
+Appendix F illustrates the use of rewriting methods
+for handling equality. 
+Appendix G includes three examples by the boolean ring method:
+one for propositional calculus; the second for
+first-order predicate calculus
+without equality and the third for the use
+ of paramodulation
+in this method.
+Appendix H illustrates the
+use of conditional rewrite rules for first order predicate
+calculus with the equality.
+
+Appendix I illustrates the use of narrowing for solving an equation
+modulo a theory. This can be used to support logic programming.
+
+Appendix J illustrates the use of \RRL for checking the sufficient
+completeness property of an abstract data type specified using
+equations. In case that a function specification is not complete, \RRL
+proposes templates on which the function needs to be specified for it
+to be completely specified.
+
+Appendix K illustrates the use of \RRL as an interpreter for
+equational programs written in a functional style.
+
+Appendixes L and M illustrate the proof-by-consistency method
+and the cover set induction method for proving
+equations by induction.
+

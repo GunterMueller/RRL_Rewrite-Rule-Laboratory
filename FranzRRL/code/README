@@ -1,0 +1,47 @@
+Here is a short note about how to make RRL runing using Franz lisp compiler.
+At first, you should have at least 1.6 MB free space on a unix system 
+(3MB is desirable). 
+
+1. Check if the following files exist in your directory:
+
+   Makefile     rrl.files    rrl.load    rrl.make  
+   
+plus the sixty lisp files ended with ".l".
+
+2. Compile all files using
+        % make > err &
+It takes about one hour on a VAX780.
+
+3. Invoke franz lisp, followed by loading "rrl.make":
+        % lisp 
+        -> (load "rrl.make")
+It will print a message saying an executable file (~1400K bytes) of RRL 
+is made in a file, say "nrrl" (stands for "new rrl").
+   If you don't have enough space, using the following:
+        % lisp 
+        -> (load "rrl.load")
+
+4. Test rrl using the files with the suffix ".cmd" in the directory "demo/".
+RRL is an interactive theorem prover, you may talk to it by type rrl commands.
+The file with the suffix ".cmd" contains a sequence of rrl commands. To execute
+the commands in such a file, use the rrl command "auto". For example, if
+you want to execute the commands in the file named "test.cmd", do 
+it as follows:
+        % nrrl
+        ... ...
+        RRL-> auto test
+
+5. If rrl runs okay, you may delete the binary code, i.e. the files with the 
+suffix ".o", to save space and change its name to rrl; 
+otherwise, please report any hazard to 
+
+            Hantao Zhang
+            Dept. of Computer Science
+            The University of Iowa
+            Iowa City, IA 52242
+    E-mail: hzhang@herky.cs.uiowa.edu
+
+
+
+        
+   

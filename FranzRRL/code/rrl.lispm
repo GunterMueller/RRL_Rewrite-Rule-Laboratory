@@ -1,0 +1,31 @@
+;;; -*- Mode: LISP; Syntax: Zetalisp; Package: USER; Base: 10; -*-
+
+(defsystem sutra
+  (:pathname-default "rrl:rrl;") ; you may your own system name.
+  (:module main ("franz-array" "line-edit"  
+		 "toplevel" "initialize" "options" "history" 
+                 "saveload" "miscel" 
+		 "input" "syntax" "typing" "output" 
+		 "set" "operators" "precedence" "term"
+		 "kb" "statistics" 
+		 "makerules" "suggprec" "lrpo" "order" "manual" "autoorder"
+		 "match" "substitution" "normalize" "normbool" "normstartegy"  
+		 "unify" "diophantine" "pickrules" "critical" "blocking" 
+		 "ac" "commutative" "equality" "aclrpo" 
+		 "prove" "consistency" "refutation" 
+		 "polynomial" "cyclerule" "cancellation" 
+		 "boolean" "skolem" "assertion" "orderpc" "pccritical" "pcmisc"
+		 "conditionals" "premises" "premisenorm"
+		 "induction" "coverrule" "conjectures" "abstraction" 
+                 "structure" "building"
+		 "narrow" "paramodulation"
+		 "sufficient" "quasireduce" "testset"
+		 ))
+
+  (:module franzdef ("def-franz"))
+  (:module franz ("franz-funs" "datamacs"))
+  (:compile-load franzdef)
+  (:compile-load franz (:fasload franzdef))
+  (:compile-load main (:fasload franzdef franz)))
+
+

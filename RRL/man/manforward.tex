@@ -1,0 +1,208 @@
+\chapter{Illustration of forward reasoning}
+\normalsize
+\rm
+This example illustrates the forward reasoning method based on completion.
+The goal is to prove that a nilpotent group is commutative. The first four
+axioms are the hypotheses and the equation is input by the {\em prove}
+command. 
+The example illustrates the power of the rewriting approach in
+contrast to the paramodulation used in resolution based systems for
+handling the equality relation.
+
+\small
+\tt
+\begin{verbatim}
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> add
+Type your equations, enter a ']' when done.
+x * i(x) == e
+x * e == x
+(x * y) * z == x * (y * z)
+x * x == e
+]
+New constant set is: { e }
+Equations read in are:
+ 1. (x * i(x)) == e  [user, 1]
+ 2. (x * e) == x  [user, 2]
+ 3. ((x * y) * z) == (x * (y * z))  [user, 3]
+ 4. (x * x) == e  [user, 4]
+Time = 0.2666666666666667 sec      Total = 0.2666666666666667 sec
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> option prove
+Following methods are available:
+  Deduction:
+     (f) forward reasoning --- using completion
+     (s) refutation        --- using boolean-ring method
+     (c) refutation        --- using conditional rules
+  Induction:
+     (e) explicit          --- using the cover-set method
+     (s) inductionless     --- using the test set method
+     (g) inductionless     --- using the ground-reducibility method
+Please make your choice: 
+(current value: s) (f,c,e,s,g) f
+Time = 0.04999999999999999 sec      Total = 0.3333333333333333 sec
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+RRL-> prove
+Note: the rewriting system is empty.
+Type your equation in the format:  L == R (if C) 
+Enter a ']' to exit when no equation is given.
+x * y == y * x
+
+No, it is not known to be an equational theorem.
+Normal form of the left hand side is:
+   (x * y)
+Normal form of the right hand side is:
+   (y * x)
+----- Step 1 -----
+Adding rule:   [1] (x * i(x)) ---> e  [user, 1]
+Adding rule:   [2] (x * e) ---> x  [user, 2]
+Trying to orient equation: 
+  ((x * y) * z) == (x * (y * z))  [user, 3]
+  To prove:  ((x * y) * z)  >  (x * (y * z))
+        or:  ((x * y) * z)  <  (x * (y * z))
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> st * l
+Operator, *, given status: lr
+----- Step 2 -----
+Adding rule:   [3] ((x * y) * z) ---> (x * (y * z))  [user, 3]
+Adding rule:   [4] (x * x) ---> e  [user, 4]
+Computing critical pairs with: 
+    [4] (x * x) ---> e  [user, 4]
+Computing critical pairs with: 
+    [2] (x * e) ---> x  [user, 2]
+Computing critical pairs with: 
+    [1] (x * i(x)) ---> e  [user, 1]
+Computing critical pairs with: 
+    [3] ((x * y) * z) ---> (x * (y * z))  [user, 3]
+Adding rule:   [5] (x * (y * (x * y))) ---> e  [4, 3]
+
+Trying to orient equation: 
+  (y * (y * z)) == (e * z)  [4, 3]
+  To prove:  (y * (y * z))  >  (e * z)
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> postpone
+Adding rule:   [6] (x * (e * z)) ---> (x * z)  [2, 3]
+Adding rule:   [7] (x * (y * i((x * y)))) ---> e  [1, 3]
+Adding rule:   [8] (x * (i(x) * z)) ---> (e * z)  [1, 3]
+Computing critical pairs with: 
+    [6] (x * (e * z)) ---> (x * z)  [2, 3]
+Adding rule:   [9] (x * i(e)) ---> x  [1, 6]
+Computing critical pairs with: 
+    [9] (x * i(e)) ---> x  [1, 6]
+Adding rule:  [10] i(e) ---> e  [4, 9]
+  Deleting rule:  [9] (x * i(e)) ---> x  [1, 6]
+Computing critical pairs with: 
+   [10] i(e) ---> e  [4, 9]
+Computing critical pairs with: 
+    [8] (x * (i(x) * z)) ---> (e * z)  [1, 3]
+Adding rule:  [11] (e * i(x)) ---> x  [4, 8]
+Adding rule:  [12] i(x) ---> x  [1, 8]
+  Deleting rule:  [1] (x * i(x)) ---> e  [user, 1]
+  Deleting rule:  [7] (x * (y * i((x * y)))) ---> e  [1, 3]
+  Deleting rule:  [8] (x * (i(x) * z)) ---> (e * z)  [1, 3]
+Trying to orient equation: 
+  (x * (x * z)) == (e * z)  [deleted, 8]
+  To prove:  (x * (x * z))  >  (e * z)
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+RRL>KB> postpone
+  Deleting rule: [10] i(e) ---> e  [4, 9]
+  Deleting rule: [11] (e * i(x)) ---> x  [4, 8]
+Adding rule:  [13] (e * x) ---> x  [deleted, 11]
+  Deleting rule:  [6] (x * (e * z)) ---> (x * z)  [2, 3]
+Computing critical pairs with: 
+   [12] i(x) ---> x  [1, 8]
+Computing critical pairs with: 
+   [13] (e * x) ---> x  [deleted, 11]
+Computing critical pairs with: 
+    [5] (x * (y * (x * y))) ---> e  [4, 3]
+Adding rule:  [14] (x * (y * (y1 * (x * (y * y1))))) ---> e  [3, 5]
+Adding rule:  [15] (x * (y * (x * (y * z)))) ---> z  [5, 3]
+Computing critical pairs with: 
+   [15] (x * (y * (x * (y * z)))) ---> z  [5, 3]
+Adding rule:  [16] (y * (z * y)) ---> z  [4, 15]
+  Deleting rule:  [5] (x * (y * (x * y))) ---> e  [4, 3]
+Adding rule:  [17] (y * (y * z)) ---> z  [13, 15]
+Adding rule:  [18] (x * (y * (y1 * (x * (y * (y1 * z)))))) ---> z  [3, 15]
+This eqn cannot be oriented into a rule: 
+  (x * (y * (x * z))) == (y1 * (y * (y1 * z)))  [15, 15]
+Type left_right, makeeq, operator, postpone, right_left, undo, quit, help --> postpone
+Computing critical pairs with: 
+   [17] (y * (y * z)) ---> z  [13, 15]
+Adding rule:  [19] (y * (y1 * (y * z))) ---> (y1 * z)  [15, 17]
+  Deleting rule: [15] (x * (y * (x * (y * z)))) ---> z  [5, 3]
+Computing critical pairs with: 
+   [16] (y * (z * y)) ---> z  [4, 15]
+Adding rule:  [20] (x * (y * (z * (x * y)))) ---> z  [3, 16]
+  Deleting rule: [14] (x * (y * (y1 * (x * (y * y1))))) ---> e  [3, 5]
+Adding rule:  [21] (y * (x * (y1 * y))) ---> (x * y1)  [3, 16]
+  Deleting rule: [20] (x * (y * (z * (x * y)))) ---> z  [3, 16]
+----- Step 3 -----
+'*' has the associative and commutative property now: 
+    (y * z) == (z * y)  [16, 17]
+'*' has been given the status lr. Now, the status is cancelled.
+
+A proof of the following equation has been found:
+    (x * y) == (y * x)  [user, 5]
+
+Input #1, produces: 
+      [1] (x * i(x)) ---> e
+Input #3, produces: 
+      [3] ((x * y) * z) ---> (x * (y * z))
+Input #4, produces: 
+      [4] (x * x) ---> e
+Rule [4] superposed into Rule [3], produces: 
+      [5] (x * (y * (x * y))) ---> e
+Rule [1] superposed into Rule [3], produces: 
+      [8] (x * (i(x) * z)) ---> (e * z)
+Rule [4] superposed into Rule [8], produces: 
+     [11] (e * i(x)) ---> x
+Rule [1] superposed into Rule [8], produces: 
+     [12] i(x) ---> x
+Rule [11], deleted by Rule [12], produces: 
+     [13] (e * x) ---> x
+Rule [5] superposed into Rule [3], produces: 
+     [15] (x * (y * (x * (y * z)))) ---> z
+Rule [4] superposed into Rule [15], produces: 
+     [16] (y * (z * y)) ---> z
+Rule [13] superposed into Rule [15], produces: 
+     [17] (y * (y * z)) ---> z
+Input #5, reformulated by the commutativity law obtained by 
+    superposing Rule [16] into Rule [17], produces: 
+     [22] (x * y) ---> (x * y)
+
+Only one rule is made from the input, but not used in the proof:
+  [2] (x * e) ---> x  [user, 2]
+
+The proof length (unifications) is 8.
+
+Save the result in file ? (y,n,yes,no) no
+
+Processor time used                  = 4.53 sec
+Number of rules generated            = 22
+Number of rules retained             = 10
+Number of critical pairs             = 69
+Time spent in normalization          = 1.23 sec     (27.21 percent of time)
+Time spent in unification            = 0.43 sec     (9.56 percent of time)
+Time spent in ordering               = 0.57 sec     (12.50 percent of time)
+Time spent in simplifying the rules  = 1.10 sec     (24.26 percent of time)
+\end{verbatim}
+\rm
+\normalsize

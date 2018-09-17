@@ -1,0 +1,16 @@
+latex title > err0
+echo "Please send title.dvi to a laser printer."
+latex part > err1
+mv part.toc part1.toc
+cp part.aux part1.aux
+latex part1 > err2
+echo "Please send part1.dvi to a laser printer."
+cp part.aux part2.aux
+latex part2 > err3
+echo "Please send part2.dvi to a laser printer."
+cp part.aux part3.aux
+latex part3 > err4
+echo "Please send part3.dvi to a laser printer."
+rm err* part.dvi
+
+

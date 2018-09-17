@@ -1,0 +1,110 @@
+Input #1, produces:
+      [1] on(z1, ln(z1, z2)) ---> true if 
+        { (z2 = z1) <=> false,
+          point(z1),
+          point(z2) } 
+Input #2, produces:
+      [2] on(z2, ln(z1, z2)) ---> true if 
+        { (z2 = z1) <=> false,
+          point(z1),
+          point(z2) } 
+Input #3, produces:
+      [3] line(ln(z1, z2)) ---> true if 
+        { (z2 = z1) <=> false,
+          point(z1),
+          point(z2) } 
+Input #4, produces:
+      [4] on(z1, y3) ---> false if 
+        { (z2 = z1) <=> false,
+          on(z2, y3),
+          (y4 = y3) <=> false,
+          on(z1, y4),
+          on(z2, y4),
+          point(z1),
+          point(z2),
+          line(y3),
+          line(y4) } 
+Input #5, produces:
+      [5] on(pt1(y1), y1) ---> true if  { line(y1) } 
+Input #6, produces:
+      [6] on(pt2(y1), y1) ---> true if  { line(y1) } 
+Input #7, produces:
+      [7] point(pt1(y1)) ---> true if  { line(y1) } 
+Input #8, produces:
+      [8] point(pt2(y1)) ---> true if  { line(y1) } 
+Input #9, produces:
+      [9] (pt2(y1) = pt1(y1)) ---> false if  { line(y1) } 
+Input #10, produces:
+     [10] on(pt3(y1), y1) ---> false if  { line(y1) } 
+Input #11, produces:
+     [11] point(pt3(y1)) ---> true if  { line(y1) } 
+Input #12, produces:
+     [12] on(pt, y1) ---> true if  { line(y1) } 
+Input #13, produces:
+     [13] line(a) ---> true
+Input #14, produces:
+     [14] point(pt) ---> true
+Rule [12] superposed into Rule [4], reduced by Rules [12], and [14], produces:
+     [15] on(z2, y3) ---> false if 
+        { line(y4),
+          line(y3),
+          point(z2),
+          on(z2, y4),
+          (y4 = y3) <=> false,
+          (pt = z2) <=> false } 
+Rule [6] superposed into Rule [15], reduced by Rules [8], [14], and [12], produces:
+     [20] on(pt2(y3), y4) ---> false if 
+        { (pt2(y3) = pt) <=> false,
+          (y4 = y3) <=> false,
+          line(y3),
+          line(y4) } 
+Rule [5] superposed into Rule [15], reduced by Rule [7], produces:
+     [21] on(pt1(y3), y4) ---> false if 
+        { (pt1(y3) = pt) <=> false,
+          (y4 = y3) <=> false,
+          line(y3),
+          line(y4) } 
+Rule [1] superposed into Rule [21], reduced by Rules [3], and [7], produces:
+     [25] ln(pt1(y3), z2) ---> y3 if 
+        { line(y3),
+          (pt1(y3) = pt) <=> false,
+          point(z2),
+          (pt1(y3) = z2) <=> false } 
+Rule [1] superposed into Rule [20], reduced by Rules [3], and [8], produces:
+     [27] ln(pt2(y3), z2) ---> y3 if 
+        { line(y3),
+          (pt2(y3) = pt) <=> false,
+          point(z2),
+          (pt2(y3) = z2) <=> false } 
+Rule [27] superposed into Rule [2], reduced by Rule [8], produces:
+     [28] on(z2, y3) ---> true if 
+        { point(z2),
+          (pt2(y3) = pt) <=> false,
+          line(y3) } 
+Rule [10] superposed into Rule [28], reduced by Rules [11], [8], and [6], produces:
+     [29] line(y3) ---> false if  { (pt2(y3) = pt) <=> false } 
+Rule [13] superposed into Rule [29], reduced by Rules [28], and [29], produces:
+     [30] pt2(a) ---> pt
+Rule [30] superposed into Rule [9], reduced by Rule [13], produces:
+     [32] (pt1(a) = pt) ---> false
+Rule [25] superposed into Rule [2], reduced by Rule [7], produces:
+     [34] on(z2, y3) ---> true if 
+        { point(z2),
+          (pt1(y3) = pt) <=> false,
+          line(y3) } 
+Rule [10] superposed into Rule [34], reduced by Rules [11], and [29], produces:
+     [35] line(y3) ---> false if  { (pt1(y3) = pt) <=> false } 
+Rule [13], deleted by Rule [35], reduced by Rules [32], and [35], produces:
+     [36] true ---> false
+
+The proof length (unifications) is 12.
+
+Processor time used                  = 27.48 sec
+Number of rules generated            = 36
+Number of rules retained             = 35
+Number of critical pairs             = 53
+Time spent in normalization          = 9.38 sec     (34.14 percent of time)
+Time spent in unification            = 0.75 sec     (2.73 percent of time)
+Time spent in ordering               = 0.97 sec     (3.52 percent of time)
+Time spent in simplifying the rules  = 2.67 sec     (9.70 percent of time)
+Time spent in boolean translation    = 2.47 sec     (8.98 percent of time)

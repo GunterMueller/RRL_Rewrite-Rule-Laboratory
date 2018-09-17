@@ -1,0 +1,18 @@
+This directory contains the rrl manual latex files. 
+To get a hardcopy of the manual, please run "latexman" under the unix and 
+follow further instructions.
+
+The hardcopy of the manual is also available as 
+   Technical Report 89-03, RRL: Rewrite Rule Laboratory User's Manual.
+You may obtain a copy by writing to:
+
+Cyndi V. Antwerp
+Computer Science Dept.
+University of Iowa
+Iowa City, IA 52242
+
+
+Hantao Zhang
+
+hzhang@herky.cs.uiowa.edu
+

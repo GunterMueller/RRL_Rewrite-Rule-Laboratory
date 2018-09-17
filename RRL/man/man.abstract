@@ -1,0 +1,8 @@
+RRL (Rewrite Rule Laboratory) is an interactive reasoning program based on 
+rewriting techniques and is developed by the authors during the last six years.
+This manual is intended to introduce the reader to RRL as a theorem
+prover: The proof methods supported by RRL are outlined with examples;
+the commands of RRL are grouped by their functionality and are described 
+in detail. Transcripts of a number of examples which were run on RRL are 
+included to illustrate the capabilities and features of RRL 
+as a theorem prover.

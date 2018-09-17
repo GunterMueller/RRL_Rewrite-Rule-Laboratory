@@ -1,0 +1,196 @@
+\chapter{Generating a canonical system for free groups}
+\normalsize
+\rm
+The following equational axiomatization of free groups is a pet
+example in the literature on rewriting techniques, perhaps because the
+seminal paper by Knuth and Bendix used this example.  The goal is to
+start with three equation axiomatization of free groups and generate a
+complete rewriting system for free groups using which any equation
+expressed only in terms of the group operations can be decided to be
+in the first-order equational theory of free groups. After the
+complete rewriting system is generated, it is shown near the end of
+the transcript how this system can be used to prove and disprove
+equations about free groups.
+
+For generating a complete system for an axiomatization using the
+interactive mode for orienting rules from equations, the following
+steps can be followed: 
+\begin{enumerate}
+\item Give an axiomatization as input.
+\item (optional) Specify precedence relation on function symbols
+using the command {\em oper precedence}.
+\item Invoke {\em kb}.
+\item Give precedence relation incrementally when equations cannot be
+oriented.
+\item (optional) Subsequently, if you wish to change the 
+precedence relation, {\em undo} to the step where
+the precedence relation that must be changed was given.
+\end{enumerate}
+If the completion procedure stops, a complete system is generated
+which can be used to prove or disprove equations using
+the {\em prove} command. If it appears that the completion procedure
+may go forever, then the computation can be interrupted
+using {\em $uparrow$-C} or {\em abort}.
+
+\small 
+\tt 
+\begin{verbatim}
+****************************************************************************
+****                                                                    ****
+****               WELCOME TO REWRITE RULE LABORATORY (RRL)             ****
+****                                                                    ****
+****************************************************************************
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em read}\\
+Type filename: {\em group}
+\begin{verbatim}
+Equations read in are:
+ 1. (e * x) == x  [user, 1]
+ 2. (i(x) * x) == e  [user, 2]
+ 3. ((x * y) * z) == (x * (y * z))  [user, 3]
+New constant set is: { e }
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em kb}
+\begin{verbatim}
+----- Step 1 -----
+Adding rule:   [1] (e * x) ---> x  [user, 1]
+Trying to orient equation: 
+  (i(x) * x) == e  [user, 2]
+  To prove:  (i(x) * x)  >  e
+  Here are some precedence suggestions:
+       1.  * > e
+       2.  i > e
+Either type a list of numbers or
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em 1 2}
+\begin{verbatim}
+----- Step 2 -----
+Adding rule:   [2] (i(x) * x) ---> e  [user, 2]
+Trying to orient equation: 
+  ((x * y) * z) == (x * (y * z))  [user, 3]
+  To prove:  ((x * y) * z)  >  (x * (y * z))
+        or:  ((x * y) * z)  <  (x * (y * z))
+I have no precedence suggestions.  
+Try doing Equiv or Status.
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em s}\\
+Type operator you wish to set status for: {\em *}\\
+Type lr, rl, help --> {\em lr}
+\begin{verbatim}
+Operator, *, given status: lr
+----- Step 3 -----
+Adding rule:   [3] ((x * y) * z) ---> (x * (y * z))  [user, 3]
+Computing critical pairs with: 
+    [1] (e * x) ---> x  [user, 1]
+Computing critical pairs with: 
+    [2] (i(x) * x) ---> e  [user, 2]
+Computing critical pairs with: 
+    [3] ((x * y) * z) ---> (x * (y * z))  [user, 3]
+Adding rule:   [4] (i(y) * (y * z)) ---> z  [2, 3]
+Computing critical pairs with: 
+    [4] (i(y) * (y * z)) ---> z  [2, 3]
+Adding rule:   [5] (i(e) * z) ---> z  [1, 4]
+Adding rule:   [6] (i(i(z)) * e) ---> z  [2, 4]
+Adding rule:   [7] (i((x * y)) * (x * (y * z))) ---> z  [3, 4]
+Adding rule:   [8] (i(i(y)) * z) ---> (y * z)  [4, 4]
+  Deleting rule:  [6] (i(i(z)) * e) ---> z  [2, 4]
+Adding rule:   [9] (z * e) ---> z  [deleted, 6]
+Computing critical pairs with: 
+    [9] (z * e) ---> z  [deleted, 6]
+Adding rule:  [10] i(e) ---> e  [2, 9]
+  Deleting rule:  [5] (i(e) * z) ---> z  [1, 4]
+Computing critical pairs with: 
+   [10] i(e) ---> e  [2, 9]
+Computing critical pairs with: 
+    [8] (i(i(y)) * z) ---> (y * z)  [4, 4]
+Adding rule:  [11] i(i(y)) ---> y  [9, 8]
+  Deleting rule:  [8] (i(i(y)) * z) ---> (y * z)  [4, 4]
+Computing critical pairs with: 
+   [11] i(i(y)) ---> y  [9, 8]
+Adding rule:  [12] (y * i(y)) ---> e  [11, 2]
+Adding rule:  [13] (y * (i(y) * z)) ---> z  [11, 4]
+Computing critical pairs with: 
+   [12] (y * i(y)) ---> e  [11, 2]
+Adding rule:  [14] (x * (y * i((x * y)))) ---> e  [3, 12]
+Computing critical pairs with: 
+   [13] (y * (i(y) * z)) ---> z  [11, 4]
+Adding rule:  [15] (x * (y * (i((x * y)) * z))) ---> z  [3, 13]
+Computing critical pairs with: 
+   [14] (x * (y * i((x * y)))) ---> e  [3, 12]
+Adding rule:  [16] (x * (y * (y1 * i((x * (y * y1)))))) ---> e  [3, 14]
+Adding rule:  [17] (y * i((y1 * y))) ---> i(y1)  [14, 4]
+  Deleting rule: [14] (x * (y * i((x * y)))) ---> e  [3, 12]
+Computing critical pairs with: 
+   [17] (y * i((y1 * y))) ---> i(y1)  [14, 4]
+Adding rule:  [18] (x * (y * i((y1 * (x * y))))) ---> i(y1)  [3, 17]
+  Deleting rule: [16] (x * (y * (y1 * i((x * (y * y1)))))) ---> e  [3, 14]
+Adding rule:  [19] (y * i((x * (y1 * y)))) ---> i((x * y1))  [3, 17]
+  Deleting rule: [18] (x * (y * i((y1 * (x * y))))) ---> i(y1)  [3, 17]
+Adding rule:  [20] (x * (i((y * x)) * z)) ---> (i(y) * z)  [17, 3]
+  Deleting rule: [15] (x * (y * (i((x * y)) * z))) ---> z  [3, 13]
+Trying to orient equation: 
+  (i(y) * i(y1)) == i((y1 * y))  [17, 4]
+  To prove:  (i(y) * i(y1))  >  i((y1 * y))
+        or:  (i(y) * i(y1))  <  i((y1 * y))
+  Here are some precedence suggestions:
+       1.  * > i                     2.  i > *
+Either type a list of numbers or
+Type Abort, Display, Drop, Equiv, LR, MakeEq, Operator, Postpone, Quit, RL,
+     Status, Superpose, Twoway, Undo or Help.
+\end{verbatim}
+RRL>KB> {\em 2}
+\begin{verbatim}
+----- Step 4 -----
+Adding rule:  [21] i((y * y1)) ---> (i(y1) * i(y))  [17, 4]
+  Deleting rule:  [7] (i((x * y)) * (x * (y * z))) ---> z  [3, 4]  
+  Deleting rule: [17] (y * i((y1 * y))) ---> i(y1)  [14, 4]
+  Deleting rule: [19] (y * i((x * (y1 * y)))) ---> i((x * y1))  [3, 17]
+  Deleting rule: [20] (x * (i((y * x)) * z)) ---> (i(y) * z)  [17, 3]
+Computing critical pairs with: 
+   [21] i((y * y1)) ---> (i(y1) * i(y))  [17, 4]
+Your system is canonical.
+  [1] (e * x) ---> x  [user, 1]
+  [2] (i(x) * x) ---> e  [user, 2]
+  [3] ((x * y) * z) ---> (x * (y * z))  [user, 3]
+  [4] (i(y) * (y * z)) ---> z  [2, 3]
+  [9] (z * e) ---> z  [deleted, 6]
+ [10] i(e) ---> e  [2, 9]
+ [11] i(i(y)) ---> y  [9, 8]
+ [12] (y * i(y)) ---> e  [11, 2]
+ [13] (y * (i(y) * z)) ---> z  [11, 4]
+ [21] i((y * y1)) ---> (i(y1) * i(y))  [17, 4]
+Processor time used                = 4.67 sec
+Number of rules generated          = 21
+Number of critical pairs           = 73
+Time spent in normalization        = 1.27 sec (27.1 percent of time)
+Time spent while adding rules      = 0.9 sec (19.3 percent of time)
+  (keeping rule set reduced)
+Time spent in unification          = 0.53 sec (11.4 percent of time)
+Time spent in ordering             = 0.45 sec (9.6 percent of time)
+Total processor time used (include 'undo' action) = 4.77 sec
+
+Type Add, Akb, Auto, Break, Clean, Delete, Grammar, History, Init, Kb, List,
+     Load, Log, Makerule, Narrow, Norm, Option, Operator, Prove, Quit, Read,
+     Refute, Save, Statics, Suffice, Undo, Unlog, Write or Help.
+\end{verbatim}
+RRL-> {\em prove} 
+\begin{verbatim}
+Type equation to prove in the format:  L == R (if C) 
+Enter a ']' to exit when no equation is given.
+\end{verbatim}
+{\em i(i(y1) * i(y)) == y * y1} \\
+\tt
+Yes, it is equational theorem.
+\rm
+\normalsize

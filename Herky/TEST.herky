@@ -1,0 +1,17 @@
+;; Remove ";" from the next line if your lisp cannot load "init.lsp":
+; (load "init.lsp")
+
+;; After compiling the HERKY files, HERKY can be tested
+;; by the following command (of UNIX).
+;;      % lisp < TEST.herky > test.out
+;; If the Common Lisp on your machine is not invoked by "lisp",
+;; please use the propriate name.
+;; The output of testing is in test.out.
+
+;; To see the CPU time of the test run, type
+;;      % grep "Time used" test.out > mytest.time
+;; and then compare mytest.time and TEST.time.
+
+(init)
+test
+quit
