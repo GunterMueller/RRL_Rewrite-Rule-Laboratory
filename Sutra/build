@@ -11,6 +11,9 @@ case *franz:
 case *kcl:
 	kcl -init < rrl.lsp   
         breaksw
+case *gcl:
+	gcl -init < rrl.lsp   
+        breaksw
 case *ibcl:
 	ibcl -init < rrl.lsp   
 	breaksw

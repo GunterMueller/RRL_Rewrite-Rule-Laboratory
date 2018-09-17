@@ -6,7 +6,8 @@
 ;;                    /    |     \   \            [ ] -- optional.
 ;;                  code  test  [lab] [hiper] 
 
-(defconstant $herky-directory "/home/zambini/csf/hzhang/herky/")
+;; (defconstant $herky-directory "/home/zambini/csf/hzhang/herky/")
+(defconstant $herky-directory "/home/gunter/GM_MATH/Rewrite_Systems/RRL_Rewrite_Rule_Lab/Herky/")
 
 ;; You may move the test directory anywhere and then change the following
 ;; definition accordingly.
